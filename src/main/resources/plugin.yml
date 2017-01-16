@@ -1,0 +1,26 @@
+name: FS-SpigotCore
+main: com.forgestorm.spigotcore.SpigotCore
+version: 0.1
+description: ForgeStorm SpigotCore
+author: unenergizer
+website: http://www.forgestorm.com/
+commands:
+  item:
+  monster:
+  mount:
+  playermenu:
+  realm:
+  spawner:
+  toggle:
+  admin:
+  creative:
+  help:
+  hub:
+  lobby:
+  mainmenu:
+  money:
+  mod:
+  roll:
+  settings:
+  playtime:
+  wa:

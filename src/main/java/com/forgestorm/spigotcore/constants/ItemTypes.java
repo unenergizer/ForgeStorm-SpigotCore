@@ -1,0 +1,21 @@
+package com.forgestorm.spigotcore.constants;
+
+public enum ItemTypes {
+
+	KITS(FilePaths.ITEMS_KITS),
+	RECEPIES_CRAFTING(FilePaths.ITEM_CRAFTING_RECIPES),
+	RECEPIES_FINISHED(FilePaths.ITEMS_RECIPES_FINISHED),
+	INGREDIENTS(FilePaths.ITEMS_INGREDIENTS),
+	MENU(FilePaths.ITEMS_MENU),
+	VANITY(FilePaths.ITEMS_VANITY);
+	
+	private FilePaths path;
+	
+	ItemTypes(FilePaths path) {
+		this.path = path;
+	}
+	
+	public FilePaths getFilePaths() {
+		return path;
+	}
+}
