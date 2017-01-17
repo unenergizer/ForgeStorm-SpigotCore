@@ -38,13 +38,13 @@ public class PlayerRealm {
 	private int timeTillpvpRenabled;
 	private int timeTillFlyingDisabled;
 
-	public PlayerRealm(SpigotCore plugin, Player player, Location location) {
+	PlayerRealm(SpigotCore plugin, Player player, Location location) {
 		PLUGIN = plugin;
 		PLAYER = player;
 		portalLocation = location;
 	}
 
-	public boolean setRealmPortal() {
+	boolean setRealmPortal() {
 		boolean cancel = true;
 		int x = (int) portalLocation.getX();
 		int y = (int) portalLocation.getY();
@@ -62,7 +62,7 @@ public class PlayerRealm {
 			blockBottom.setType(Material.PORTAL);
 
 			//Set title and realm status.
-			Location hologramLocation = new Location(portalLocation.getWorld(), x + .5, y + 1.1, z + .5);
+			Location hologramLocation = new Location(portalLocation.getWorld(), x + .5, y + 2.1, z + .5);
 			ArrayList<String> hologramText = new ArrayList<>();
 			hologramText.add(PLAYER.getName());
 			hologramText.add(ChatColor.RED + "Chaotic");
@@ -166,7 +166,7 @@ public class PlayerRealm {
 		}
 	}
 
-	public void removeRealm() {
+	void removeRealm() {
 		//Remove Blocks
 		blockTop.setType(Material.AIR);
 		blockBottom.setType(Material.AIR);

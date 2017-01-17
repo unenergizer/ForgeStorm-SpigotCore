@@ -6,7 +6,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
 
 import com.forgestorm.spigotcore.bungeecord.BungeeCord;
-import com.forgestorm.spigotcore.citizens.CitizenManager;
 import com.forgestorm.spigotcore.commands.Admin;
 import com.forgestorm.spigotcore.commands.Creative;
 import com.forgestorm.spigotcore.commands.Hub;
@@ -28,7 +27,8 @@ import com.forgestorm.spigotcore.entity.EntityManager;
 import com.forgestorm.spigotcore.entity.EntityRespawner;
 import com.forgestorm.spigotcore.entity.EntitySpawnerManager;
 import com.forgestorm.spigotcore.entity.MountManager;
-import com.forgestorm.spigotcore.entity.PlayerManager;
+import com.forgestorm.spigotcore.entity.human.CitizenManager;
+import com.forgestorm.spigotcore.entity.human.PlayerManager;
 import com.forgestorm.spigotcore.games.dragoneggtp.DragonEggTeleport;
 import com.forgestorm.spigotcore.help.LocationTrackingManager;
 import com.forgestorm.spigotcore.help.Tutorial;

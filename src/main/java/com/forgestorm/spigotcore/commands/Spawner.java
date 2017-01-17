@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.Messages;
 import com.forgestorm.spigotcore.entity.EntitySpawnerManager;
-import com.forgestorm.spigotcore.spawner.monster.SaveMonsterSpawner;
+import com.forgestorm.spigotcore.entity.spawner.SaveEntitySpawner;
 
 import lombok.AllArgsConstructor;
 
@@ -49,7 +49,7 @@ public class Spawner implements CommandExecutor {
 			int maxMobCount = Integer.parseInt(args[3]);
 			int respawnTime = Integer.parseInt(args[4]);
 			
-			new SaveMonsterSpawner().entitySaver(player.getLocation(), spawnRadius, runRadius, maxMobCount, respawnTime);
+			new SaveEntitySpawner().entitySaver(player.getLocation(), spawnRadius, runRadius, maxMobCount, respawnTime);
 		}
 		return false;
 	}

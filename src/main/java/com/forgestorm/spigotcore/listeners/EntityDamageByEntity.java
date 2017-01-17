@@ -2,7 +2,6 @@ package com.forgestorm.spigotcore.listeners;
 
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -51,7 +50,7 @@ public class EntityDamageByEntity implements Listener {
 			UUID uuid = entity.getUniqueId();
 			boolean isInMountMap = PLUGIN.getMountManager().containsMount(uuid);
 
-			Bukkit.broadcastMessage(ChatColor.RED + "Damage Taken. " + ChatColor.BOLD + "Removing mount" + ChatColor.RED + "..");
+			event.getEntity().sendMessage(ChatColor.RED + "Damage Taken. " + ChatColor.BOLD + "Removing mount" + ChatColor.RED + "..");
 
 			if (isInMountMap) {
 				PLUGIN.getMountManager().removeMount(uuid);
@@ -63,7 +62,7 @@ public class EntityDamageByEntity implements Listener {
 		}
 
 		//Cancel regular mc damage.
-		event.setDamage(0);
+		event.setDamage(1);
 
 		//Arrow damage
 		if (event.getDamager() instanceof Projectile) {
@@ -82,6 +81,11 @@ public class EntityDamageByEntity implements Listener {
 			LivingEntity damager = (LivingEntity) event.getDamager();
 			LivingEntity defender = (LivingEntity) event.getEntity();
 
+			if (damager instanceof Player) {
+				//If the player is fatigued, cancel hit event to prevent
+				//them from moving the defender or doing hit effects.
+				event.setCancelled(startFatigue((Player) damager));
+			}
 			entityTester(damager, defender);
 		}
 	}
@@ -102,7 +106,7 @@ public class EntityDamageByEntity implements Listener {
 				
 				startCombat((Player) damager);
 				startCombat((Player) defender);
-				startFatigue((Player) damager);
+				//startFatigue((Player) damager);
 				new PlayerVersusPlayer(PLUGIN, damager, defender).doCalculations();
 				return;
 			}
@@ -123,7 +127,7 @@ public class EntityDamageByEntity implements Listener {
 			//Player versus Mob, Entity, etc
 			if (damager instanceof Player && !(defender instanceof Player)) {
 				startCombat((Player) damager);
-				startFatigue((Player) damager);
+				//startFatigue((Player) damager);
 
 				boolean isInMap = PLUGIN.getEntityManager().getRpgEntity().containsKey(defender.getUniqueId());
 
@@ -146,11 +150,13 @@ public class EntityDamageByEntity implements Listener {
 		profile.putInCombat();
 	}
 
-	private void startFatigue(Player damager) {
+	private boolean startFatigue(Player damager) {
 		PlayerProfileData profile = PLUGIN.getPlayerManager().getPlayerProfile(damager);
 		if (profile.getEnergy() == 0) {
-			damager.playSound(damager.getLocation(), Sound.ENTITY_WOLF_PANT, 10F, 1.5F);	
+			damager.playSound(damager.getLocation(), Sound.ENTITY_WOLF_PANT, 10F, 1.5F);
+			return true;
 		}
 		profile.addFatigue(new Fatigue().getEnergyCost(damager.getInventory().getItemInMainHand().getType()));
+		return false;
 	}
 }

@@ -109,7 +109,7 @@ public class MonsterBuilder {
 		applyAttributesToProfile();
 		
 		//Create RPGEntity data class.
-		RPGEntity monster = getRPGEntityFromENUM(RPGEntityType.valueOf(type), location);
+		RPGEntity monster = getRPGEntityFromENUM(RPGEntityType.valueOf(type.toUpperCase()), location);
 		
 		//Spawn the monster
 		monster.spawn();

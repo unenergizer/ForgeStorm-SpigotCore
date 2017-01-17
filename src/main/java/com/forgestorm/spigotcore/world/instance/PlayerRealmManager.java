@@ -36,7 +36,7 @@ public class PlayerRealmManager {
 		removeAllPlayerRealms();
 	}
 	
-	public void runJoinTimeCountdowns() {
+	private void runJoinTimeCountdowns() {
 		new BukkitRunnable() {
 
 			@Override

@@ -18,7 +18,7 @@ public class PlayerRealmData {
 	private int timeTillJoin;
 	private int invincibilityTimeLeft;
 	
-	public PlayerRealmData(Player player, UUID realmOwner, Location joinLocation) {
+	PlayerRealmData(Player player, UUID realmOwner, Location joinLocation) {
 		this.player = player.getUniqueId();
 		this.realmOwner = realmOwner;
 		this.joinLocation = joinLocation;

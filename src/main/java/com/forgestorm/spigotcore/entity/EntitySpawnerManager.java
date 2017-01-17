@@ -8,9 +8,9 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.entity.spawner.EntitySpawnerData;
+import com.forgestorm.spigotcore.entity.spawner.LoadEntitySpawner;
 import com.forgestorm.spigotcore.profile.monster.MonsterLoader;
-import com.forgestorm.spigotcore.spawner.monster.LoadMonsterSpawner;
-import com.forgestorm.spigotcore.spawner.monster.MonsterSpawnerData;
 import com.forgestorm.spigotcore.world.ChunkData;
 
 import lombok.Getter;
@@ -22,7 +22,7 @@ public class EntitySpawnerManager {
 	
 	private final SpigotCore PLUGIN;
 	
-	private List<MonsterSpawnerData> spawners;
+	private List<EntitySpawnerData> spawners;
 	
 	public EntitySpawnerManager(SpigotCore plugin) {
 		PLUGIN = plugin;
@@ -40,7 +40,7 @@ public class EntitySpawnerManager {
 		int chunkZ = chunkLocation.getBlockZ();
 
 		//Loop through and add Spawner ID's to the RPGChunk data class.
-		for (MonsterSpawnerData spawner: spawners) {
+		for (EntitySpawnerData spawner: spawners) {
 			Location spawnerLocation = spawner.getLocation();
 			int spawnerX = spawnerLocation.getBlockX();
 			int spawnerZ = spawnerLocation.getBlockZ();
@@ -91,7 +91,7 @@ public class EntitySpawnerManager {
 	}
 	
 	private void loadAllSpawners() {
-		spawners = new LoadMonsterSpawner().loadConfigValues();
+		spawners = new LoadEntitySpawner().loadConfigValues();
 
 		Bukkit.getLogger().info(" ");
 		Bukkit.getLogger().info("---------------[ LOAD SPAWNERS ]--------------");
@@ -99,11 +99,11 @@ public class EntitySpawnerManager {
 		Bukkit.getLogger().info("[FSRPG] ID's: " + spawners.toString());
 	}
 	
-	public void addSpawner(MonsterSpawnerData spawner) {
+	public void addSpawner(EntitySpawnerData spawner) {
 		spawners.add(spawner);
 	}
 	
-	public MonsterSpawnerData getSpawnerData(int id) {
+	public EntitySpawnerData getSpawnerData(int id) {
 		return spawners.get(id);
 	}
 }

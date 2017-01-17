@@ -4,18 +4,14 @@ public enum FilePaths {
 	
 	
 	//RPG CODE
-	LOOT_TABLE_CHEST("LootTable/Chest.yml"),
-	LOOT_TABLE_MOBS("LootTable/Monster.yml"),
+	LOOT_TABLE_CHEST("loot/Chest.yml"),
+	LOOT_TABLE_MOBS("loot/Monster.yml"),
 	
-	//ENTITY_TYPE("Entity/EntityType.yml"),
-	
-	MONSTER_SPAWNER("Entity/MonsterSpawner.yml"),
-	
-	SETTINGS("Settings.yml"),
+	SETTINGS("settings.yml"),
 
-	SOUND("Sounds"),
+	SOUND("sounds"),
 	
-	WORLD_PLAYER_DEFAULT("World/EMPTYWORLD"),
+	WORLD_PLAYER_DEFAULT("world/emptyworld"),
 	
 	//ORIGINAL
 	CHAT_ICONS("resources/chaticons/"),

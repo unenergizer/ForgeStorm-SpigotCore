@@ -1,18 +1,16 @@
 package com.forgestorm.spigotcore.util.scoreboard;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.Usergroup;
 import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class ScoreboardManager {
 	
@@ -42,8 +40,7 @@ public class ScoreboardManager {
 	}
 	
 	public void updatePlayerHP(PlayerProfileData profile, Player player) {
-		Score score = objectivePlayerHP.getScore(Integer.toString((int) profile.getHealth()));
-		score.setScore((int) profile.getHealth());
+		objectivePlayerHP.getScore(player.getName()).setScore((int) profile.getHealth());
 	}
 	
 	private void setupTeams() {

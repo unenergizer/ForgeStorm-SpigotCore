@@ -37,17 +37,18 @@ import com.forgestorm.spigotcore.attributes.weapon.VersusPlayer;
 import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
 
 import lombok.AllArgsConstructor;
+import net.md_5.bungee.api.ChatColor;
 
 @AllArgsConstructor
 public class AttributeReader {
-	
+
 	private final SpigotCore PLUGIN;
 	private final Player PLAYER;
 
 	public void readArmorAttributes(boolean showUpdates) {
-		
+
 		PlayerProfileData profile = PLUGIN.getPlayerManager().getPlayerProfile(PLAYER);
-		
+
 		/*--- OLD ARMOR DATA ---*/
 		int oldArmorMax = profile.getArmorMax();
 		int oldArmorMin = profile.getArmorMin();
@@ -67,7 +68,7 @@ public class AttributeReader {
 		int oldStrength = profile.getStrength();
 		int oldThorns = profile.getArmorThorns();
 		int oldVitality = profile.getVitality();
-		
+
 		/*---- ARMOR ----*/
 		int armorMax = new ArmorMax().getAttributeValue(PLAYER);
 		int armorMin = new ArmorMin().getAttributeValue(PLAYER);
@@ -88,7 +89,7 @@ public class AttributeReader {
 		int strength = new Strength().getAttributeValue(PLAYER);
 		int thorns = new Thorns().getAttributeValue(PLAYER);
 		int vitality = new Vitality().getAttributeValue(PLAYER);
-		
+
 		profile.setArmorMax(armorMax);
 		profile.setArmorMin(armorMin);
 		profile.setArmorBlock(block);
@@ -107,39 +108,164 @@ public class AttributeReader {
 		profile.setStrength(strength);
 		profile.setArmorThorns(thorns);
 		profile.setVitality(vitality);
-		
+
 		//Update the players HP under their name tag.
 		PLUGIN.getScoreboardManager().updatePlayerHP(profile, PLAYER);
-		
+
 		//Show debug.
 		if (profile.isToggleDebug() && showUpdates) {
-			PLAYER.sendMessage("");
-			PLAYER.sendMessage("---------- UPDATE ARMOR ATTRIBUTES ---------");
-			if (armorMax != oldArmorMax) PLAYER.sendMessage("ArmorMax: " + armorMax);
-			if (armorMin != oldArmorMin) PLAYER.sendMessage("ArmorMin: " + armorMin);
-			if (block != oldBlock) PLAYER.sendMessage("Block: " + block);
-			if (dexterity != oldDexterity) PLAYER.sendMessage("Dex: " + dexterity);
-			if (dodge != oldDodge) PLAYER.sendMessage("Dodge: " + dodge);
-			if (energyRegen != oldEnergyRegen) PLAYER.sendMessage("EnergyRegen: " + energyRegen);
-			if (fireResist != oldFireResist) PLAYER.sendMessage("Fire Resist: " + fireResist);
-			if (gemFind != oldGemFind) PLAYER.sendMessage("Gem Find: " + gemFind);
-			if (healthMax != oldHealthMax) PLAYER.sendMessage("Health: " + healthMax);
-			if (healthRegen != oldHealthRegen) PLAYER.sendMessage("HealthRegen: " + healthRegen);
-			if (iceResist != oldIceResist) PLAYER.sendMessage("IceResist: " + iceResist);
-			if (intellect != oldIntellect) PLAYER.sendMessage("Intellect: " + intellect);
-			if (itemFind != oldItemFind) PLAYER.sendMessage("Item Find: " + itemFind);
-			if (poisonResist != oldPoisonResist) PLAYER.sendMessage("Poison Resist: " + poisonResist);
-			if (reflection != oldReflection) PLAYER.sendMessage("Reflection: " + reflection);
-			if (strength != oldStrength) PLAYER.sendMessage("Strength: " + strength);
-			if (thorns != oldThorns) PLAYER.sendMessage("Thorns: " + thorns);
-			if (vitality != oldVitality) PLAYER.sendMessage("Vit: " + vitality);
+			if (armorMax != oldArmorMax) {
+				int difference = armorMax - oldArmorMax;
+				if (armorMax > oldArmorMax) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Max Armor");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Max Armor");
+				}
+			}
+			if (armorMin != oldArmorMin) { 
+				int difference = armorMin - oldArmorMin;
+				if (armorMin > oldArmorMin) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Min Armor");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Min Armor");
+				}
+			}
+			if (block != oldBlock) {
+				int difference = block - oldBlock;
+				if (block > oldBlock) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Block");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Block");
+				}
+			}
+			if (dexterity != oldDexterity) {
+				int difference = dexterity - oldDexterity;
+				if (dexterity > oldDexterity) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Dexterity");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Dexterity");
+				}
+			}
+			if (dodge != oldDodge) {
+				int difference = dodge - oldDodge;
+				if (dodge > oldDodge) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Dodge");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Dodge");
+				}
+			}
+			if (energyRegen != oldEnergyRegen) {
+				int difference = energyRegen - oldEnergyRegen;
+				if (energyRegen > oldEnergyRegen) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Energy Regeneration");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Energy Regeneration");
+				}
+			}
+			if (fireResist != oldFireResist) {
+				int difference = fireResist - oldFireResist;
+				if (fireResist > oldFireResist) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Fire Resistance");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Fire Resistance");
+				}
+			}
+			if (gemFind != oldGemFind) {
+				int difference = gemFind - oldGemFind;
+				if (gemFind > oldGemFind) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Gem Find");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Gem Find");
+				}
+			}
+			if (healthMax != oldHealthMax) {
+				int difference = healthMax - oldHealthMax;
+				if (healthMax > oldHealthMax) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Health");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Health");
+				}
+			}
+			if (healthRegen != oldHealthRegen) {
+				int difference = healthRegen - oldHealthRegen;
+				if (healthRegen > oldHealthRegen) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Health Regeneration");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Health Regeneration");
+				}
+			}
+			if (iceResist != oldIceResist) {
+				int difference = iceResist - oldIceResist;
+				if (iceResist > oldIceResist) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Ice Resistance");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Ice Resistance");
+				}
+			}
+			if (intellect != oldIntellect) {
+				int difference = intellect - oldIntellect;
+				if (intellect > oldIntellect) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Intellect");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Intellect");
+				}
+			}
+			if (itemFind != oldItemFind) {
+				int difference = itemFind - oldItemFind;
+				if (itemFind > oldItemFind) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Item Find");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Item Find");
+				}
+			}
+			if (poisonResist != oldPoisonResist) {
+				int difference = poisonResist - oldPoisonResist;
+				if (poisonResist > oldPoisonResist) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Poison Resistance");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Poison Resistance");
+				}
+			}
+			if (reflection != oldReflection) {
+				int difference = reflection - oldReflection;
+				if (reflection > oldReflection) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Reflection");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Reflection");
+				}
+			}
+			if (strength != oldStrength) {
+				int difference = strength - oldStrength;
+				if (strength > oldStrength) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Strength");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Strength");
+				}
+			}
+			if (thorns != oldThorns) {
+				int difference = thorns - oldThorns;
+				if (thorns > oldThorns) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Thorns");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Thorns");
+				}
+			}
+			if (vitality != oldVitality) {
+				int difference = vitality - oldVitality;
+				if (vitality > oldVitality) {
+					PLAYER.sendMessage(ChatColor.GREEN + "+" + difference + " Vitality");
+				} else {
+					PLAYER.sendMessage(ChatColor.RED + "-" + (difference * -1) + " Vitality");
+				}
+			}
 		}
 	}
-	
+
+
 	public void readWeaponAttributes(boolean showUpdates) {
-		
+
 		PlayerProfileData profile = PLUGIN.getPlayerManager().getPlayerProfile(PLAYER);
-		
+
 		/*---- OLD WEAPON DATA----*/
 		int oldArmorPen = profile.getWeaponArmorPenetration();
 		int oldBlind = profile.getWeaponBlind();
@@ -154,7 +280,7 @@ public class AttributeReader {
 		int oldPureDamage = profile.getWeaponPure();
 		int oldVersusMonster = profile.getWeaponVersusMonster();
 		int oldVersusPlayer = profile.getWeaponVersusPlayer();
-		
+
 		/*---- WEAPON DATA ----*/
 		int armorPen = new ArmorPenetration().getAttributeValue(PLAYER);
 		int blind = new Blind().getAttributeValue(PLAYER);
@@ -169,7 +295,7 @@ public class AttributeReader {
 		int pureDamage = new PureDamage().getAttributeValue(PLAYER);
 		int versusMonster = new VersusMonster().getAttributeValue(PLAYER);
 		int versusPlayer = new VersusPlayer().getAttributeValue(PLAYER);
-		
+
 		profile.setWeaponArmorPenetration(armorPen);
 		profile.setWeaponBlind(blind);
 		profile.setWeaponCriticalHit(critical);
@@ -183,11 +309,9 @@ public class AttributeReader {
 		profile.setWeaponPure(pureDamage);
 		profile.setWeaponVersusMonster(versusMonster);
 		profile.setWeaponVersusPlayer(versusPlayer);
-		
+
 		//Show debug.
 		if (profile.isToggleDebug() && showUpdates) {
-			PLAYER.sendMessage("");
-			PLAYER.sendMessage("---------- UPDATE WEAPON ATTRIBUTES ---------");
 			if (armorPen != oldArmorPen) PLAYER.sendMessage("ArmorPen: " + armorPen);
 			if (blind != oldBlind) PLAYER.sendMessage("Blind: " + blind);
 			if (critical != oldCritical) PLAYER.sendMessage("Critical: " + critical);

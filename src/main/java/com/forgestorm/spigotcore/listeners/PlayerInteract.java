@@ -26,7 +26,17 @@ public class PlayerInteract implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {	
 		Player player = event.getPlayer();
-		Block block = event.getClickedBlock();		
+		Block block = event.getClickedBlock();
+		
+		//Player to place realm portal.
+		if (player.isSneaking()) {
+			if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+				if (event.getItem() != null && event.getItem().getType().equals(Material.COMPASS)) {
+					PLUGIN.getPlayerRealmManager().addPlayerRealm(player, block.getLocation());
+					return;
+				}
+			}
+		}
 		
 		//Dragon Egg Teleport game.
 		if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && block.getType().equals(Material.DRAGON_EGG) 
@@ -37,16 +47,6 @@ public class PlayerInteract implements Listener {
 			
 			//Toggle the egg click.
 			PLUGIN.getDragonEggTP().toggleEggClick(player, event.getClickedBlock().getLocation());
-		}
-		
-		//Player to place realm portal.
-		if (player.isSneaking()) {
-			if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
-				if (event.getItem() != null && event.getItem().getType().equals(Material.COMPASS)) {
-					PLUGIN.getPlayerRealmManager().addPlayerRealm(player, block.getLocation());
-					return;
-				}
-			}
 		}
 
 		//Armor and Weapon Actions
