@@ -30,9 +30,9 @@ public class T3Chestplate extends ArmorItem {
 		dodge_percent = 15;
 		dodge_min = 1;
 		dodge_max = 10;
-		throns_percent = 10;
-		throns_min = 1;
-		throns_max = 5;
+		thorns_percent = 10;
+		thorns_min = 1;
+		thorns_max = 5;
 		reflection_percent = 10;
 		reflection_min = 1;
 		reflection_max = 4;

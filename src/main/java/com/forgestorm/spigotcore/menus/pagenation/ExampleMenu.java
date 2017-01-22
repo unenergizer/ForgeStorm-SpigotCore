@@ -9,7 +9,7 @@ import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.ItemTypes;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
 
-public class ExampleMenu extends PagenationMenu {
+public class ExampleMenu extends PaginationMenu {
 	
 	public ExampleMenu(SpigotCore plugin) {
 		super(plugin, "Example menu", 5);

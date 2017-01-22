@@ -1,14 +1,13 @@
 package com.forgestorm.spigotcore.entity.neutral;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.PigZombie;
 
-import com.forgestorm.spigotcore.profile.ProfileData;
-
 public class EntityBabyZombiePigman extends NeutralEntity {
 
-	public EntityBabyZombiePigman(String name, int level, Location location, ProfileData profile) {
+	public EntityBabyZombiePigman(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.PIG_ZOMBIE;
 	}

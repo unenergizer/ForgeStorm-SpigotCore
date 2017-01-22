@@ -1,24 +1,22 @@
 package com.forgestorm.spigotcore.crafting;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.FilePaths;
+import com.forgestorm.spigotcore.constants.ItemTypes;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.FilePaths;
-import com.forgestorm.spigotcore.constants.ItemTypes;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CraftingConfig {
+class CraftingConfig {
 
 	private final SpigotCore PLUGIN;
 	
-	private FileConfiguration config;
+	private final FileConfiguration config;
 	
 	public CraftingConfig(SpigotCore plugin) {
 		PLUGIN = plugin;
@@ -47,19 +45,17 @@ public class CraftingConfig {
 	 * @param recipeName the name of the recipe
 	 * @return A list of ItemStacks.
 	 */
-	public List<ItemStack> getRecipieItems(String recipeName) {
-		ConfigurationSection section = config.getConfigurationSection(recipeName + ".ingredents");
+	public List<ItemStack> getRecipeItems(String recipeName) {
+		ConfigurationSection section = config.getConfigurationSection(recipeName + ".ingredients");
 		
 		List<ItemStack> items = new ArrayList<>();
-		Iterator<String> it = section.getKeys(false).iterator();
-		
-		while (it.hasNext()) {
-			
-			int i = Integer.parseInt(it.next());
-			
+
+		for (String s : section.getKeys(false)) {
+			int i = Integer.parseInt(s);
+
 			String name = section.getString(i + ".name");
 			int amount = section.getInt(i + ".amount");
-			
+
 			items.add(PLUGIN.getItemGen().generateItem(name, ItemTypes.INGREDIENTS, amount));
 		}
 		

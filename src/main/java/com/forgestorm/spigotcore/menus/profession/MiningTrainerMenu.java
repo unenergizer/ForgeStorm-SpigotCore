@@ -1,11 +1,5 @@
 package com.forgestorm.spigotcore.menus.profession;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.ItemTypes;
 import com.forgestorm.spigotcore.constants.ProfessionType;
@@ -19,12 +13,17 @@ import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
 import com.forgestorm.spigotcore.util.item.ItemBuilder;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
 import com.forgestorm.spigotcore.util.text.ProgressBarString;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MiningTrainerMenu extends Menu {
 
 	private final SpigotCore PLUGIN;
-	private Player player;
-	private boolean openAtNPC;
+	private final Player player;
+	private final boolean openAtNPC;
 
 	public MiningTrainerMenu(SpigotCore plugin, Player player, boolean openAtNPC) {
 		super(plugin);
@@ -85,7 +84,7 @@ public class MiningTrainerMenu extends Menu {
 				if (openAtNPC) {
 					//The menu was opened by clicking on an NPC.
 					//we can allow the player to upgrade their tool.
-					upgradeLore.add("&aCongradulations!!!!");
+					upgradeLore.add("&aCongratulations!!!!");
 					upgradeLore.add("&7Your tool is ready to be");
 					upgradeLore.add("&7upgraded!");
 					upgradeLore.add("");
@@ -96,7 +95,7 @@ public class MiningTrainerMenu extends Menu {
 					//The menu was opened using the "Main Menu." Because of this,
 					//we can not let the user upgrade their tool.  Tools can only
 					//be upgraded at the profession trainer.
-					upgradeLore.add("&eCongradulations!!!!");
+					upgradeLore.add("&eCongratulations!!!!");
 					upgradeLore.add("&7Your tool is ready to be");
 					upgradeLore.add("&7upgraded! Visit the mining");
 					upgradeLore.add("&7trainer for more information.");

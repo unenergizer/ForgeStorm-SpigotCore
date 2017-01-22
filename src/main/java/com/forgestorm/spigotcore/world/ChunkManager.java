@@ -1,20 +1,19 @@
 package com.forgestorm.spigotcore.world;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.forgestorm.spigotcore.SpigotCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
-import com.forgestorm.spigotcore.SpigotCore;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ChunkManager {
 
 	private final SpigotCore PLUGIN;
 
-	private Map<Location, ChunkData> chunkData = new HashMap<>();
+	private final Map<Chunk, ChunkData> chunkData = new HashMap<>();
 
 	public ChunkManager(SpigotCore plugin) {
 		PLUGIN = plugin;
@@ -47,7 +46,7 @@ public class ChunkManager {
 			ChunkData rpgChunk = new ChunkData(PLUGIN, location);
 			rpgChunk.setSpawnerIDs(ids);
 
-			chunkData.put(location, rpgChunk);
+			chunkData.put(chunk, rpgChunk);
 			PLUGIN.getEntitySpawnerManager().spawnMonsters(rpgChunk);
 		}
 	}

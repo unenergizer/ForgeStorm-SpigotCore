@@ -69,18 +69,24 @@ import com.forgestorm.spigotcore.redis.RedisService;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
 import com.forgestorm.spigotcore.util.item.RecipeManager;
 import com.forgestorm.spigotcore.util.player.DeletePlayerFiles;
+import com.forgestorm.spigotcore.util.scoreboard.PuhaScoreboard;
 import com.forgestorm.spigotcore.util.scoreboard.ScoreboardManager;
 import com.forgestorm.spigotcore.world.BlockRegenerationManager;
 import com.forgestorm.spigotcore.world.ChunkManager;
 import com.forgestorm.spigotcore.world.animate.WorldAnimator;
 import com.forgestorm.spigotcore.world.animate.WorldTimer;
-import com.forgestorm.spigotcore.world.instance.PlayerRealmManager;
+import com.forgestorm.spigotcore.world.instance.RealmManager;
 
+import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
 import lombok.Getter;
 
 @Getter
 public class SpigotCore extends JavaPlugin {
 
+	//API's
+	private TitleManagerAPI titleManagerAPI;
+
+	//Local
 	private BlockRegenerationManager blockRegen;
 	private BungeeCord bungeecord;
 	private ChunkManager chunkManager;
@@ -101,18 +107,43 @@ public class SpigotCore extends JavaPlugin {
 	private WorldAnimator worldAnimator;
 	private MountManager mountManager;
 	private PlayerManager playerManager;
-	private PlayerRealmManager playerRealmManager;
+	private RealmManager realmManager;
+	private PuhaScoreboard puhaScoreboard;
 
 	//Menus
 	private Menu gameSelectionMenu;
-	
+
 	@Override
 	public void onEnable() {
-		
+
 		//Delete any existing player files.
 		new DeletePlayerFiles(this).deleteSaveDirectory();
 		
-		//Load class (do not rearrange)
+		//Continue setup
+		loadClasses();
+		registerSpigotListeners();
+		registerCommands();
+		registerBungeecordChannels();
+		registerMenus();
+	}
+
+	@Override
+	public void onDisable() {
+		realmManager.disable();
+		profileManager.disable();
+		redisService.disable();		
+		blockRegen.disable();
+		citizenManager.disable();
+		dragonEggTP.disable();
+		locationTrackingManager.disable();
+		puhaScoreboard.disable();
+	}
+
+	private void loadClasses() {
+		//Load API's
+		titleManagerAPI = (TitleManagerAPI) Bukkit.getServer().getPluginManager().getPlugin("TitleManager");
+
+		//Load classes (do not rearrange)
 		redisService = new RedisService("localhost", "6379");
 		profileManager = new RedisProfileManager(this);
 		bungeecord = new BungeeCord(this);
@@ -129,37 +160,22 @@ public class SpigotCore extends JavaPlugin {
 		citizenManager = new CitizenManager(this);
 		dragonEggTP = new DragonEggTeleport(this);
 		recipeManager = new RecipeManager(this);
-		locationTrackingManager = new LocationTrackingManager();
+		locationTrackingManager = new LocationTrackingManager(this);
 		scoreboardManager = new ScoreboardManager(this);
-		playerRealmManager = new PlayerRealmManager(this);
+		realmManager = new RealmManager(this);
 		mountManager = new MountManager();
 		playerManager = new PlayerManager(this);
-		
+		puhaScoreboard = new PuhaScoreboard(this);
+
 		//Run threads
 		citizenManager.runTaskTimer(this, 0, 5);
 		worldTimer.runTaskTimer(this, 0, 1);
 		locationTrackingManager.runTaskTimerAsynchronously(this, 0, 5);
-		
-		//Continue setup
-		registerSpigotListeners();
-		registerCommands();
-		registerBungeecordChannels();
-		registerMenus();
-	}
-	
-	@Override
-	public void onDisable() {
-		playerRealmManager.disable();
-		profileManager.disable();
-		redisService.disable();		
-		blockRegen.disable();
-		citizenManager.disable();
-		dragonEggTP.disable();
-		locationTrackingManager.disable();
+		realmManager.runTaskTimerAsynchronously(this, 0, 20);
 	}
 
 	private void registerCommands() {
-		
+
 		//RPG COMMANDS
 		getCommand("item").setExecutor(new Item());
 		getCommand("monster").setExecutor(new Monster(this));
@@ -167,7 +183,7 @@ public class SpigotCore extends JavaPlugin {
 		getCommand("realm").setExecutor(new Realm(this));
 		getCommand("roll").setExecutor(new Roll());
 		getCommand("spawner").setExecutor(new Spawner(this));
-		
+
 		//ORIGINAL COMMANDS
 		getCommand("admin").setExecutor(new Admin(this));
 		getCommand("creative").setExecutor(new Creative(this));
@@ -178,7 +194,7 @@ public class SpigotCore extends JavaPlugin {
 		getCommand("playtime").setExecutor(new PlayTime(this));
 		getCommand("roll").setExecutor(new Roll());
 		getCommand("wa").setExecutor(new WorldAnimate(this));
-		
+
 		//Menu commands
 		getCommand("help").setExecutor(new MenuHelp(this));
 		getCommand("mainmenu").setExecutor(new MenuMain(this));
@@ -187,13 +203,13 @@ public class SpigotCore extends JavaPlugin {
 
 	private void registerSpigotListeners() {
 		PluginManager pm = Bukkit.getPluginManager();
-		
+
 		pm.registerEvents(new AsyncPlayerChat(this), this);
 		pm.registerEvents(new BlockBreak(this), this);
 		pm.registerEvents(new BlockDamage(this), this);
 		pm.registerEvents(new BlockIgnite(), this);
 		pm.registerEvents(new BlockPhysics(), this);
-		pm.registerEvents(new BlockPlace(), this);
+		pm.registerEvents(new BlockPlace(this), this);
 		pm.registerEvents(new ChunkLoad(this), this);
 		pm.registerEvents(new ChunkUnload(this), this);
 		pm.registerEvents(new EntityChangeBlock(), this);
@@ -221,7 +237,7 @@ public class SpigotCore extends JavaPlugin {
 
 	private void registerBungeecordChannels() {
 		Messenger messenger = getServer().getMessenger();
-		
+
 		messenger.registerIncomingPluginChannel(this, "BungeeCord", bungeecord);
 		messenger.registerOutgoingPluginChannel(this, "BungeeCord");
 	}

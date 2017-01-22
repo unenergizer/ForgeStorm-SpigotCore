@@ -11,13 +11,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class WeatherChange  implements Listener {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@EventHandler
 	public void onWeatherChange(WeatherChangeEvent event) {
 		
 		//Cancel weather changes not made by the WorldAnimator.
-		if (!PLUGIN.getWorldAnimator().isAllowWeatherChange()) {
+		if (!plugin.getWorldAnimator().isAllowWeatherChange()) {
 			event.setCancelled(true);
 		}
 	}

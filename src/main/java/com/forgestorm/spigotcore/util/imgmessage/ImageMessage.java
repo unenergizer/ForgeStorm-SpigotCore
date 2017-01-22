@@ -1,13 +1,13 @@
 package com.forgestorm.spigotcore.util.imgmessage;
 
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.util.ChatPaginator;
+
 import java.awt.Color;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-import org.bukkit.util.ChatPaginator;
 
 /**
  * User: bobacadodl
@@ -44,7 +44,7 @@ public class ImageMessage {
             new Color(255, 255, 255),
     };
 
-    private String[] lines;
+    private final String[] lines;
 
     public ImageMessage(BufferedImage image, int height, char imgChar) {
         ChatColor[][] chatColors = toChatColorArray(image, height);
@@ -101,9 +101,9 @@ public class ImageMessage {
         String[] lines = new String[colors[0].length];
         for (int y = 0; y < colors[0].length; y++) {
             String line = "";
-            for (int x = 0; x < colors.length; x++) {
-                ChatColor color = colors[x][y];
-                line += (color != null) ? colors[x][y].toString() + imgchar : TRANSPARENT_CHAR;
+            for (ChatColor[] color1 : colors) {
+                ChatColor color = color1[y];
+                line += (color != null) ? color1[y].toString() + imgchar : TRANSPARENT_CHAR;
             }
             lines[y] = line + ChatColor.RESET;
         }

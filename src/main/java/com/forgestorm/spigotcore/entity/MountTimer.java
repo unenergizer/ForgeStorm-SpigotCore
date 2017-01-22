@@ -21,8 +21,8 @@ public class MountTimer extends BukkitRunnable {
 	private final String LIQUID = Messages.MOUNT_LIQUID.toString();
 	private final String HAS_MOUNT = Messages.MOUNT_HAS_MOUNT.toString();
 	
-	private Player player;
-	private MountEntity entity;
+	private final Player player;
+	private final MountEntity entity;
 	private boolean isCanceled = false;
 	private String cancelReason;
 	private Location location;

@@ -1,5 +1,13 @@
 package com.forgestorm.spigotcore.listeners;
 
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.combat.Fatigue;
+import com.forgestorm.spigotcore.menus.MainMenu;
+import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
+import com.forgestorm.spigotcore.util.item.AttributeReader;
+import com.forgestorm.spigotcore.world.instance.Realm;
+import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -10,30 +18,48 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.combat.Fatigue;
-import com.forgestorm.spigotcore.menus.MainMenu;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-import com.forgestorm.spigotcore.util.item.AttributeReader;
-
-import lombok.AllArgsConstructor;
-
 @AllArgsConstructor
 public class PlayerInteract implements Listener {
 	
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {	
 		Player player = event.getPlayer();
 		Block block = event.getClickedBlock();
 		
-		//Player to place realm portal.
-		if (player.isSneaking()) {
+		//Player to place realm portal (only if they are in the main world).
+		if (player.isSneaking() && player.getWorld().equals(Bukkit.getWorlds().get(0))) {
 			if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 				if (event.getItem() != null && event.getItem().getType().equals(Material.COMPASS)) {
-					PLUGIN.getPlayerRealmManager().addPlayerRealm(player, block.getLocation());
+					plugin.getRealmManager().addPlayerRealm(player, block.getLocation());
 					return;
+				}
+			}
+		}
+
+		//Check for realm portal move.
+		if (player.getWorld().getName().equals(player.getUniqueId().toString())) {
+			if (player.isSneaking() && event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+				if (block.getType() != Material.PORTAL) {
+					if (event.getItem() != null && event.getItem().getType().equals(Material.COMPASS)) {
+						Realm realm = plugin.getRealmManager().getPlayerRealm(player);
+
+						//Remove Old Realm inside Portal
+						realm.getInsideBlockTop().setType(Material.AIR);
+						realm.getInsideBlockBottom().setType(Material.AIR);
+
+						//Set New Realm inside Portal
+						realm.setPortalInsideLocation(block.getLocation().add(0, 1, 0));
+						realm.setPlayerInsidePortal();
+
+						//Save location to player profile.
+                        double x = realm.getPortalInsideLocation().getX();
+                        double y = realm.getPortalInsideLocation().getY();
+                        double z = realm.getPortalInsideLocation().getZ();
+                        plugin.getProfileManager().getProfile(player).setRealmInsideLocation(x + "/" + y + "/" + z);
+						return;
+					}
 				}
 			}
 		}
@@ -46,7 +72,7 @@ public class PlayerInteract implements Listener {
 			event.setCancelled(true);
 			
 			//Toggle the egg click.
-			PLUGIN.getDragonEggTP().toggleEggClick(player, event.getClickedBlock().getLocation());
+			plugin.getDragonEggTP().toggleEggClick(player, event.getClickedBlock().getLocation());
 		}
 
 		//Armor and Weapon Actions
@@ -215,7 +241,7 @@ public class PlayerInteract implements Listener {
 					break;
 				case COMPASS:
 					//Open players main menu.
-					new MainMenu(PLUGIN).open(player);
+					new MainMenu(plugin).open(player);
 					break;
 				case WORKBENCH:
 					//Disable item crafting.
@@ -229,7 +255,7 @@ public class PlayerInteract implements Listener {
 	}
 	
 	private void startFatigue(Player player) {
-		PlayerProfileData profile = PLUGIN.getPlayerManager().getPlayerProfile(player);
+		PlayerProfileData profile = plugin.getPlayerManager().getPlayerProfile(player);
 		if (profile.getEnergy() == 0) {
 			player.playSound(player.getLocation(), Sound.ENTITY_WOLF_PANT, 10F, 1.5F);	
 		}
@@ -245,8 +271,8 @@ public class PlayerInteract implements Listener {
 			@Override
 			public void run() {
 				//TODO: ItemLoreFactory.getInstance().applyHPBonus(player, true);
-				new AttributeReader(PLUGIN, player).readArmorAttributes(true);
+				new AttributeReader(plugin, player).readArmorAttributes(true);
 			} //END Run method.
-		}.runTaskLater(PLUGIN, 5);
+		}.runTaskLater(plugin, 5);
 	}
 }

@@ -1,14 +1,13 @@
 package com.forgestorm.spigotcore.util.imgmessage;
 
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 
 /**
  * User: bobacadodl
@@ -16,15 +15,15 @@ import javax.imageio.stream.ImageInputStream;
  * Time: 10:41 PM
  * https://github.com/bobacadodl/ImageMessage
  */
-public class AnimatedMessage {
-    private ImageMessage[] images;
+class AnimatedMessage {
+    private final ImageMessage[] images;
     private int index = 0;
 
     public AnimatedMessage(ImageMessage... images) {
         this.images = images;
     }
 
-    public AnimatedMessage(File gifFile, int height, char imgChar) throws IOException {
+    public AnimatedMessage(File gifFile, int height, char imgChar) {
         List<BufferedImage> frames = getFrames(gifFile);
         images = new ImageMessage[frames.size()];
         for (int i = 0; i < frames.size(); i++) {
@@ -32,8 +31,8 @@ public class AnimatedMessage {
         }
     }
 
-    public List<BufferedImage> getFrames(File input) {
-        List<BufferedImage> images = new ArrayList<BufferedImage>();
+    private List<BufferedImage> getFrames(File input) {
+        List<BufferedImage> images = new ArrayList<>();
         try {
             ImageReader reader = ImageIO.getImageReadersBySuffix("GIF").next();
             ImageInputStream in = ImageIO.createImageInputStream(input);

@@ -1,15 +1,5 @@
 package com.forgestorm.spigotcore.menus.help;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.ItemTypes;
 import com.forgestorm.spigotcore.menus.Menu;
@@ -18,8 +8,16 @@ import com.forgestorm.spigotcore.menus.actions.StartTutorial;
 import com.forgestorm.spigotcore.util.item.ItemBuilder;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
 import com.forgestorm.spigotcore.util.text.StringSplitter;
-
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class TutorialMenu extends Menu {
 
@@ -38,7 +36,7 @@ public class TutorialMenu extends Menu {
 		ConfigurationSection section = config.getConfigurationSection("Tutorial");
 		String material, name;
 		Iterator<String> it = section.getKeys(false).iterator();
-		//TODO: dont add some tuts... lol rekt. boolean tutMenuEnabled = config.getBoolean("Tutorial." + tutorialID + ".showInTutorialMenu");
+		//TODO: don't add some tuts... lol rekt. boolean tutMenuEnabled = config.getBoolean("Tutorial." + tutorialID + ".showInTutorialMenu");
 		
 		//Add Back Button
 		ItemStack backButton, exitButton;
@@ -74,7 +72,7 @@ public class TutorialMenu extends Menu {
 			linesColored.add(start);
 			
 			//Make ItemStack
-			ItemStack tutorialItem = null;
+			ItemStack tutorialItem;
 			if (enchanted) {
 				//Adds enchantment effect!
 				tutorialItem = new ItemBuilder(Material.valueOf(material))

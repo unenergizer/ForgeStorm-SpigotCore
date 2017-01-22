@@ -1,14 +1,13 @@
 package com.forgestorm.spigotcore.entity.passive;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Giant;
 
-import com.forgestorm.spigotcore.profile.ProfileData;
-
 public class EntityGiant extends PassiveEntity {
 
-	public EntityGiant(String name, int level, Location location, ProfileData profile) {
+	public EntityGiant(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.GIANT;
 	}

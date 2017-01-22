@@ -1,13 +1,12 @@
 package com.forgestorm.spigotcore.entity.passive;
 
-import org.bukkit.Location;
-
 import com.forgestorm.spigotcore.entity.RPGEntity;
-import com.forgestorm.spigotcore.profile.ProfileData;
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
+import org.bukkit.Location;
 
 abstract class PassiveEntity extends RPGEntity {
 
-	PassiveEntity(String name, int level, Location location, ProfileData profile) {
+	PassiveEntity(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 	}
 }

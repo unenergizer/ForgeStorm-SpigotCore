@@ -1,32 +1,31 @@
 package com.forgestorm.spigotcore.bungeecord;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.messaging.Messenger;
-import org.bukkit.plugin.messaging.PluginMessageListener;
-
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.Messages;
 import com.forgestorm.spigotcore.menus.GameSelectionMenu;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.messaging.Messenger;
+import org.bukkit.plugin.messaging.PluginMessageListener;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 public class BungeeCord implements PluginMessageListener {
 
 	private final SpigotCore PLUGIN;
-	private Logger log = Logger.getLogger("Minecraft");
+	private final Logger log = Logger.getLogger("Minecraft");
 
 	public BungeeCord(SpigotCore plugin) {
 		PLUGIN = plugin;
 	}
 
-	public boolean connectToBungeeServer(Player player, String server) {
+	public void connectToBungeeServer(Player player, String server) {
 		//Send connection message.
 		player.sendMessage(Messages.BUNGEECORD_CONNECT_SERVER.toString().replace("%s", server));
 
@@ -38,7 +37,7 @@ public class BungeeCord implements PluginMessageListener {
 
 			if (server.length() == 0) {
 				player.sendMessage("&cThe server name was empty!");
-				return false;
+				return;
 			}
 
 			ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
@@ -53,9 +52,8 @@ public class BungeeCord implements PluginMessageListener {
 			ex.printStackTrace();
 			log.warning("Could not handle BungeeCord command from " + player.getName() + ": tried to connect to \"" + server + "\".");
 
-			return false;
+			return;
 		}
-		return true;
 	}
 
 	public void getPlayerCount(String serverName) {

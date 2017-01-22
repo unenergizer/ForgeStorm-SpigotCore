@@ -4,7 +4,7 @@ public enum Sounds {
 	
 	SECRET("Secret.nbs");
 	
-	private String file;
+	private final String file;
 	
 	//Constructor
 	Sounds(String filePath) {

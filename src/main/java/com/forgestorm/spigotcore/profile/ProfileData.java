@@ -1,9 +1,9 @@
 package com.forgestorm.spigotcore.profile;
 
-import java.util.UUID;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -25,7 +25,7 @@ public abstract class ProfileData {
 	
 	/*---- ENTITY ----*/
 	protected int dexterity;
-	protected int intelect;
+	protected int intellect;
 	protected int strength;
 	protected int vitality;
 	
@@ -33,7 +33,7 @@ public abstract class ProfileData {
 	protected int armorMax;
 	protected int armorMin;
 	protected int armorHealthRegen;
-	protected int armorHealtIncrease;
+	protected int armorHealthIncrease;
 	protected int armorEnergyRegen;
 	protected int armorBlock;
 	protected int armorDodge;

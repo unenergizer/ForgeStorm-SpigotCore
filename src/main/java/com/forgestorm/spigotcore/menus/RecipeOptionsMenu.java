@@ -9,11 +9,11 @@ import com.forgestorm.spigotcore.util.item.ItemGenerator;
 
 public class RecipeOptionsMenu extends Menu {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	public RecipeOptionsMenu(SpigotCore plugin) {
 		super(plugin);
-		PLUGIN = plugin;
+		this.plugin = plugin;
 		init("Recipe Options", 1);
 		makeMenuItems();
 	}
@@ -21,13 +21,13 @@ public class RecipeOptionsMenu extends Menu {
 	@Override
 	protected void makeMenuItems() {
 		ItemTypes type = ItemTypes.MENU;
-		ItemGenerator itemGen = PLUGIN.getItemGen();
+		ItemGenerator itemGen = plugin.getItemGen();
 		
-		ItemStack showall, showcollected;
-		showall = itemGen.generateItem("recipe_options_menu_show_all", type);
-		showcollected = itemGen.generateItem("recipe_options_menu_show_collected", type);
+		ItemStack showAll, showCollected;
+		showAll = itemGen.generateItem("recipe_options_menu_show_all", type);
+		showCollected = itemGen.generateItem("recipe_options_menu_show_collected", type);
 		
-		setItem(showall, 0, new SelectRecipeDisplay(PLUGIN, true));
-		setItem(showcollected, 1, new SelectRecipeDisplay(PLUGIN, false));
+		setItem(showAll, 0, new SelectRecipeDisplay(plugin, true));
+		setItem(showCollected, 1, new SelectRecipeDisplay(plugin, false));
 	}
 }

@@ -30,9 +30,9 @@ public class T2Leggings extends ArmorItem {
 		dodge_percent = 9;
 		dodge_min = 1;
 		dodge_max = 8;
-		throns_percent = 5;
-		throns_min = 1;
-		throns_max = 3;
+		thorns_percent = 5;
+		thorns_min = 1;
+		thorns_max = 3;
 		reflection_percent = 5;
 		reflection_min = 1;
 		reflection_max = 2;

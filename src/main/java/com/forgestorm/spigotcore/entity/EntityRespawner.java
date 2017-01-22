@@ -11,7 +11,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class EntityRespawner extends BukkitRunnable {
 	
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@Override
 	public void run() {

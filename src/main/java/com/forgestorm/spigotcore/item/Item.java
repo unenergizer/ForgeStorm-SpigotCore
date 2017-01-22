@@ -1,8 +1,8 @@
 package com.forgestorm.spigotcore.item;
 
-import java.util.ArrayList;
-import java.util.Random;
-
+import com.forgestorm.spigotcore.util.item.ItemBuilder;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -12,10 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.forgestorm.spigotcore.util.item.ItemBuilder;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.ArrayList;
+import java.util.Random;
 
 @Getter
 @Setter
@@ -56,17 +54,16 @@ public abstract class Item {
 		Bukkit.getWorld(location.getWorld().getName()).dropItemNaturally(location, item);
 	}
 	
-	public boolean givePlayerItem(Player player) {
+	public void givePlayerItem(Player player) {
 		PlayerInventory inv = player.getInventory();
 		
 		for (int i = 0; i <= 35; i++) {
 			if (inv.getItem(i) == null) {
 				inv.setItem(i, item);
-				return true;
+				return;
 			}
 		}
-		
-		return false;
+
 	}
 	
 	protected int loreChance(int percent, int min, int max) {

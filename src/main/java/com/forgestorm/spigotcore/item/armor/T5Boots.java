@@ -30,9 +30,9 @@ public class T5Boots extends ArmorItem {
 		dodge_percent = 30;
 		dodge_min = 1;
 		dodge_max = 12;
-		throns_percent = 20;
-		throns_min = 2;
-		throns_max = 9;
+		thorns_percent = 20;
+		thorns_min = 2;
+		thorns_max = 9;
 		reflection_percent = 15;
 		reflection_min = 2;
 		reflection_max = 5;

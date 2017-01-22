@@ -8,11 +8,7 @@ public class FeatureComingSoon implements ClickAction {
 
 	@Override
 	public void click(Player player) {
-		player.sendMessage(color("&cFeature coming soon!!!!"));
+		String message = "&cFeature coming soon!!!!";
+		player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
 	}
-	
-	private String color(String msg) {
-		return ChatColor.translateAlternateColorCodes('&', msg);
-	}
-
 }

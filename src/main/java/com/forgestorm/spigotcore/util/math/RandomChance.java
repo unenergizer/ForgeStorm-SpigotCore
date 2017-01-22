@@ -15,10 +15,7 @@ public class RandomChance {
 		Random random = new Random();
 		int success = random.nextInt(100) + 1;
 
-		if (percent >= success) {
-			return  true;
-		}
-		return false;
+		return percent >= success;
 	}
 	
 	/**
@@ -31,7 +28,6 @@ public class RandomChance {
 	public static int randomInt(int min, int max) {
 		Random rand = new Random();
 
-		int randomNum = rand.nextInt((max - min) + 1) + min;
-		return randomNum;
+		return rand.nextInt((max - min) + 1) + min;
 	}
 }

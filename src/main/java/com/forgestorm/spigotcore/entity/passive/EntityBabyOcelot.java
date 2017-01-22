@@ -1,14 +1,13 @@
 package com.forgestorm.spigotcore.entity.passive;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ocelot;
 
-import com.forgestorm.spigotcore.profile.ProfileData;
-
 public class EntityBabyOcelot extends PassiveEntity {
 
-	public EntityBabyOcelot(String name, int level, Location location, ProfileData profile) {
+	public EntityBabyOcelot(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.OCELOT;
 	}

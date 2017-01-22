@@ -1,22 +1,21 @@
 package com.forgestorm.spigotcore.util.display;
 
-import java.util.ArrayList;
-
+import lombok.Getter;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 
-import lombok.Getter;
-import net.md_5.bungee.api.ChatColor;
+import java.util.ArrayList;
 
 @Getter
 public class Hologram {
 
-	private ArrayList<ArmorStand> armorStands;
+	private final ArrayList<ArmorStand> armorStands;
 
 	public Hologram() {
-		armorStands = new ArrayList<ArmorStand>();
+		armorStands = new ArrayList<>();
 	}
 
 	/**
@@ -39,10 +38,10 @@ public class Hologram {
 		double spotsMovedDown = 0;
 
 		//Create armor stand and save it.
-		for (int i = 0; i < name.size(); i++) {
+		for (String aName : name) {
 			//Location adjustedLocation = location.subtract(0, spotsMovedDown, 0);
 			Location adjustedLocation = new Location(location.getWorld(), location.getX(), location.getY() - spotsMovedDown, location.getZ());
-			armorStands.add(spawnArmorStand(name.get(i), adjustedLocation));
+			armorStands.add(spawnArmorStand(aName, adjustedLocation));
 
 			spotsMovedDown += .3;
 		}
@@ -79,8 +78,8 @@ public class Hologram {
 	 */
 	public void removeHolograms() {
 		//Loop through and delete hologram entities.
-		for (int i = 0; i < armorStands.size(); i++) {
-			armorStands.get(i).remove();
+		for (ArmorStand armorStand : armorStands) {
+			armorStand.remove();
 		}
 
 		//Clear array holograms.

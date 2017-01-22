@@ -30,9 +30,9 @@ public class T4Chestplate extends ArmorItem {
 		dodge_percent = 25;
 		dodge_min = 1;
 		dodge_max = 12;
-		throns_percent = 31;
-		throns_min = 2;
-		throns_max = 9;
+		thorns_percent = 31;
+		thorns_min = 2;
+		thorns_max = 9;
 		reflection_percent = 13;
 		reflection_min = 1;
 		reflection_max = 5;

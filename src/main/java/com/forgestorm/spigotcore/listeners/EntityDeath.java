@@ -11,7 +11,7 @@ public class EntityDeath implements Listener {
 	public void onEntityDeath(EntityDeathEvent event) {
 		
 		if (event.getEntity() instanceof Player) {
-			//TODO:
+			//TODO: Maybe do something if they are a player.
 		} else {
 			event.getDrops().clear();
 			event.setDroppedExp(0);

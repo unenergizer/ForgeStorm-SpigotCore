@@ -1,12 +1,14 @@
 package com.forgestorm.spigotcore.world.animate;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.FilePaths;
+import com.sk89q.worldedit.CuboidClipboard;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.MaxChangedBlocksException;
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.world.DataException;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -18,17 +20,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.FilePaths;
-import com.forgestorm.spigotcore.util.display.FloatingMessage;
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.world.DataException;
-
-import lombok.Getter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 @Getter
@@ -39,7 +36,7 @@ public class WorldAnimator {
 
 	private File file;
 	private FileConfiguration config;
-	private List<Long> animationTimes;
+	private final List<Long> animationTimes;
 	private World world;
 	private boolean allowWeatherChange;
 
@@ -70,10 +67,8 @@ public class WorldAnimator {
 
 	private void getAnimationTimes(FileConfiguration config) {
 
-		Iterator<String> it = config.getConfigurationSection("Animations").getKeys(false).iterator();
-
-		while (it.hasNext()) {	
-			animationTimes.add(Long.parseLong(it.next()));
+		for (String s : config.getConfigurationSection("Animations").getKeys(false)) {
+			animationTimes.add(Long.parseLong(s));
 		}
 	}
 
@@ -95,19 +90,17 @@ public class WorldAnimator {
 		suffix  = prefix + ".Blocks";
 		if (config.contains(suffix)) {
 			iterator = config.getConfigurationSection(suffix).getKeys(false).iterator();
-			if (iterator != null) {
-				while (iterator.hasNext()) {
-					int i = Integer.parseInt(iterator.next());
+			while (iterator.hasNext()) {
+                int i = Integer.parseInt(iterator.next());
 
-					double x = config.getDouble(suffix + "." + i + ".x");
-					double y = config.getDouble(suffix + "." + i + ".y");
-					double z = config.getDouble(suffix + "." + i + ".z");
-					String type = config.getString(suffix + "." + i + ".blocktype");
+                double x = config.getDouble(suffix + "." + i + ".x");
+                double y = config.getDouble(suffix + "." + i + ".y");
+                double z = config.getDouble(suffix + "." + i + ".z");
+                String type = config.getString(suffix + "." + i + ".blocktype");
 
-					//Set block
-					world.getBlockAt(new Location(world, x, y, z)).setType(Material.getMaterial(type.toUpperCase()));				
-				}	
-			}
+                //Set block
+                world.getBlockAt(new Location(world, x, y, z)).setType(Material.getMaterial(type.toUpperCase()));
+            }
 		}
 
 		/////////////////////
@@ -138,30 +131,28 @@ public class WorldAnimator {
 
 		if (config.contains(suffix)) {
 			iterator = config.getConfigurationSection(suffix).getKeys(false).iterator();
-			if (iterator != null) {
-				while (iterator.hasNext()) {
-					int i = Integer.parseInt(iterator.next());
+			while (iterator.hasNext()) {
+                int i = Integer.parseInt(iterator.next());
 
-					double x = config.getDouble(suffix + "." + i + ".x");
-					double y = config.getDouble(suffix + "." + i + ".y");
-					double z = config.getDouble(suffix + "." + i + ".z");
-					String filename = config.getString(suffix + "." + i + ".filename").replace(".schematic", "");
+                double x = config.getDouble(suffix + "." + i + ".x");
+                double y = config.getDouble(suffix + "." + i + ".y");
+                double z = config.getDouble(suffix + "." + i + ".z");
+                String filename = config.getString(suffix + "." + i + ".filename").replace(".schematic", "");
 
-					//String path = PLUGIN.getDataFolder().getAbsolutePath();
-					//System.out.println("path " + path + "plugins\\FSHub\\animations\\schematics\\" + filename + ".schematic");
+                //String path = plugin.getDataFolder().getAbsolutePath();
+                //System.out.println("path " + path + "plugins\\FSHub\\animations\\schematics\\" + filename + ".schematic");
 
 
-					// Perform particle shit
-					try {
-						loadArea(Bukkit.getWorlds().get(0), new File( 
-								FilePaths.WORLD_ANIMATE_SCHEMATIC.toString() +
-								filename + ".schematic"), new Vector(x, y, z));
+                // Perform particle shit
+                try {
+                    loadArea(Bukkit.getWorlds().get(0), new File(
+                            FilePaths.WORLD_ANIMATE_SCHEMATIC.toString() +
+                            filename + ".schematic"), new Vector(x, y, z));
 
-					} catch (MaxChangedBlocksException | IOException | DataException e) {
-						e.printStackTrace();
-					}
-				}
-			}	
+                } catch (MaxChangedBlocksException | IOException | DataException e) {
+                    e.printStackTrace();
+                }
+            }
 		}
 
 		/////////////////////
@@ -243,20 +234,21 @@ public class WorldAnimator {
 		String title = ChatColor.translateAlternateColorCodes('&', config.getString(prefix + ".Titles.title"));
 		String subtitle = ChatColor.translateAlternateColorCodes('&', config.getString(prefix + ".Titles.subtitle"));
 
+		// TODO: Fix null stuff (ChatColor.translateAlternateColorCodes can never be null.
 		if (title != null && subtitle != null) {
 
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				new FloatingMessage().sendFloatingMessage(player, title, subtitle);	
+				PLUGIN.getTitleManagerAPI().sendTitles(player, title, subtitle);
 			}
 		} else if (title != null) {
 
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				new FloatingMessage().sendFloatingMessage(player, title, "");	
+				PLUGIN.getTitleManagerAPI().sendTitles(player, title, "");
 			}
 		} else if (subtitle != null) {
 
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				new FloatingMessage().sendFloatingMessage(player, "", subtitle);	
+				PLUGIN.getTitleManagerAPI().sendTitles(player, "", subtitle);
 			}
 		}
 

@@ -1,14 +1,13 @@
 package com.forgestorm.spigotcore.entity.hostile;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Zombie;
 
-import com.forgestorm.spigotcore.profile.ProfileData;
-
 public class EntityBabyZombieVillager extends HostileEntity {
 
-	public EntityBabyZombieVillager(String name, int level, Location location, ProfileData profile) {
+	public EntityBabyZombieVillager(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.ZOMBIE;
 	}

@@ -120,7 +120,7 @@ public enum Messages {
 	
 	BAR_TUTORIAL("&8&l&m-----------------&r&l &l &l &9&lTutorial&l &l &l &8&l&m-----------------"),
 	
-	DISPLAY_TAB_HEADRER("\n&8&m-------------------------------\n&r%s&7, thanks for playing on\n \n&r&6&l�  ForgeStorm  �&r\n&8&m-------------------------------&r\n "),
+	DISPLAY_TAB_HEADER("\n&8&m-------------------------------\n&r%s&7, thanks for playing on\n \n&r&6&l�  ForgeStorm  �&r\n&8&m-------------------------------&r\n "),
 	DISPLAY_TAB_FOOTER("\n&8&m-------------------------------\n&bNews&7, &aForum&7, &eTeamSpeak&7, &dShop &6@\n&r\n&r&9http://www.ForgeStorm.com\n&8&m-------------------------------"),
 	
 	GAME_BAR_ROLL("&8&l&m--------------------&r&8&l<[ &6&lRoll &8&l]>&8&l&m------------------"),
@@ -131,7 +131,7 @@ public enum Messages {
 
 	NO_PERMISSION("&cYou do not have permission to do this.");
 	
-	private String message;
+	private final String message;
 	
 	//Constructor
 	Messages(String message) {
@@ -152,7 +152,7 @@ public enum Messages {
 	 * @param msg The message that needs to have its color codes converted.
 	 * @return Returns a colored message!
 	 */
-	public static String color(String msg) {
+	private static String color(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 }

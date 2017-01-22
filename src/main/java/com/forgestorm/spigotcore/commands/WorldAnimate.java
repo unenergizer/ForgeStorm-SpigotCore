@@ -15,13 +15,13 @@ import net.md_5.bungee.api.ChatColor;
 @AllArgsConstructor
 public class WorldAnimate implements CommandExecutor {
 	
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@Override
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
 		//Check if the command sender is a server Operator
-		if (commandSender instanceof Player && !commandSender.isOp()) {
+		if (!(commandSender instanceof Player) || !commandSender.isOp()) {
 			commandSender.sendMessage(Messages.NO_PERMISSION.toString());
 			return false;
 		}
@@ -32,12 +32,12 @@ public class WorldAnimate implements CommandExecutor {
 		if (args.length == 1) {	
 			switch (args[0].toLowerCase()) {
 			case "pause":				
-				PLUGIN.getServer().dispatchCommand(player, "gamerule doDaylightCycle false");
+				plugin.getServer().dispatchCommand(player, "gamerule doDaylightCycle false");
 				player.sendMessage(ChatColor.RED + "The day/night cycle has been paused.");
 				break;
 				
 			case "resume":
-				PLUGIN.getServer().dispatchCommand(player, "gamerule doDaylightCycle true");
+				plugin.getServer().dispatchCommand(player, "gamerule doDaylightCycle true");
 				player.sendMessage(ChatColor.GREEN + "The day/night cycle has been resumed.");
 				break;
 				

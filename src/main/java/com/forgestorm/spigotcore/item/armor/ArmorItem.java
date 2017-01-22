@@ -1,13 +1,12 @@
 package com.forgestorm.spigotcore.item.armor;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import org.bukkit.ChatColor;
-
 import com.forgestorm.spigotcore.item.Item;
 import com.forgestorm.spigotcore.item.ItemQuality;
 import com.forgestorm.spigotcore.item.ItemText;
+import org.bukkit.ChatColor;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 abstract class ArmorItem extends Item {
 
@@ -26,9 +25,9 @@ abstract class ArmorItem extends Item {
 	protected int dodge_percent;
 	protected int dodge_min;
 	protected int dodge_max;
-	protected int throns_percent;
-	protected int throns_min;
-	protected int throns_max;
+	protected int thorns_percent;
+	protected int thorns_min;
+	protected int thorns_max;
 	protected int reflection_percent;
 	protected int reflection_min;
 	protected int reflection_max;
@@ -75,7 +74,7 @@ abstract class ArmorItem extends Item {
 		int energy_regen = loreChance(100, energy_regen_min, energy_regen_max);
 		int block = loreChance(block_percent, block_min, block_max);
 		int dodge = loreChance(dodge_percent, dodge_min, dodge_max);
-		int throns = loreChance(throns_percent, throns_min, throns_max);
+		int thorns = loreChance(thorns_percent, thorns_min, thorns_max);
 		int reflection = loreChance(reflection_percent, reflection_min, reflection_max);
 		int gem_find = loreChance(gem_find_percent, gem_find_min, gem_find_max);
 		int item_find = loreChance(item_find_percent, item_find_min, item_find_max);
@@ -110,7 +109,7 @@ abstract class ArmorItem extends Item {
 		
 		if (block > 0) lores.add(ItemText.ARMOR_BLOCK.toString().replace("%s", Integer.toString(block)));
 		if (dodge > 0) lores.add(ItemText.ARMOR_DODGE.toString().replace("%s", Integer.toString(dodge)));
-		if (throns > 0) lores.add(ItemText.ARMOR_THRONS.toString().replace("%s", Integer.toString(throns)));
+		if (thorns > 0) lores.add(ItemText.ARMOR_THORNS.toString().replace("%s", Integer.toString(thorns)));
 		if (reflection > 0) lores.add(ItemText.ARMOR_REFLECTION.toString().replace("%s", Integer.toString(reflection)));
 		if (gem_find > 0) lores.add(ItemText.ARMOR_GEM_FIND.toString().replace("%s", Integer.toString(gem_find)));
 		if (item_find > 0) lores.add(ItemText.ARMOR_ITEM_FIND.toString().replace("%s", Integer.toString(item_find)));
@@ -123,8 +122,8 @@ abstract class ArmorItem extends Item {
 		if (vitality > 0) lores.add(ItemText.ARMOR_VITALITY.toString().replace("%s", Integer.toString(vitality)));
 
 		String tiers = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + tier.toString();
-		String qualitys = quality.colorToString() + ChatColor.ITALIC + quality.nameToString();
-		lores.add(tiers + ": " + qualitys);
+		String quality = this.quality.colorToString() + ChatColor.ITALIC + this.quality.nameToString();
+		lores.add(tiers + ": " + quality);
 
 		if (description != null) {
 			lores.add(" ");//Blank line

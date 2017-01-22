@@ -1,13 +1,13 @@
 package com.forgestorm.spigotcore.menus.actions;
 
-import java.util.ArrayList;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+
+import java.util.ArrayList;
 
 public class GiveHelpBook implements ClickAction {
 
@@ -44,7 +44,7 @@ public class GiveHelpBook implements ClickAction {
 		}
 
 		//Check to see if the player has a book.
-		if (hasBook == false && freeSlots > 0) {
+		if (!hasBook && freeSlots > 0) {
 			//Loop through the players inventory and find a free inventory slot.
 			for (int i = 0; i < invSize; i++) {
 				ItemStack item = player.getInventory().getItem(i);
@@ -52,7 +52,7 @@ public class GiveHelpBook implements ClickAction {
 				//Check for empty slot.
 				if (item == null) {
 					//Make sure we have not already sent them a book.
-					if (hasBook == false) {
+					if (!hasBook) {
 						//Place book in empty slot.
 						player.getInventory().setItem(i, fullHelpBook.clone());
 						hasBook = true;
@@ -68,7 +68,7 @@ public class GiveHelpBook implements ClickAction {
 		}
 
 		//If we could not place a book, notify the player.
-		if (hasBook == false) {
+		if (!hasBook) {
 			player.sendMessage(ChatColor.RED + "You do not have room in your inventory for the help book.");
 
 			//Play a sound.
@@ -104,7 +104,7 @@ public class GiveHelpBook implements ClickAction {
 				"\n" + "   4. Rules" +
 				"\n" + "   5. Commands");
 		bookMeta.addPage(ChatColor.RED + "" + ChatColor.BOLD + "    Introduction" + ChatColor.RESET +
-				"\n" + "    * the beggining *" +
+				"\n" + "    * the beginning *" +
 				"\n" + "" +
 				"\n" + "Welcome traveler!  You are about to embark on an epic adventure full of treasure and wonder." + 
 				"\n" + "Tread carefully, as the world has been corrupted by an unknown evil force.  Are you up for a challenge?");

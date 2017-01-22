@@ -1,24 +1,23 @@
 package com.forgestorm.spigotcore.menus;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.ItemTypes;
 import com.forgestorm.spigotcore.menus.actions.Exit;
 import com.forgestorm.spigotcore.menus.actions.TryCraftingRecipe;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CraftingMenu extends Menu {
 
 	private final SpigotCore PLUGIN;
 	private final String RECIPE;
 	private List<ItemStack> requiredItems = new ArrayList<>();
-	private int[] playerSlots = {
+	private final int[] playerSlots = {
 			27, 28, 29, 30,
 			36, 37, 38, 39,
 			45, 46, 47, 48
@@ -47,8 +46,8 @@ public class CraftingMenu extends Menu {
 		List<ItemStack> playerItems = new ArrayList<>();
 		
 		//Build a list of player inserted items.
-		for (int i = 0; i < playerSlots.length; i++) {
-			ItemStack item = inventory.getItem(playerSlots[i]);
+		for (int playerSlot : playerSlots) {
+			ItemStack item = inventory.getItem(playerSlot);
 			if (item != null) playerItems.add(item);
 		}
 		
@@ -101,7 +100,7 @@ public class CraftingMenu extends Menu {
 		setItem(filler, 49);
 		
 		//Set clickable slots
-		for (int i = 0; i < playerSlots.length; i++) setMovableSlot(playerSlots[i]);
+		for (int playerSlot : playerSlots) setMovableSlot(playerSlot);
 	}
 	
 	private void addRecipeItems() {
@@ -114,11 +113,10 @@ public class CraftingMenu extends Menu {
 				41, 42, 43, 44,
 				50, 51, 52, 53
 		};
-		
-		for (int i = 0; i < craftingSlots.length; i++) {
+
+		for (int craftingSlot : craftingSlots) {
 			if (recipeItems.isEmpty()) return;
-			int slotPosition = craftingSlots[i];
-			setItem(recipeItems.get(0), slotPosition);
+			setItem(recipeItems.get(0), craftingSlot);
 			recipeItems.remove(0);
 		}
 	}
@@ -133,13 +131,11 @@ public class CraftingMenu extends Menu {
 	public void onClose(Player player) {
 		
 		if (successfulCraft) return;
-		
-		for (int i = 0; i < playerSlots.length; i++) {
-			int j = playerSlots[i];
-			
+
+		for (int j : playerSlots) {
 			Inventory inventory = getInventory();
 			ItemStack item = inventory.getItem(j);
-			
+
 			if (item != null) {
 				Inventory playerInventory = player.getInventory();
 				if (playerInventory.firstEmpty() != -1) {
@@ -148,7 +144,7 @@ public class CraftingMenu extends Menu {
 					player.getWorld().dropItemNaturally(player.getLocation(), item);
 				}
 			}
-			
+
 		}
 	}
 }

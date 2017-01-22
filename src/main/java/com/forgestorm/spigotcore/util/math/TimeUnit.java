@@ -1,17 +1,17 @@
 package com.forgestorm.spigotcore.util.math;
 
+import org.bukkit.ChatColor;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.bukkit.ChatColor;
-
 /**
  * This class will convert seconds to a readable string.
- * 
+ * Usage: TimeUnit.toString(69696969);
+ * Website: https://www.spigotmc.org/resources/timeformat-api.16318/
+
  * @author xYourFreindx
- * @link https://www.spigotmc.org/resources/timeformat-api.16318/
- * @see USAGE: TimeUnit.toString(69696969);
  */
 public enum TimeUnit {
 
@@ -25,16 +25,16 @@ public enum TimeUnit {
 	private final long ms;
 	private final char unit;
 
-	private static final Map<Character, Long> convertion = new HashMap<Character, Long>();
+	private static final Map<Character, Long> conversion = new HashMap<>();
 	private static final TimeUnit[] order = new TimeUnit[] { WEEK, DAY, HOUR, MIN, SEC };
 	private static final Pattern isLong = Pattern.compile("[0-9]+");
 
 	static {
 		for (TimeUnit unit : values())
-			convertion.put(unit.unit, unit.ms);
+			conversion.put(unit.unit, unit.ms);
 	}
 
-	private TimeUnit(String name, long ms, char unit) {
+	TimeUnit(String name, long ms, char unit) {
 		this.name = name;
 		this.ms = ms;
 		this.unit = unit;
@@ -48,8 +48,8 @@ public enum TimeUnit {
 	}
 
 	private static long convert(char c) {
-		if (convertion.containsKey(c))
-			return convertion.get(c);
+		if (conversion.containsKey(c))
+			return conversion.get(c);
 		return 0;
 	}
 

@@ -1,7 +1,8 @@
 package com.forgestorm.spigotcore.combat;
 
-import java.util.Random;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.profile.ProfileData;
+import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,9 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.profile.ProfileData;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
+import java.util.Random;
 
 abstract class Combat {
 
@@ -74,7 +73,7 @@ abstract class Combat {
 	private double combatDamage;
 	private double damageReduction;
 
-	private Random random = new Random();
+	private final Random random = new Random();
 
 	Combat(SpigotCore plugin, LivingEntity damager, LivingEntity defender) {
 		PLUGIN = plugin;
@@ -360,9 +359,6 @@ abstract class Combat {
 		Random random = new Random();
 		int success = random.nextInt(100) + 1;
 
-		if (percent >= success) {
-			return  true;
-		}
-		return false;
+		return percent >= success;
 	}
 }

@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PlayerItemHeld implements Listener {
 
-	public final SpigotCore PLUGIN;
+	public final SpigotCore plugin;
 
 	@EventHandler
 	public void onPlayerSwitchItem(PlayerItemHeldEvent event) {
@@ -69,8 +69,8 @@ public class PlayerItemHeld implements Listener {
 			@Override
 			public void run() {
 				//TODO: ItemLoreFactory.getInstance().applyHPBonus(player, true);
-				new AttributeReader(PLUGIN, player).readWeaponAttributes(true);
+				new AttributeReader(plugin, player).readWeaponAttributes(true);
 			} //END Run method.
-		}.runTaskLater(PLUGIN, 5);
+		}.runTaskLater(plugin, 5);
 	}
 }

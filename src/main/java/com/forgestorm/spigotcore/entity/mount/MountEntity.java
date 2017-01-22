@@ -1,19 +1,18 @@
 package com.forgestorm.spigotcore.entity.mount;
 
+import com.forgestorm.spigotcore.entity.RPGEntity;
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
+import com.forgestorm.spigotcore.util.item.ItemBuilder;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.forgestorm.spigotcore.entity.RPGEntity;
-import com.forgestorm.spigotcore.profile.ProfileData;
-import com.forgestorm.spigotcore.util.item.ItemBuilder;
-
 
 public abstract class MountEntity extends RPGEntity {
 
-	public MountEntity(String name, int level, Location location, ProfileData profile) {
+	public MountEntity(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 	}
 	

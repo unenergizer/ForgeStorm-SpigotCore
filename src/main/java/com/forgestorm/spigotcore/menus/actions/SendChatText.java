@@ -6,7 +6,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class SendChatText implements ClickAction {
 
-	private String[] text;
+	private final String[] text;
 
 	public SendChatText(String... text) {
 		this.text = text;

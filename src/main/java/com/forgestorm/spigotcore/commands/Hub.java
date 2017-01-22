@@ -12,12 +12,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Hub implements CommandExecutor {
 
-	private final SpigotCore PLUGIN; 
+	private final SpigotCore plugin;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (sender instanceof Player) {
-			PLUGIN.getBungeecord().connectToBungeeServer((Player) sender, "hub-01");
+			plugin.getBungeecord().connectToBungeeServer((Player) sender, "hub-01");
 		}
 		return false;
 	}

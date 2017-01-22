@@ -13,13 +13,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MenuSettings implements CommandExecutor {
 
-	private final SpigotCore PLUGIN; 
+	private final SpigotCore plugin;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			new SettingsMenu(PLUGIN, player).open(player);
+			new SettingsMenu(plugin, player).open(player);
 		}
 		return false;
 	}

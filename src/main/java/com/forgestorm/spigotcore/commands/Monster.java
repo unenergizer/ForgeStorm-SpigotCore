@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Monster implements CommandExecutor {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@Override
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -25,7 +25,7 @@ public class Monster implements CommandExecutor {
 		
 		if (args.length == 5) {
 			new MonsterSaver().entitySaver(args[1], args[2], Integer.parseInt(args[3]), Integer.parseInt(args[4]), "owner", "loot");
-			new MonsterLoader(PLUGIN).getConfig(args[2], player.getLocation());
+			new MonsterLoader(plugin).getConfig(args[2], player.getLocation());
 		}
 		return false;
 	}

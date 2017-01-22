@@ -21,7 +21,7 @@ public enum CitizenType {
 	TUTORIAL("Server Tutorial"),
 	VOTE("Daily Rewards");
 
-	private String name;
+	private final String name;
 
 	CitizenType(String s) {
 		this.name = s;

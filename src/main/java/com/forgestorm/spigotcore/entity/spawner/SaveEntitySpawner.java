@@ -1,15 +1,14 @@
 package com.forgestorm.spigotcore.entity.spawner;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.forgestorm.spigotcore.constants.FilePaths;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.forgestorm.spigotcore.constants.FilePaths;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SaveEntitySpawner {
 
@@ -21,7 +20,7 @@ public class SaveEntitySpawner {
 		}
 	}
 
-	public boolean entitySaver(Location location, int spawnRadius, int runRadius, int maxMobCount, int respawnTime){
+	public void entitySaver(Location location, int spawnRadius, int runRadius, int maxMobCount, int respawnTime){
 		File file = new File(FILE_PATH);
 		FileConfiguration config =  YamlConfiguration.loadConfiguration(file);
 		
@@ -53,9 +52,8 @@ public class SaveEntitySpawner {
 			config.save(file);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
-		} 
-		return true;
+			return;
+		}
 	}
 
 	private void createConfig() {

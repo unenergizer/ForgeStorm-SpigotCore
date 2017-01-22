@@ -1,23 +1,5 @@
 package com.forgestorm.spigotcore.entity.human;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.CitizenType;
 import com.forgestorm.spigotcore.constants.FilePaths;
@@ -35,8 +17,24 @@ import com.forgestorm.spigotcore.util.display.Hologram;
 import com.forgestorm.spigotcore.util.item.NPCSkullBuilder;
 import com.forgestorm.spigotcore.util.math.RandomChance;
 import com.forgestorm.spigotcore.util.text.CenterChatText;
-
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class manages what happens when a NPC is clicked.
@@ -48,18 +46,18 @@ public class CitizenManager extends BukkitRunnable {
 
 	private File file;
 	private FileConfiguration config;
-	private String filePath;
+	private final String filePath;
 
 	private final int MAX_FRAMES = 4;
 	private int frame = 0;
 
 	//Holograms
-	private ArrayList<Hologram> holograms = new ArrayList<>();
-	private ArrayList<Hologram> animatedHologram = new ArrayList<>();
-	private ArrayList<Hologram> animatedHologramRightClick = new ArrayList<>();
+	private final ArrayList<Hologram> holograms = new ArrayList<>();
+	private final ArrayList<Hologram> animatedHologram = new ArrayList<>();
+	private final ArrayList<Hologram> animatedHologramRightClick = new ArrayList<>();
 	
 	@Getter
-	private Map<Location, ItemStack> npcMenuLocations = new HashMap<>();
+	private final Map<Location, ItemStack> npcMenuLocations = new HashMap<>();
 
 	public CitizenManager(SpigotCore plugin) {
 		PLUGIN = plugin;
@@ -76,12 +74,10 @@ public class CitizenManager extends BukkitRunnable {
 		}
 
 		//Apply Citizens Configuration after server startup.
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,  new Runnable() {
-			public void run() {
-				applyCitizensConfiguration();
-				//System.out.println("[FSCore] Applied Citizens HP and Holograms.");
-			}
-		}, 5 * 20L);
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            applyCitizensConfiguration();
+            //System.out.println("[FSCore] Applied Citizens HP and Holograms.");
+        }, 5 * 20L);
 
 	}
 
@@ -104,7 +100,7 @@ public class CitizenManager extends BukkitRunnable {
 		}
 
 		//Rename holograms
-		for (int i = 0; i < animatedHologram.size(); i++) {
+		for (Hologram anAnimatedHologram : animatedHologram) {
 			String hologramText = "";
 
 			if (frame == 0) {
@@ -120,7 +116,7 @@ public class CitizenManager extends BukkitRunnable {
 			}
 
 			//Rename the hologram.
-			animatedHologram.get(i).getArmorStands().get(0).setCustomName(hologramText);
+			anAnimatedHologram.getArmorStands().get(0).setCustomName(hologramText);
 		}
 
 		frame++;
@@ -156,7 +152,7 @@ public class CitizenManager extends BukkitRunnable {
 						hologramRC.createHologram(rightClick, new Location(location.getWorld(), location.getX(), location.getY() - .3, location.getZ()));
 						animatedHologramRightClick.add(hologramRC);
 					} else {					
-						ArrayList<String> hologramText = new ArrayList<String>();
+						ArrayList<String> hologramText = new ArrayList<>();
 						hologramText.add(getCitizenType(npcName).getName());
 						hologramText.add(ChatColor.BOLD + "RIGHT-CLICK");
 						
@@ -182,21 +178,15 @@ public class CitizenManager extends BukkitRunnable {
 
 	private void removeStaticHolograms() {
 		//Remove static holograms.
-		for (int i = 0; i < holograms.size(); i++) {
-			holograms.get(i).removeHolograms();
-		}
+		holograms.forEach(Hologram::removeHolograms);
 	}
 
 	private void removeAnimatedHolograms() {
 		//Remove animated holograms.
-		for (int i = 0; i < animatedHologram.size(); i++) {
-			animatedHologram.get(i).removeHolograms();
-		}
+		animatedHologram.forEach(Hologram::removeHolograms);
 
 		//Remove animated holograms.
-		for (int i = 0; i < animatedHologramRightClick.size(); i++) {
-			animatedHologramRightClick.get(i).removeHolograms();
-		}
+        animatedHologramRightClick.forEach(Hologram::removeHolograms);
 	}
 
 	/**

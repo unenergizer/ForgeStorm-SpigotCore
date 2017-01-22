@@ -1,8 +1,11 @@
 package com.forgestorm.spigotcore.menus.tracking;
 
-import java.io.File;
-import java.util.Iterator;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.FilePaths;
+import com.forgestorm.spigotcore.menus.Menu;
+import com.forgestorm.spigotcore.menus.actions.SetCompassTarget;
+import com.forgestorm.spigotcore.util.item.ItemBuilder;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -11,18 +14,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.FilePaths;
-import com.forgestorm.spigotcore.menus.Menu;
-import com.forgestorm.spigotcore.menus.actions.SetCompassTarget;
-import com.forgestorm.spigotcore.util.item.ItemBuilder;
-
-import net.md_5.bungee.api.ChatColor;
+import java.io.File;
+import java.util.Iterator;
 
 public class TrackBuildingMenu extends Menu {
 
 	private final SpigotCore PLUGIN;	
-	private FileConfiguration config;
+	private final FileConfiguration config;
 	
 	public TrackBuildingMenu(SpigotCore plugin) {
 		super(plugin);

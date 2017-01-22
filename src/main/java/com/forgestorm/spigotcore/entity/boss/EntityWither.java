@@ -1,15 +1,14 @@
 package com.forgestorm.spigotcore.entity.boss;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
-
-import com.forgestorm.spigotcore.profile.ProfileData;
 
 
 
 public class EntityWither extends BossEntity {
 
-	public EntityWither(String name, int level, Location location, ProfileData profile) {
+	public EntityWither(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.WITHER;
 	}

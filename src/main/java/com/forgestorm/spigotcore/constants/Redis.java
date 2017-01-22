@@ -51,11 +51,16 @@ public enum Redis {
 	PROFESSION_FISHING("profession:fishing:%s"),
 	PROFESSION_LUMBERJACK("profession:lumberjack:%s"),
 	PROFESSION_MINING("profession:mining:%s"),
+
+	//REALM DATA
+	REALM_TIER("realm:tier:%s"),
+	REALM_PORTAL_INSIDE_LOCATION("realm:portalinsidelocation:%s"),
+	REALM_TITLE("realm:title:%s"),
 	
 	//SERVER STATS
 	SERVER_UNIQUE_LOGINS("stats:s:uniquelogins");
 
-	private String message;
+	private final String message;
 
 	//Constructor
 	Redis(String message) {

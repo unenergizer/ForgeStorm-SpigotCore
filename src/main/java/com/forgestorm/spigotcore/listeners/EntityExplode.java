@@ -1,10 +1,6 @@
 package com.forgestorm.spigotcore.listeners;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
+import com.forgestorm.spigotcore.SpigotCore;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
@@ -12,12 +8,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import com.forgestorm.spigotcore.SpigotCore;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class EntityExplode implements Listener {
 	
 	private final SpigotCore PLUGIN;
-	private final Set<Material> toDestroy = new HashSet<Material>();
+	private final Set<Material> toDestroy = new HashSet<>();
 	
 	public EntityExplode(SpigotCore plugin) {
 		PLUGIN = plugin;
@@ -42,7 +41,7 @@ public class EntityExplode implements Listener {
 			List<Block> destroyed = event.blockList();
 			Iterator<Block> it = destroyed.iterator();
 			while (it.hasNext()) {
-				Block block = (Block) it.next();
+				Block block = it.next();
 				Material mat = block.getType();
 				if (!toDestroy.contains(block.getType())) {
 					it.remove();

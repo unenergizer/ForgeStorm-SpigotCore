@@ -15,12 +15,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AsyncPlayerChat implements Listener {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
-		PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
+		PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
 		//String prefix = ChatColor.RESET + "";
 		ChatColor messageColor = ChatColor.WHITE;
 		boolean isInTutorial = profile.isInTutorial();
@@ -36,12 +36,11 @@ public class AsyncPlayerChat implements Listener {
 			}
 			
 			//Set message format.
-			StringBuilder sb = new StringBuilder();
-			sb.append(player.getCustomName());
-			sb.append(ChatColor.DARK_GRAY + ": ");
-			sb.append(messageColor + event.getMessage());
-			
-			sendMessage(sb.toString());
+			String sb = player.getCustomName() +
+					ChatColor.DARK_GRAY + ": " +
+					messageColor + event.getMessage();
+
+			sendMessage(sb);
 		} else {
 			//If the player is in the tutorial, prevent them from talking.
 			event.setCancelled(true);
@@ -51,7 +50,7 @@ public class AsyncPlayerChat implements Listener {
 	private void sendMessage(String message) {
 		for (Player players : Bukkit.getOnlinePlayers()) {
 			//If the player is in a tutorial, they will not receive the message.
-			if (!PLUGIN.getProfileManager().getProfile(players).isInTutorial()) {	
+			if (!plugin.getProfileManager().getProfile(players).isInTutorial()) {
 				players.sendMessage(message);
 			}
 		}

@@ -16,12 +16,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PlayerMove implements Listener {
 
-	private SpigotCore PLUGIN;
+	private SpigotCore plugin;
 
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
-		Tutorial tutorial = PLUGIN.getTutorial();
+		Tutorial tutorial = plugin.getTutorial();
 
 		//Prevent players in the tutorial from moving.
 		if (tutorial.getActivePlayers().containsKey(player)) {

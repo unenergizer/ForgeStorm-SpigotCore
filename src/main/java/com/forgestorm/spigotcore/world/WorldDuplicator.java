@@ -1,5 +1,12 @@
 package com.forgestorm.spigotcore.world;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Server;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,13 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.logging.Logger;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 public class WorldDuplicator {
 
@@ -75,11 +75,11 @@ public class WorldDuplicator {
 	 * 
 	 * @param src The source destination of the folder to copy.
 	 * @param dest The end destination to copy the folder to.
-	 * @throws IOException
+	 * @throws IOException This means the shit broke.
 	 */
 	public void copyFolder(File src, File dest) throws IOException {
 
-		if (src.isDirectory()) {
+		if (src.isDirectory() && dest.exists()) {
 
 			// if directory not exists, create it
 			if (!dest.exists()) {
@@ -98,6 +98,11 @@ public class WorldDuplicator {
 			}
 
 		} else {
+
+			if (dest.isDirectory()) {
+				System.out.println("YOU FUCKED UP!");
+			}
+
 			// if file, then copy it
 			// Use bytes stream to support all file types
 			InputStream in = new FileInputStream(src);
@@ -120,9 +125,8 @@ public class WorldDuplicator {
 	 * Delete's a file directory.
 	 * 
 	 * @param file The file or folder that will be deleted.
-	 * @throws IOException
 	 */
-	public void deleteFolder(File file) throws IOException {
+	public void deleteFolder(File file) {
 
 		if (file.isDirectory()) {
 

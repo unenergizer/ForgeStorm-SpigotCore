@@ -1,14 +1,5 @@
 package com.forgestorm.spigotcore.commands;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.ChatIcons;
 import com.forgestorm.spigotcore.constants.Messages;
@@ -16,19 +7,26 @@ import com.forgestorm.spigotcore.experience.ProfessionExperience;
 import com.forgestorm.spigotcore.menus.RecipeOptionsMenu;
 import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
 import com.forgestorm.spigotcore.util.imgmessage.EzImgMessage;
-
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 @AllArgsConstructor
 public class Admin implements CommandExecutor {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 
 	@Override
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
 
 		//Check if the command sender is a server Operator
-		if (commandSender instanceof Player && !PLUGIN.getProfileManager().getProfile((Player)commandSender).isAdmin()) {
+		if (!(commandSender instanceof Player) || !plugin.getProfileManager().getProfile((Player)commandSender).isAdmin()) {
 			commandSender.sendMessage(Messages.NO_PERMISSION.toString());
 			return false;
 		}
@@ -38,13 +36,13 @@ public class Admin implements CommandExecutor {
 
 			switch (args[0].toLowerCase()) {
 			case "eggtp":
-				PLUGIN.getDragonEggTP().teleportToEgg((Player) commandSender);
+				plugin.getDragonEggTP().teleportToEgg((Player) commandSender);
 				break;
 
 			case "crafting":
-				new RecipeOptionsMenu(PLUGIN).open((Player) commandSender);
+				new RecipeOptionsMenu(plugin).open((Player) commandSender);
 
-				List<ItemStack> recipeItems = PLUGIN.getRecipeManager().getRecipeIngredients("Recipe01");
+				List<ItemStack> recipeItems = plugin.getRecipeManager().getRecipeIngredients("Recipe01");
 
 				for (ItemStack item : recipeItems) {
 					((Player) commandSender).getInventory().addItem(item);
@@ -58,7 +56,7 @@ public class Admin implements CommandExecutor {
 			switch (args[0].toLowerCase()) {
 			case "chaticon":
 				System.out.println("Sending chat icon...");
-				((Player) commandSender).sendMessage("");
+				commandSender.sendMessage("");
 				new EzImgMessage().sendEzImgMessage((Player) commandSender, ChatIcons.valueOf(args[1].toUpperCase()), "This is test text!");
 				break;
 			}
@@ -71,7 +69,7 @@ public class Admin implements CommandExecutor {
 			}
 
 			Player player = Bukkit.getPlayer(args[2]);
-			PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
+			PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
 
 			switch (args[0].toLowerCase()) {
 			case "demote":
@@ -137,7 +135,7 @@ public class Admin implements CommandExecutor {
 			}
 
 			Player player = Bukkit.getPlayer(args[2]);
-			PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
+			PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
 			String argument = args[3];
 
 			//if statement
@@ -243,7 +241,7 @@ public class Admin implements CommandExecutor {
 					break;
 
 				case "recipe":
-					String msg = PLUGIN.getRecipeManager().givePlayerRecipe(player, argument);
+					String msg = plugin.getRecipeManager().givePlayerRecipe(player, argument);
 					commandSender.sendMessage(msg);
 					break;
 
@@ -294,7 +292,7 @@ public class Admin implements CommandExecutor {
 					break;
 
 				case "recipe":
-					String msg = PLUGIN.getRecipeManager().removePlayerRecipe((Player) commandSender, argument);
+					String msg = plugin.getRecipeManager().removePlayerRecipe((Player) commandSender, argument);
 					commandSender.sendMessage(msg);
 					break;	
 

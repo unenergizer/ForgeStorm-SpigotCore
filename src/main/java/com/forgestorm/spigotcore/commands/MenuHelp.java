@@ -13,13 +13,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class MenuHelp implements CommandExecutor {
 
-	private final SpigotCore PLUGIN; 
+	private final SpigotCore plugin;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (sender instanceof Player) {
 			Player player = (Player) sender;
-			new HelpMenu(PLUGIN).open(player);
+			new HelpMenu(plugin).open(player);
 		}
 		return false;
 	}

@@ -15,7 +15,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PlayTime implements CommandExecutor {
 
-	private final SpigotCore PLUGIN; 
+	private final SpigotCore plugin;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -24,7 +24,7 @@ public class PlayTime implements CommandExecutor {
 		}
 		
 		Player player = (Player) sender;
-		PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
+		PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
 		long currentTime = System.currentTimeMillis() / 1000;
 		long totalTime = (currentTime - profile.getLoginTime()) + profile.getPlayTime();
 		long levelTime = (currentTime - profile.getLastLevelTime()) + profile.getLevelTime();

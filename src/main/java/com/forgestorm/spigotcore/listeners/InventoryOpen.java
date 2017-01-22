@@ -17,11 +17,10 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class InventoryOpen implements Listener {
 	
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@EventHandler
 	public void onInventoryOpen(InventoryOpenEvent event) {
-		
 		if (event.getPlayer() instanceof Player) {
 			Player player = (Player) event.getPlayer();
 			Location loc = player.getLocation();
@@ -32,7 +31,7 @@ public class InventoryOpen implements Listener {
 			case ANVIL:
 				//OPEN MENU
 				event.setCancelled(true);
-				new RecipeOptionsMenu(PLUGIN).open(player);
+				new RecipeOptionsMenu(plugin).open(player);
 				break;
 			case BEACON:
 				player.playSound(loc, Sound.BLOCK_NOTE_BASS, 1F, .5F);

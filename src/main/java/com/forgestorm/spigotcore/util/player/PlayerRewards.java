@@ -11,8 +11,8 @@ import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
 public class PlayerRewards {
 
 	private final SpigotCore PLUGIN;
-	private Player player;
-	private	PlayerProfileData profile;
+	private final Player player;
+	private final PlayerProfileData profile;
 
 	public PlayerRewards(SpigotCore plugin, Player player) {
 		PLUGIN = plugin;

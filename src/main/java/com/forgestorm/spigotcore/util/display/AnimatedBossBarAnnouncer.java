@@ -1,10 +1,9 @@
 package com.forgestorm.spigotcore.util.display;
 
-import java.util.List;
-
+import com.forgestorm.spigotcore.SpigotCore;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.forgestorm.spigotcore.SpigotCore;
+import java.util.List;
 
 public class AnimatedBossBarAnnouncer extends BossBarAnnouncer {
 	
@@ -13,7 +12,7 @@ public class AnimatedBossBarAnnouncer extends BossBarAnnouncer {
 	private boolean isCanceled;
 	private int animatedFrame;
 	
-	public AnimatedBossBarAnnouncer(String message, SpigotCore plugin) {
+	private AnimatedBossBarAnnouncer(String message, SpigotCore plugin) {
 		super(message);
 		PLUGIN = plugin;
 		isCanceled = false;

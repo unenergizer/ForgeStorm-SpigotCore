@@ -1,15 +1,13 @@
 package com.forgestorm.spigotcore.world;
 
+import com.forgestorm.spigotcore.SpigotCore;
+import lombok.Getter;
+import lombok.Setter;
+import org.bukkit.Location;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.bukkit.Location;
-
-import com.forgestorm.spigotcore.SpigotCore;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -37,7 +35,6 @@ public class ChunkData {
 		DecimalFormat df = new DecimalFormat("#.##");
 		long currentTime = System.currentTimeMillis();
 		double time = (currentTime - timeLoaded) / 1000;
-		double returnTime = Double.parseDouble(df.format((time)));
-		return returnTime;
+		return Double.parseDouble(df.format((time)));
 	}
 }

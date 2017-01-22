@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ChunkLoad implements Listener {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@EventHandler
 	public void onChunkLoad(ChunkLoadEvent event) {
@@ -39,16 +39,17 @@ public class ChunkLoad implements Listener {
 			//Clear living entities from newly loaded chunks.
 			for (Entity entity: chunk.getEntities()) {
 				if (entity instanceof LivingEntity && !(entity instanceof Player)) {
-					EntityManager mm = PLUGIN.getEntityManager();
+					EntityManager mm = plugin.getEntityManager();
 					boolean hasRPGEntity = mm.getRpgEntity().containsKey(entity.getUniqueId());
 					
 					//Remove RPGEntity from Map.
-					if (!hasRPGEntity) {						entity.remove();
+					if (!hasRPGEntity) {
+						entity.remove();
 					}
 				}
 			}
 			
-			PLUGIN.getChunkManager().addNewChunk(chunk);
+			plugin.getChunkManager().addNewChunk(chunk);
 		}
 	}
 }

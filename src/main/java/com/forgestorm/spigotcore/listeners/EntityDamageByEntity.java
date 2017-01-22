@@ -1,7 +1,15 @@
 package com.forgestorm.spigotcore.listeners;
 
-import java.util.UUID;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.combat.Fatigue;
+import com.forgestorm.spigotcore.combat.MonsterVersusMonster;
+import com.forgestorm.spigotcore.combat.MonsterVersusPlayer;
+import com.forgestorm.spigotcore.combat.PlayerVersusMonster;
+import com.forgestorm.spigotcore.combat.PlayerVersusPlayer;
+import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
+import com.forgestorm.spigotcore.world.instance.RealmManager;
+import lombok.AllArgsConstructor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -14,29 +22,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.combat.Fatigue;
-import com.forgestorm.spigotcore.combat.MonsterVersusMonster;
-import com.forgestorm.spigotcore.combat.MonsterVersusPlayer;
-import com.forgestorm.spigotcore.combat.PlayerVersusMonster;
-import com.forgestorm.spigotcore.combat.PlayerVersusPlayer;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-import com.forgestorm.spigotcore.world.instance.PlayerRealmManager;
-
-import lombok.AllArgsConstructor;
-import net.md_5.bungee.api.ChatColor;
+import java.util.UUID;
 
 @AllArgsConstructor
 public class EntityDamageByEntity implements Listener {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
 
 		//Player realm / Hologram armor stand
 		if (event.getEntity() instanceof ArmorStand && event.getDamager() instanceof Player) {
-			PlayerRealmManager prm = PLUGIN.getPlayerRealmManager();
+			RealmManager prm = plugin.getRealmManager();
 			Player player = (Player) event.getDamager();
 			if (prm.hasRealm(player)) {
 				prm.removePlayerRealmAtLocation(player, event.getEntity().getLocation());
@@ -48,12 +46,12 @@ public class EntityDamageByEntity implements Listener {
 		if (event.getEntity() instanceof Horse || event.getEntity() instanceof Pig) {
 			Entity entity = event.getEntity();
 			UUID uuid = entity.getUniqueId();
-			boolean isInMountMap = PLUGIN.getMountManager().containsMount(uuid);
+			boolean isInMountMap = plugin.getMountManager().containsMount(uuid);
 
 			event.getEntity().sendMessage(ChatColor.RED + "Damage Taken. " + ChatColor.BOLD + "Removing mount" + ChatColor.RED + "..");
 
 			if (isInMountMap) {
-				PLUGIN.getMountManager().removeMount(uuid);
+				plugin.getMountManager().removeMount(uuid);
 				return;
 			} else {
 				entity.remove();
@@ -100,27 +98,27 @@ public class EntityDamageByEntity implements Listener {
 				//Check to see if entity is a Citizens NPC.
 				if (defender.hasMetadata("NPC")) {
 
-					PLUGIN.getCitizenManager().onCitizenInteract((Player) damager, (Player) defender);
+					plugin.getCitizenManager().onCitizenInteract((Player) damager, (Player) defender);
 					return;
 				}
 				
 				startCombat((Player) damager);
 				startCombat((Player) defender);
 				//startFatigue((Player) damager);
-				new PlayerVersusPlayer(PLUGIN, damager, defender).doCalculations();
+				new PlayerVersusPlayer(plugin, damager, defender).doCalculations();
 				return;
 			}
 
 			//Mob versus Mob
 			if (!(damager instanceof Player) && !(defender instanceof Player)) {
-				new MonsterVersusMonster(PLUGIN, damager, defender).doCalculations();
+				new MonsterVersusMonster(plugin, damager, defender).doCalculations();
 				return;
 			}
 
 			//Mob versus Player
 			if (!(damager instanceof Player) && defender instanceof Player) {
 				startCombat((Player) defender);
-				new MonsterVersusPlayer(PLUGIN, damager, defender).doCalculations();
+				new MonsterVersusPlayer(plugin, damager, defender).doCalculations();
 				return;
 			}
 
@@ -129,11 +127,11 @@ public class EntityDamageByEntity implements Listener {
 				startCombat((Player) damager);
 				//startFatigue((Player) damager);
 
-				boolean isInMap = PLUGIN.getEntityManager().getRpgEntity().containsKey(defender.getUniqueId());
+				boolean isInMap = plugin.getEntityManager().getRpgEntity().containsKey(defender.getUniqueId());
 
 				if (isInMap) {
 					//Entity is in the map, lets do our damage code.
-					new PlayerVersusMonster(PLUGIN, damager, defender).doCalculations();
+					new PlayerVersusMonster(plugin, damager, defender).doCalculations();
 				} else {
 					//Entity does not exist in the monster mappings.
 					defender.remove();
@@ -143,7 +141,7 @@ public class EntityDamageByEntity implements Listener {
 	}
 
 	private void startCombat(Player player) {
-		PlayerProfileData profile = PLUGIN.getPlayerManager().getPlayerProfile(player);
+		PlayerProfileData profile = plugin.getPlayerManager().getPlayerProfile(player);
 		if (profile.getCombatTime() == 0) {
 			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "You have entered combat!");
 		}
@@ -151,7 +149,7 @@ public class EntityDamageByEntity implements Listener {
 	}
 
 	private boolean startFatigue(Player damager) {
-		PlayerProfileData profile = PLUGIN.getPlayerManager().getPlayerProfile(damager);
+		PlayerProfileData profile = plugin.getPlayerManager().getPlayerProfile(damager);
 		if (profile.getEnergy() == 0) {
 			damager.playSound(damager.getLocation(), Sound.ENTITY_WOLF_PANT, 10F, 1.5F);
 			return true;

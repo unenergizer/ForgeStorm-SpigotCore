@@ -1,14 +1,13 @@
 package com.forgestorm.spigotcore.entity.mount;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 
-import com.forgestorm.spigotcore.profile.ProfileData;
-
 public class EntityMountHorse extends MountEntity {
 
-	public EntityMountHorse(String name, int level, Location location, ProfileData profile) {
+	public EntityMountHorse(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.HORSE;
 	}

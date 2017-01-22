@@ -1,13 +1,12 @@
 package com.forgestorm.spigotcore.entity.passive;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
-import com.forgestorm.spigotcore.profile.ProfileData;
-
 public class EntitySnowGolem extends PassiveEntity {
 
-	public EntitySnowGolem(String name, int level, Location location, ProfileData profile) {
+	public EntitySnowGolem(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.SNOWMAN;
 	}

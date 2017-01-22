@@ -15,18 +15,17 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PlayerJoin implements Listener {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		
-		PlayerProfileData data = PLUGIN.getProfileManager().loadProfile(player);
-		new SetupNetworkPlayer(PLUGIN, player, data).runTaskTimer(PLUGIN, 0, 1);
-		PLUGIN.getPlayerManager().addPlayerProfile(player, data);
+		PlayerProfileData data = plugin.getProfileManager().loadProfile(player);
+		new SetupNetworkPlayer(plugin, player, data).runTaskTimer(plugin, 0, 1);
 		
         //Show welcome message.
         event.setJoinMessage("");
-        player.sendMessage(Messages.PLAYER_WELCOME.toString().replace("%s", PLUGIN.getDescription().getVersion()));
+        player.sendMessage(Messages.PLAYER_WELCOME.toString().replace("%s", plugin.getDescription().getVersion()));
 	}
 }

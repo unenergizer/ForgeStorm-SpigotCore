@@ -4,5 +4,5 @@ public enum ProfessionType {
 	FARMING,
 	FISHING,
 	LUMBERJACK,
-	MINING;
+	MINING
 }

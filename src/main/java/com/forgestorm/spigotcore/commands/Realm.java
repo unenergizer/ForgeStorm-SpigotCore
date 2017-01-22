@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Realm implements CommandExecutor {
 	
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@Override
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -22,12 +22,12 @@ public class Realm implements CommandExecutor {
 		Player player = (Player) commandSender;
 		
 		String title = "";
-		
-		for (int i = 0; i < args.length; i++) {
-			title = title.concat(args[i] + " ");
+
+		for (String arg : args) {
+			title = title.concat(arg + " ");
 		}
 		
-		PLUGIN.getPlayerRealmManager().setTitle(player, title);
+		plugin.getRealmManager().setTitle(player, title);
 		return true;
 	}
 }

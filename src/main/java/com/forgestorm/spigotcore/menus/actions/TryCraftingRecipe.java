@@ -25,10 +25,10 @@ public class TryCraftingRecipe implements ClickAction {
 			//give item
 			
 			ItemGenerator itemGen = PLUGIN.getItemGen();
-			ItemStack item = itemGen.generateItem(RECIPE, ItemTypes.RECEPIES_FINISHED);
+			ItemStack item = itemGen.generateItem(RECIPE, ItemTypes.RECIPES_FINISHED);
 			player.getInventory().addItem(item);
 			player.closeInventory();
-			player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Congradulations! You have crafted the recipe!");
+			player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Congratulations! You have crafted the recipe!");
 		} else {
 			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "Cannot forge recipe! Check your items!");
 		}

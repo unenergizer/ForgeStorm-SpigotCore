@@ -1,10 +1,14 @@
 package com.forgestorm.spigotcore.profession;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.FilePaths;
+import com.forgestorm.spigotcore.constants.ProfessionType;
+import com.forgestorm.spigotcore.experience.Experience;
+import com.forgestorm.spigotcore.experience.ProfessionExperience;
+import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
+import com.forgestorm.spigotcore.util.math.RandomChance;
+import com.forgestorm.spigotcore.util.text.ProgressBarString;
+import com.forgestorm.spigotcore.world.BlockRegenerationManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -14,28 +18,21 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.FilePaths;
-import com.forgestorm.spigotcore.constants.ProfessionType;
-import com.forgestorm.spigotcore.experience.Experience;
-import com.forgestorm.spigotcore.experience.ProfessionExperience;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-import com.forgestorm.spigotcore.util.display.ActionBarText;
-import com.forgestorm.spigotcore.util.math.RandomChance;
-import com.forgestorm.spigotcore.util.text.ProgressBarString;
-import com.forgestorm.spigotcore.world.BlockRegenerationManager;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Profession {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	private final boolean showDebugMessages = false;
 	
-	private List<String> tools;
-	private FileConfiguration config;
-	private Experience experienceCalculator;
+	private final List<String> tools;
+	private final FileConfiguration config;
+	private final Experience experienceCalculator;
 
 	public Profession(SpigotCore plugin) {
-		PLUGIN = plugin;
+		this.plugin = plugin;
 		tools = new ArrayList<>();
 		config = YamlConfiguration.loadConfiguration(
 				new File(FilePaths.TOOL_INFORMATION.toString()));
@@ -53,7 +50,7 @@ public class Profession {
 		showDebugMessage("[PROFESSION] Tool: " + toolName + " Block: " + blockName);
 		
 		//tool check. if tool exists in config continue
-		if (tools.contains(toolName) && tool != null && blockName != null) {
+		if (tools.contains(toolName) && blockName != null) {
 			
 			showDebugMessage("[PROFESSION] TOOL EXISTS!");
 
@@ -72,11 +69,11 @@ public class Profession {
 					showDebugMessage("[PROFESSION] TOGGLE SUCCESS!");
 					
 					//Give EXP
-					PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
+					PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
 					long expReward = config.getLong(toolName + ".breaks." + blockName + ".exp");
 					String profession = config.getString(toolName + ".profession").toUpperCase(); 
 					ProfessionType professionType = ProfessionType.valueOf(profession);
-					BlockRegenerationManager blockRegen = PLUGIN.getBlockRegen();
+					BlockRegenerationManager blockRegen = plugin.getBlockRegen();
 					Material blockType = block.getType();
 					
 					long toolEXP = 0;
@@ -89,18 +86,18 @@ public class Profession {
 						showDebugMessage("Toggled farming profession!");
 						break;
 					case FISHING:
-						toolEXP = PLUGIN.getProfileManager().getProfile(player).getFishingExperience();
+						toolEXP = plugin.getProfileManager().getProfile(player).getFishingExperience();
 						profile.setFishingExperience(toolEXP + expReward);
 						showDebugMessage("Toggled fishing profession!");
 						break;
 					case LUMBERJACK:
-						toolEXP = PLUGIN.getProfileManager().getProfile(player).getLumberjackExperience();
+						toolEXP = plugin.getProfileManager().getProfile(player).getLumberjackExperience();
 						profile.setLumberjackExperience(toolEXP + expReward);
 						blockRegen.setBlock(blockType, Material.WOOD, block.getLocation());
 						showDebugMessage("Toggled lumberjack profession!");
 						break;
 					case MINING:
-						toolEXP = PLUGIN.getProfileManager().getProfile(player).getMiningExperience();
+						toolEXP = plugin.getProfileManager().getProfile(player).getMiningExperience();
 						profile.setMiningExperience(toolEXP + expReward);
 						blockRegen.setBlock(blockType, Material.STONE, block.getLocation());
 						showDebugMessage("Toggled mining profession!");
@@ -116,8 +113,8 @@ public class Profession {
 					long exp = toolEXP + expReward;
 					showDebugMessage("[PROFESSION] OLD LEVEL: " + oldLevel);
 					showDebugMessage("[PROFESSION] LEVEL: " + level + " EXP: " + exp);
-					
-					new ActionBarText().sendActionbarMessage(player, showEXPLevel(expReward, exp, level));
+
+					plugin.getTitleManagerAPI().sendActionbar(player, showEXPLevel(expReward, exp, level));
 					
 					//Level up check
 					if (oldLevel != level) {
@@ -147,13 +144,13 @@ public class Profession {
 						}
 
 						//Show Leveling message!
-						player.sendMessage("Congradulations! Your profession item has leveled up!");
+						player.sendMessage("Congratulations! Your profession item has leveled up!");
 						player.sendMessage(ChatColor.GREEN + "Your pick is now level " + ChatColor.GOLD + level + ChatColor.GREEN + ".");
 						
 
 						//Show profession item upgrade message.
 						if (showUpgradeMsg) {
-							player.sendMessage("Congradulations! Your profession item has been upgraded!");
+							player.sendMessage("Congratulations! Your profession item has been upgraded!");
 						}
 					}
 
@@ -196,10 +193,9 @@ public class Profession {
 	private void loadConfig() {
 
 		ConfigurationSection section = config.getConfigurationSection("");
-		Iterator<String> it = section.getKeys(false).iterator();
 
-		while (it.hasNext()) {
-			tools.add(it.next());
+		for (String s : section.getKeys(false)) {
+			tools.add(s);
 		}
 	}
 	

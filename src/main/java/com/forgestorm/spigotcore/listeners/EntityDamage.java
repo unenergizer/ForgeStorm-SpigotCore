@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class EntityDamage implements Listener {
 	
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event) {
@@ -25,7 +25,7 @@ public class EntityDamage implements Listener {
 		//If the player falls into the void, tp them to the lobby spawn.
 		if (event.getCause().equals(DamageCause.VOID) && entity instanceof Player) {
 			event.setCancelled(true);
-			PLUGIN.getPlayerRealmManager().leaveRealm((Player) entity);
+			plugin.getRealmManager().leaveRealm((Player) entity);
 		}
 		
 		//Mount Check
@@ -34,7 +34,7 @@ public class EntityDamage implements Listener {
 			//This mount should be a player mount.
 			if (entity.getPassenger() != null && entity.getPassenger() instanceof Player) {
 				Player player = (Player) entity.getPassenger();
-				PLUGIN.getMountManager().removePlayerMount(player);
+				plugin.getMountManager().removePlayerMount(player);
 			}
 		}
 	}

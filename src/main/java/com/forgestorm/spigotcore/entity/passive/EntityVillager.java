@@ -1,14 +1,13 @@
 package com.forgestorm.spigotcore.entity.passive;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
 
-import com.forgestorm.spigotcore.profile.ProfileData;
-
 public class EntityVillager extends PassiveEntity {
 
-	public EntityVillager(String name, int level, Location location, ProfileData profile) {
+	public EntityVillager(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.VILLAGER;
 	}

@@ -5,10 +5,10 @@ import org.bukkit.ChatColor;
 import com.forgestorm.spigotcore.constants.DefaultFontInfo;
 
 public class CenterChatText {
-	
+
 	/**
 	 * This will take a message and center it for the Minecraft chat box.
-	 * 
+	 *
 	 * @param message The message that will be centered.
 	 * @return Returns a message that is perfectly (or near perfect) centered.
 	 */
@@ -16,10 +16,10 @@ public class CenterChatText {
 		final int DEFAULT_WIDTH = 154;
 		return centerMessage(DEFAULT_WIDTH, message);
 	}
-	
+
 	/**
 	 * This will take a message and center it for the Minecraft chat box.
-	 * 
+	 *
 	 * @param width How wide the text area is in pixels.
 	 * @param message The message that will be centered.
 	 * @return Returns a message that is perfectly (or near perfect) centered.
@@ -33,15 +33,11 @@ public class CenterChatText {
 			boolean isBold = false;
 
 			for (char c : message.toCharArray()) {
-				if (c == '§') {
+				if (c == '\u00a7') {
 					previousCode = true;
-					continue;
-				} else if (previousCode == true) {
+				} else if (previousCode) {
 					previousCode = false;
-					if (c == 'l' || c == 'L') {
-						isBold = true;
-						continue;
-					} else isBold = false;
+					isBold = c == 'l' || c == 'L';
 				} else {
 					DefaultFontInfo dFI = DefaultFontInfo.getDefaultFontInfo(c);
 					messagePxSize += isBold ? dFI.getBoldLength() : dFI.getLength();
@@ -54,7 +50,7 @@ public class CenterChatText {
 			int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
 			int compensated = 0;
 			StringBuilder sb = new StringBuilder();
-			
+
 			while (compensated < toCompensate) {
 				sb.append(" ");
 				compensated += spaceLength;

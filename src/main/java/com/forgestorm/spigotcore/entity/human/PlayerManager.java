@@ -1,26 +1,23 @@
 package com.forgestorm.spigotcore.entity.human;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-
-import io.puharesource.mc.titlemanager.api.ActionbarTitleObject;
-import lombok.Getter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Getter
 public class PlayerManager {
 
 	private final SpigotCore PLUGIN;
 
-	private Map<UUID, PlayerProfileData> profiles = new HashMap<>();
+	private final Map<UUID, PlayerProfileData> profiles = new HashMap<>();
 
 	public PlayerManager(SpigotCore plugin) {
 		PLUGIN = plugin;
@@ -39,11 +36,11 @@ public class PlayerManager {
 
 		//Show player important attributes!
 		String hp = Integer.toString((int) profile.getHealth());
-		String maxHP = Integer.toString((int) profile.getMaxHealth());
+		String maxHP = Integer.toString(profile.getMaxHealth());
 		String level = Integer.toString(profile.getPlayerLevel());
 		String expPercent = Double.toString(profile.getExpPercent());
 
-		new ActionbarTitleObject(ChatColor.GREEN + "" + ChatColor.BOLD + "HP" 
+		PLUGIN.getTitleManagerAPI().sendActionbar(player, ChatColor.GREEN + "" + ChatColor.BOLD + "HP"
 				+ ChatColor.GRAY + ChatColor.BOLD + ": " 
 				+ ChatColor.WHITE + ChatColor.BOLD + hp 
 				+ ChatColor.GREEN + ChatColor.BOLD + "/" 
@@ -54,7 +51,7 @@ public class PlayerManager {
 				+ ChatColor.LIGHT_PURPLE + ChatColor.BOLD + "   XP" 
 				+ ChatColor.GRAY + ChatColor.BOLD + ": " 
 				+ ChatColor.WHITE + ChatColor.BOLD + expPercent 
-				+ ChatColor.LIGHT_PURPLE + ChatColor.BOLD +  "%").send(player);
+				+ ChatColor.LIGHT_PURPLE + ChatColor.BOLD +  "%");
 	}
 
 	
@@ -111,7 +108,6 @@ public class PlayerManager {
 			//Set the players health.
 			if (healthPointsFinal >= maxHealthPoints) {
 				profile.setHealth(maxHealthPoints);
-				currentHP = maxHealthPoints;
 			} else {
 				profile.setHealth(healthPointsFinal);
 			}

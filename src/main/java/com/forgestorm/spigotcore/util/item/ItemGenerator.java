@@ -1,19 +1,15 @@
 package com.forgestorm.spigotcore.util.item;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.forgestorm.spigotcore.constants.ItemTypes;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import com.forgestorm.spigotcore.constants.ItemTypes;
+import java.io.File;
+import java.util.List;
 
 public class ItemGenerator {
-
-	private FileConfiguration config;
 
 	public ItemStack generateItem(String itemConfigName, ItemTypes type) {
 		return generateItem(itemConfigName, type, 1);
@@ -23,7 +19,7 @@ public class ItemGenerator {
 		
 		//System.out.println("-------------- "+ itemConfigName + ":" + type.toString() + " --------------");
 		File file = new File(type.getFilePaths().toString());
-		config = YamlConfiguration.loadConfiguration(file);
+		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		
 		final String path = "." + itemConfigName; 
 		
@@ -31,8 +27,7 @@ public class ItemGenerator {
 		String material = config.getString(path + ".material");
 		boolean enchanted = config.getBoolean(path + ".enchant");
 		int data = config.getInt(path + ".data");
-		List<String> desc = new ArrayList<>();
-		desc = config.getStringList(path + ".desc");
+		List<String> desc = config.getStringList(path + ".desc");
 		Material mat = Material.valueOf(material);
 		
 		//System.out.println("NAME:" + path + "." + name);

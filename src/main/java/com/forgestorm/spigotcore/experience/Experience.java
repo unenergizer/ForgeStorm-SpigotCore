@@ -4,12 +4,12 @@ import java.text.DecimalFormat;
 
 public abstract class Experience {
 	
-	private int expOffSet = getExperience(1, true);
+	private final int expOffSet = getExperience(1, true);
 	protected int minLevel = 1;
-	protected int maxLevel = 100;
-	protected int var1;
-	protected double var2;
-	protected double var3;
+	private final int maxLevel = 100;
+	int var1;
+	double var2;
+	double var3;
 
 	/**
 	 * This will return the experience needed for a given level.
@@ -27,7 +27,7 @@ public abstract class Experience {
 	 */
 	public int getExperience(int level, boolean getOffSet) {
 		int points = 0;
-		int output = 0;
+		int output;
 
 		for (int lvl = 1; lvl <= maxLevel; lvl++) {
 			points += Math.floor(var1 * Math.pow(2, lvl / var2));
@@ -44,7 +44,7 @@ public abstract class Experience {
 	/**
 	 * This will return the players level based off their experience.
 	 * @param exp The players current experience.
-	 * @return
+	 * @return Returns a level based on the exp parameter.
 	 */
 	public int getLevel(long exp) {
 		for (int i = 1; i <= 100; i++) {

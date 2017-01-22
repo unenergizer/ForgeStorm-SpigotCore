@@ -1,16 +1,14 @@
 package com.forgestorm.spigotcore.entity;
 
+import com.forgestorm.spigotcore.constants.Messages;
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
+import com.forgestorm.spigotcore.util.text.ProgressBarString;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-
-import com.forgestorm.spigotcore.constants.Messages;
-import com.forgestorm.spigotcore.profile.ProfileData;
-import com.forgestorm.spigotcore.util.text.ProgressBarString;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -22,9 +20,9 @@ public abstract class RPGEntity {
 	private String modifiedName;
 	private int level;
 	private Location location;
-	private ProfileData profile;
+	private MonsterProfileData profile;
 	
-	public RPGEntity(String name, int level, Location location, ProfileData profile) {
+	public RPGEntity(String name, int level, Location location, MonsterProfileData profile) {
 		this.name = name;
 		this.level = level;
 		this.location = location;
@@ -48,14 +46,12 @@ public abstract class RPGEntity {
 		entity.setCustomNameVisible(true);
 	}
 	
-	public boolean toggleDamage() {
+	public void toggleDamage() {
 		//Adjust health
 		if (entity.getHealth() >= 1) {
-			renameEntity(); 
-			return false; //Entity is alive
+			renameEntity();
 		} else {
 			toggleDeath();
-			return true; //Entity died.
 		}
 	}
 	

@@ -19,7 +19,7 @@ public enum ItemText {
 	ARMOR_POISON_RESIST(ChatColor.RED + "POISON RESISTANCE: +%s%"),	
 	ARMOR_REFLECTION(ChatColor.RED + "REFLECTION: +%s%"),	
 	ARMOR_STRENGTH(ChatColor.RED + "STR: +%s"),	
-	ARMOR_THRONS(ChatColor.RED + "THORNS: +%s%"),	
+	ARMOR_THORNS(ChatColor.RED + "THORNS: +%s%"),
 	ARMOR_VITALITY(ChatColor.RED + "VIT: +%s"),	
 	
 	WEAPON_ARMOR_PENETRATION(ChatColor.RED + "ARMOR PENETRATION: +%s"),	
@@ -35,9 +35,9 @@ public enum ItemText {
 	WEAPON_VS_MOB(ChatColor.RED + "vs. MOB: +%s DMG"),	
 	WEAPON_VS_PLAYER(ChatColor.RED + "vs. PLAYER: +%s DMG"),
 	
-	ITEM_UNTRADEABLE(ChatColor.GRAY + "" + ChatColor.ITALIC + "Untradeable");
+	ITEM_ACCOUNT_BOUND(ChatColor.GRAY + "" + ChatColor.ITALIC + "Account Bound");
 	
-	private String message;
+	private final String message;
 
 	//Constructor
 	ItemText(String message) {

@@ -1,8 +1,13 @@
 package com.forgestorm.spigotcore.profile.player;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.ProfessionType;
+import com.forgestorm.spigotcore.constants.UserGroup;
+import com.forgestorm.spigotcore.experience.PlayerExperience;
+import com.forgestorm.spigotcore.menus.Menu;
+import com.forgestorm.spigotcore.profile.ProfileData;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -12,16 +17,8 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.ProfessionType;
-import com.forgestorm.spigotcore.constants.Usergroup;
-import com.forgestorm.spigotcore.experience.PlayerExperience;
-import com.forgestorm.spigotcore.menus.Menu;
-import com.forgestorm.spigotcore.profile.ProfileData;
-import com.forgestorm.spigotcore.util.display.FloatingMessage;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -69,12 +66,16 @@ public class PlayerProfileData extends ProfileData {
 	private boolean tradeRequests;
 	private boolean toggleDebug;
 
-	// Profession stats
+	//Profession stats
 	private long farmingExperience;
 	private long fishingExperience;
 	private long lumberjackExperience;
 	private long miningExperience;
-	
+
+	//Realm data
+	private int realmTier;
+	private String realmTitle;
+	private String realmInsideLocation;
 	
 	//////////////////////////
 	/// NOT SAVED TO REDIS ///
@@ -106,7 +107,8 @@ public class PlayerProfileData extends ProfileData {
 		prefix = "";
 		loginTime = lastLevelTime = System.currentTimeMillis() / 1000;
 		expCalc = new PlayerExperience();
-		
+		loaded = false;
+
 		setUsernameRankPrefix();
 	}
 
@@ -130,16 +132,13 @@ public class PlayerProfileData extends ProfileData {
 	}
 	
 	public boolean isInCombat() {
-		if (combatTime > 0) {
-			return true;
-		}
-		return false;
+		return combatTime > 0;
 	}
 	
 	/**
 	 * This will add fatigue to the player.
 	 * 
-	 * @param amount
+	 * @param amount The amount of fatigue to add.
 	 */
 	public void addFatigue(double amount) {
 		double fatigue = energy - amount;
@@ -157,16 +156,12 @@ public class PlayerProfileData extends ProfileData {
 	 * @return True if the player is fatigued.
 	 */
 	public boolean isFatigued() {
-		if (energy <= 1) {
-			return true;
-		}
-		return false;
+		return energy <= 1;
 	}
 
 	/**
 	 * Sets a players experience. This will override any previous values.
-	 * 
-	 * @param player The player who we will set experience for.
+	 *
 	 * @param argument The amount of experience the player will receive.
 	 */
 	public void setExperience(long argument) {
@@ -178,8 +173,7 @@ public class PlayerProfileData extends ProfileData {
 
 	/**
 	 * Adds experience to the players total current experience.
-	 * 
-	 * @param player The player who will receive additional experience.
+	 *
 	 * @param argument The amount of experience to add.
 	 */
 	public void addExperience(long argument) {
@@ -197,10 +191,10 @@ public class PlayerProfileData extends ProfileData {
 		//Player leveled up!
 		if (newLevel > previousLevel) {
 			//Show level up message.
-			new FloatingMessage().sendFloatingMessage(player, ChatColor.GREEN + "Leveled UP!", ChatColor.GOLD + "You are now level " + newLevel);
+			PLUGIN.getTitleManagerAPI().sendTitles(player, ChatColor.GREEN + "Leveled UP!", ChatColor.GOLD + "You are now level " + newLevel);
 
 			for (double i = 0; i < 2; i++) {
-				Firework fw = (Firework) player.getWorld().spawn(player.getLocation().subtract(0, -1, 0), Firework.class);
+				Firework fw = player.getWorld().spawn(player.getLocation().subtract(0, -1, 0), Firework.class);
 				FireworkMeta fm = fw.getFireworkMeta();
 				fm.addEffect(FireworkEffect.builder()
 						.flicker(false)
@@ -233,8 +227,7 @@ public class PlayerProfileData extends ProfileData {
 
 	/**
 	 * This will remove experience from the players current total experience count.
-	 * 
-	 * @param player The player who will have experience removed from them.
+	 *
 	 * @param argument The amount of experience to remove.
 	 */
 	public void removeExperience(long argument) {
@@ -250,12 +243,11 @@ public class PlayerProfileData extends ProfileData {
 
 	/**
 	 * Sets a players level. This will override any previous values.
-	 * 
-	 * @param player The player who we will set level for.
+	 *
 	 * @param argument The level the player will receive.
 	 */
 	public void setLevel(int argument) {
-		int xp = 0;
+		int xp;
 
 		if (argument > 100) {
 			xp = expCalc.getExperience(100);
@@ -268,8 +260,7 @@ public class PlayerProfileData extends ProfileData {
 
 	/**
 	 * Adds level(s) to the players current level.
-	 * 
-	 * @param player The player who will receive additional level(s).
+	 *
 	 * @param argument The amount of level(s) to add.
 	 */
 	public void addLevel(int argument) {
@@ -291,8 +282,7 @@ public class PlayerProfileData extends ProfileData {
 
 	/**
 	 * This will remove level(s) from the players current level.
-	 * 
-	 * @param player The player who will have level(s) removed from them.
+	 *
 	 * @param argument The amount of level(s) to remove.
 	 */
 	public void removeLevel(int argument) {
@@ -327,23 +317,23 @@ public class PlayerProfileData extends ProfileData {
 
 		//Set Admin prefix
 		if (isAdmin) {
-			prefix = prefix.concat(Usergroup.USER_PREFIX_ADMINISTRATOR.getUsergroupPrefix());
+			prefix = prefix.concat(UserGroup.USER_PREFIX_ADMINISTRATOR.getUserGroupPrefix());
 		}
 
 		//Set moderator prefix
 		if (isModerator) {
-			prefix = prefix.concat(Usergroup.USER_PREFIX_MODERATOR.getUsergroupPrefix());
+			prefix = prefix.concat(UserGroup.USER_PREFIX_MODERATOR.getUserGroupPrefix());
 		}
 
 		//Paid rank prefix
 		if (getUserGroup() == 1) {
-			prefix = prefix.concat(Usergroup.USER_PREFIX_USERGROUP_1.getUsergroupPrefix());
+			prefix = prefix.concat(UserGroup.USER_PREFIX_USER_GROUP_1.getUserGroupPrefix());
 		} else if (getUserGroup() == 2) {
-			prefix = prefix.concat(Usergroup.USER_PREFIX_USERGROUP_2.getUsergroupPrefix());
+			prefix = prefix.concat(UserGroup.USER_PREFIX_USER_GROUP_2.getUserGroupPrefix());
 		} else if (getUserGroup() == 3) {
-			prefix = prefix.concat(Usergroup.USER_PREFIX_USERGROUP_3.getUsergroupPrefix());
+			prefix = prefix.concat(UserGroup.USER_PREFIX_USER_GROUP_3.getUserGroupPrefix());
 		} else if (getUserGroup() == 4) {
-			prefix = prefix.concat(Usergroup.USER_PREFIX_USERGROUP_4.getUsergroupPrefix());
+			prefix = prefix.concat(UserGroup.USER_PREFIX_USER_GROUP_4.getUserGroupPrefix());
 		}
 
 		//Append the prefix to the player.
@@ -366,8 +356,7 @@ public class PlayerProfileData extends ProfileData {
 	/**
 	 * Sets the player's premium currency. This will override the player's 
 	 * current premium currency count.
-	 * 
-	 * @param player The player who will have their premium currency changed.
+	 *
 	 * @param argument The new amount of premium currency the player will have.
 	 */
 	public void setPremiumCurrency(int argument) {
@@ -381,10 +370,8 @@ public class PlayerProfileData extends ProfileData {
 	/**
 	 * This will add premium currency to the player's current premium currency 
 	 * count.
-	 * 
-	 * @param player The player who will receive premium currency.
+	 *
 	 * @param argument The amount of premium currency to add.
-	 * @return 
 	 */
 	public void addPremiumCurrency(int argument) {
 		int previousCurrency = getPremiumCurrency();
@@ -400,8 +387,7 @@ public class PlayerProfileData extends ProfileData {
 	/**
 	 * This will remove premium currency from the player's current premium 
 	 * currency count.
-	 * 
-	 * @param player The player who will have premium currency deducted.
+	 *
 	 * @param argument The amount of premium currency to remove.
 	 * @return Returns true if the player has enough balance to subtract from.
 	 */
@@ -420,8 +406,7 @@ public class PlayerProfileData extends ProfileData {
 	/**
 	 * Sets the player's currency. This will override the player's current 
 	 * currency count.
-	 * 
-	 * @param player The player who will have their currency changed.
+	 *
 	 * @param argument The new amount of currency the player will have.
 	 */
 	public void setCurrency(int argument) {
@@ -434,8 +419,7 @@ public class PlayerProfileData extends ProfileData {
 
 	/**
 	 * This will add currency to the player's current currency count.
-	 * 
-	 * @param player The player who will receive currency.
+	 *
 	 * @param argument The amount of currency to add.
 	 */
 	public void addCurrency(int argument) {
@@ -451,8 +435,7 @@ public class PlayerProfileData extends ProfileData {
 
 	/**
 	 * This will remove currency from the player's current currency count.
-	 * 
-	 * @param player The player who will have currency deducted.
+	 *
 	 * @param argument The amount of currency to remove.
 	 * @return Returns true if the player has enough balance to subtract from.
 	 */
@@ -537,7 +520,7 @@ public class PlayerProfileData extends ProfileData {
 		setUsernameRankPrefix();
 		setOperatorRank();
 		PLUGIN.getScoreboardManager().assignPlayer(player);
-		return userGroup - 1 >= 0 ? true : false;
+		return userGroup - 1 >= 0;
 	}
 
 
@@ -564,7 +547,7 @@ public class PlayerProfileData extends ProfileData {
 	/**
 	 * This will add an achievement to the players achievement list!
 	 * 
-	 * @param achievementNames
+	 * @param achievementNames The achievement to add to the list.
 	 */
 	public void addAchievement(String... achievementNames) {
 		for (String id : achievementNames) {

@@ -17,7 +17,7 @@ import com.forgestorm.spigotcore.util.item.ItemGenerator;
 public class ProfessionMenu extends Menu {
 
 	private final SpigotCore PLUGIN;
-	private Player player;
+	private final Player player;
 
 	public ProfessionMenu(SpigotCore plugin, Player player) {
 		super(plugin);

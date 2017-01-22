@@ -1,10 +1,5 @@
 package com.forgestorm.spigotcore.constants;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
-import org.bukkit.Location;
-
 import com.forgestorm.spigotcore.entity.RPGEntity;
 import com.forgestorm.spigotcore.entity.boss.EntityEnderDragon;
 import com.forgestorm.spigotcore.entity.boss.EntityWither;
@@ -70,7 +65,11 @@ import com.forgestorm.spigotcore.entity.passive.EntitySheep;
 import com.forgestorm.spigotcore.entity.passive.EntitySnowGolem;
 import com.forgestorm.spigotcore.entity.passive.EntitySquid;
 import com.forgestorm.spigotcore.entity.passive.EntityVillager;
-import com.forgestorm.spigotcore.profile.ProfileData;
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
+import org.bukkit.Location;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 
 public enum RPGEntityType {
@@ -151,16 +150,16 @@ public enum RPGEntityType {
 	VILLAGER(EntityVillager.class);
 	
 	
-	Class<? extends RPGEntity> clazz;
+	final Class<? extends RPGEntity> clazz;
 	
 	RPGEntityType(Class<? extends RPGEntity> clazz) {
 		this.clazz = clazz;
 	}
 	
-	public RPGEntity getType(String name, int level, Location location, ProfileData profile) {
+	public RPGEntity getType(String name, int level, Location location, MonsterProfileData profile) {
 		Constructor<? extends RPGEntity> constructor;
 		try {
-			constructor = clazz.getConstructor(String.class, int.class, Location.class);
+			constructor = clazz.getConstructor(String.class, int.class, Location.class, MonsterProfileData.class);
 			return constructor.newInstance(name, level, location, profile);
 		} catch (NoSuchMethodException | SecurityException | InstantiationException
 				| IllegalAccessException | IllegalArgumentException

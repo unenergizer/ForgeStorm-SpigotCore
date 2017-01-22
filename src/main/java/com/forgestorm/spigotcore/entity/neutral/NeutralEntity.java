@@ -1,13 +1,12 @@
 package com.forgestorm.spigotcore.entity.neutral;
 
-import org.bukkit.Location;
-
 import com.forgestorm.spigotcore.entity.RPGEntity;
-import com.forgestorm.spigotcore.profile.ProfileData;
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
+import org.bukkit.Location;
 
 public abstract class NeutralEntity extends RPGEntity {
 
-	public NeutralEntity(String name, int level, Location location, ProfileData profile) {
+	public NeutralEntity(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 	}
 }

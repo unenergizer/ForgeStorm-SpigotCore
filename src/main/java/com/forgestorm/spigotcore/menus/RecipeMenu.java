@@ -1,25 +1,23 @@
 package com.forgestorm.spigotcore.menus;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.bukkit.entity.Player;
-
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.ItemTypes;
 import com.forgestorm.spigotcore.menus.actions.SelectRecipe;
 import com.forgestorm.spigotcore.menus.actions.SendChatText;
 import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
-
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class RecipeMenu extends Menu {
 
 	private final SpigotCore PLUGIN;
 	private final boolean SHOW_ALL;
-	private PlayerProfileData profile;
+	private final PlayerProfileData profile;
 	final int MAX_FOR_PAGE = 20; 
 	
 	public RecipeMenu(SpigotCore plugin, Player player, boolean showAll) {
@@ -44,7 +42,7 @@ public class RecipeMenu extends Menu {
 	private void showCollected() {
 		List<String> recipes = profile.getCollectedRecipes();
 		
-		ItemTypes type = ItemTypes.RECEPIES_CRAFTING;
+		ItemTypes type = ItemTypes.RECIPES_CRAFTING;
 		ItemGenerator itemGen = PLUGIN.getItemGen();
 		
 		int count = 0;
@@ -64,7 +62,7 @@ public class RecipeMenu extends Menu {
 	private void showAll() {
 		Set<String> items = PLUGIN.getRecipeManager().getRecipes().keySet();
 		
-		ItemTypes type = ItemTypes.RECEPIES_CRAFTING;
+		ItemTypes type = ItemTypes.RECIPES_CRAFTING;
 		ItemGenerator itemGen = PLUGIN.getItemGen();
 		
 		Iterator<String> it = items.iterator();
@@ -79,7 +77,7 @@ public class RecipeMenu extends Menu {
 			if (profile.getCollectedRecipes().contains(key)) {
 				setItem(itemGen.generateItem(key, type), count++, new SelectRecipe(PLUGIN, key));	
 			} else {
-				String error = ChatColor.RED + "You do not own this recipie.";
+				String error = ChatColor.RED + "You do not own this recipe.";
 				setItem(itemGen.generateItem(key, type), count++, new SendChatText(error));
 			}
 		}

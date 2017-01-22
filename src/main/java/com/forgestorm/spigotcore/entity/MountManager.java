@@ -1,20 +1,18 @@
 package com.forgestorm.spigotcore.entity;
 
+import com.forgestorm.spigotcore.entity.mount.MountEntity;
+import lombok.Getter;
+import org.bukkit.entity.Player;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import org.bukkit.entity.Player;
-
-import com.forgestorm.spigotcore.entity.mount.MountEntity;
-
-import lombok.Getter;
-
 @Getter
 public class MountManager {
 
-	private Map<Player, RPGEntity> playerMounts = new HashMap<>();
+	private final Map<Player, RPGEntity> playerMounts = new HashMap<>();
 	
 	private void mountPlayer(Player player) {
 		MountEntity entity = (MountEntity) playerMounts.get(player);

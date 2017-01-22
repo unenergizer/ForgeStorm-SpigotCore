@@ -15,12 +15,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class InventoryClose implements Listener {
 	
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {
 		Player player = (Player) event.getPlayer();
-		PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
+		PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
 		Menu menu = profile.getCurrentMenu();
 		
 		if (menu != null) {

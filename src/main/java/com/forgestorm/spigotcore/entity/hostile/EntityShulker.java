@@ -1,13 +1,12 @@
 package com.forgestorm.spigotcore.entity.hostile;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
-import com.forgestorm.spigotcore.profile.ProfileData;
-
 public class EntityShulker extends HostileEntity {
 
-	public EntityShulker(String name, int level, Location location, ProfileData profile) {
+	public EntityShulker(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.SHULKER;
 	}

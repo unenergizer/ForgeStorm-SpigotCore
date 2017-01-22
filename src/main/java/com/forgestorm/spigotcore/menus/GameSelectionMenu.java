@@ -1,13 +1,5 @@
 package com.forgestorm.spigotcore.menus;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.ItemLores;
 import com.forgestorm.spigotcore.constants.ItemTypes;
@@ -16,9 +8,15 @@ import com.forgestorm.spigotcore.menus.actions.ConnectToBungeeServer;
 import com.forgestorm.spigotcore.menus.actions.Exit;
 import com.forgestorm.spigotcore.util.item.ItemBuilder;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
-
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,7 +24,7 @@ public class GameSelectionMenu extends Menu {
 
 	private final SpigotCore PLUGIN;
 
-	private ItemStack arcade, crative;
+	private ItemStack arcade, creative;
 	private int arcadePlayers, creativePlayers;
 	private int frame = 1;
 
@@ -61,7 +59,7 @@ public class GameSelectionMenu extends Menu {
 		arcade = createItem(ItemLores.ARCADE_TITLE.toString(), ItemLores.ARCADE_LORE.toString(), Material.BOW, arcadePlayers);
 		
 		PLUGIN.getBungeecord().getPlayerCount("creative");
-		crative = createItem(ItemLores.CREATIVE_TITLE.toString(), ItemLores.CREATIVE_LORE.toString(), Material.GRASS, creativePlayers);
+		creative = createItem(ItemLores.CREATIVE_TITLE.toString(), ItemLores.CREATIVE_LORE.toString(), Material.GRASS, creativePlayers);
 	}
 
 	/**
@@ -96,7 +94,7 @@ public class GameSelectionMenu extends Menu {
 					
 					//Update Menu
 					setItem(arcade, 0, arcadeAction);
-					setItem(crative, 1, creativeAction);
+					setItem(creative, 1, creativeAction);
 				}
 			}
 		}.runTaskTimer(PLUGIN, 0, 20 * UPDATE_TIME);
@@ -107,7 +105,6 @@ public class GameSelectionMenu extends Menu {
 	 * @param title The title of the menu item (usually a server name).
 	 * @param lore The description of the menu item.
 	 * @param material The icon that will represent the menu item.
-	 * @param server The server associated with this menu item.
 	 * @return Returns a menu item ready for display to the user.
 	 */
 	private ItemStack createItem(String title, String lore, Material material, int playersOnline) {

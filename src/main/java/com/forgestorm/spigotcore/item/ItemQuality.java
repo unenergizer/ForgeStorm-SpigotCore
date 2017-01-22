@@ -10,9 +10,9 @@ public enum ItemQuality {
 	EPIC		("Epic",		1.8,ChatColor.DARK_PURPLE),
 	LEGENDARY	("Legendary", 	2,	ChatColor.GOLD);
 
-	private String name;
-	private double multiplier;
-	private ChatColor color;
+	private final String name;
+	private final double multiplier;
+	private final ChatColor color;
 
 	//Constructor
 	ItemQuality(String name, double multiplier, ChatColor color) {
@@ -30,6 +30,6 @@ public enum ItemQuality {
 	}
 	
 	public String nameToString() {
-		return color + name.toString();
+		return color + name;
 	}
 }

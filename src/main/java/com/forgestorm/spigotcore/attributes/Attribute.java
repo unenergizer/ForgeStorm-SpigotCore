@@ -69,12 +69,12 @@ public abstract class Attribute {
 		}
 		
 		//Check off hand items.
-		ItemStack offHanditem = entity.getEquipment().getItemInOffHand();
+		ItemStack offHandItem = entity.getEquipment().getItemInOffHand();
 		//If the item is not null and has meta and has lore, continue.
-		if ((offHanditem != null) && (offHanditem.hasItemMeta()) && (offHanditem.getItemMeta().hasLore())) {
+		if ((offHandItem != null) && (offHandItem.hasItemMeta()) && (offHandItem.getItemMeta().hasLore())) {
 			
 			//Create an array list of "Lore" strings and add them to it.
-			Object lore = offHanditem.getItemMeta().getLore();
+			Object lore = offHandItem.getItemMeta().getLore();
 			
 			//Convert the array to a string, and make it all lowercase.
 			String allLore =  ChatColor.stripColor(lore.toString().toLowerCase());

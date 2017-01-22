@@ -1,12 +1,11 @@
 package com.forgestorm.spigotcore.profile.monster;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.forgestorm.spigotcore.constants.FilePaths;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.forgestorm.spigotcore.constants.FilePaths;
+import java.io.File;
+import java.io.IOException;
 
 public class MonsterSaver {
 
@@ -29,18 +28,18 @@ public class MonsterSaver {
 		} 
 	}
 
-	public boolean entitySaver(String entityType, String name, int level, int health, String skullOwner, String lootTable){
+	public void entitySaver(String entityType, String name, int level, int health, String skullOwner, String lootTable){
 		File file = new File(FILE_PATH);
 		FileConfiguration config =  YamlConfiguration.loadConfiguration(file);
 		
 		config.set(name + ".name", name);      
-		config.set(name + ".type", entityType.toString());
+		config.set(name + ".type", entityType);
 		config.set(name + ".tier", 0);
 		config.set(name + ".level", level);
 		config.set(name + ".health", health);
 		config.set(name + ".magic.fire", 100);
 		config.set(name + ".magic.ice", 0);
-		config.set(name + ".magic.posion", 0);
+		config.set(name + ".magic.poison", 0);
 		config.set(name + ".has.armor.playerskull", false);
 		config.set(name + ".has.armor.playerskullowner", skullOwner);
 		config.set(name + ".has.armor.helmet", false);
@@ -59,8 +58,7 @@ public class MonsterSaver {
 			config.save(file);
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
-		} 
-		return true;
+			return;
+		}
 	}
 }

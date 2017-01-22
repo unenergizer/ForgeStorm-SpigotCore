@@ -1,13 +1,12 @@
 package com.forgestorm.spigotcore.entity.hostile;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
-import com.forgestorm.spigotcore.profile.ProfileData;
-
 public class EntityEvoker extends HostileEntity {
 
-	public EntityEvoker(String name, int level, Location location, ProfileData profile) {
+	public EntityEvoker(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.EVOKER;
 	}

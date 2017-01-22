@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class InventoryClick implements Listener {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onInventoryClick(InventoryClickEvent event) {
@@ -86,7 +86,7 @@ public class InventoryClick implements Listener {
 				event.setCancelled(true);
 			}
 
-			Menu menu = PLUGIN.getProfileManager().getProfile(player).getCurrentMenu();
+			Menu menu = plugin.getProfileManager().getProfile(player).getCurrentMenu();
 
 			if (menu == null) {
 				return;
@@ -155,8 +155,8 @@ public class InventoryClick implements Listener {
 			@Override
 			public void run() {
 				//TODO: ItemLoreFactory.getInstance().applyHPBonus(player, true);
-				new AttributeReader(PLUGIN, player).readArmorAttributes(true);
+				new AttributeReader(plugin, player).readArmorAttributes(true);
 			} //END Run method.
-		}.runTaskLater(PLUGIN, 5);
+		}.runTaskLater(plugin, 5);
 	}
 }

@@ -7,7 +7,7 @@ import redis.clients.jedis.JedisPool;
 
 public class RedisService { 
 
-	private JedisPool pool;
+	private final JedisPool pool;
 
 	public RedisService(String redisServerIp, String redisServerPort) { 
 		//Class loading for Redis by Tux on SpigotMc

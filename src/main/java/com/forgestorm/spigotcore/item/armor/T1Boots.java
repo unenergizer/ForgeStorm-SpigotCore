@@ -1,11 +1,10 @@
 package com.forgestorm.spigotcore.item.armor;
 
-import java.util.ArrayList;
-
-import org.bukkit.Material;
-
 import com.forgestorm.spigotcore.item.ItemQuality;
 import com.forgestorm.spigotcore.item.Tier;
+import org.bukkit.Material;
+
+import java.util.ArrayList;
 
 public class T1Boots extends ArmorItem {
 
@@ -30,9 +29,9 @@ public class T1Boots extends ArmorItem {
 		dodge_percent = 5;
 		dodge_min = 1;
 		dodge_max = 5;
-		throns_percent = 3;
-		throns_min = 1;
-		throns_max = 2;
+		thorns_percent = 3;
+		thorns_min = 1;
+		thorns_max = 2;
 		reflection_percent = 3;
 		reflection_min = 1;
 		reflection_max = 2;

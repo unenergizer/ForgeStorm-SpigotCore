@@ -1,12 +1,10 @@
 package com.forgestorm.spigotcore.util.item;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.FilePaths;
+import com.forgestorm.spigotcore.constants.ItemTypes;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,20 +12,19 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.FilePaths;
-import com.forgestorm.spigotcore.constants.ItemTypes;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @Getter
 public class RecipeManager {
 
 	private final SpigotCore PLUGIN;
-	private FileConfiguration config;
-
-	private Map<String, List<Data>> recipes;
+	private final FileConfiguration config;
+	private final Map<String, List<Data>> recipes;
 
 	public RecipeManager(SpigotCore plugin) {
 		PLUGIN = plugin;
@@ -44,21 +41,18 @@ public class RecipeManager {
 	 */
 	private void loadRecipes() {
 		ConfigurationSection outSec = config.getConfigurationSection("");
-		Iterator<String> outIt = outSec.getKeys(false).iterator();
-		while (outIt.hasNext()) {
-			String recipe = outIt.next();
-
-			ConfigurationSection inSec = config.getConfigurationSection(recipe + ".ingredents");
+		for (String recipe : outSec.getKeys(false)) {
+			ConfigurationSection inSec = config.getConfigurationSection(recipe + ".ingredients");
 			Iterator<String> inIt = inSec.getKeys(false).iterator();
 
 			List<Data> items = new ArrayList<>();
 			while (inIt.hasNext()) {
 				int i = Integer.parseInt(inIt.next());
 
-				String confiName = inSec.getString(i  + ".name");
+				String configName = inSec.getString(i + ".name");
 				int amount = inSec.getInt(i + ".amount");
 
-				items.add(new Data(confiName, amount));
+				items.add(new Data(configName, amount));
 			}
 
 			recipes.put(recipe, items);
@@ -119,9 +113,9 @@ public class RecipeManager {
 			//Give it to them, if they don't already have it.
 			if (!PLUGIN.getProfileManager().getProfile(player).getCollectedRecipes().contains(recipe)) {
 				PLUGIN.getProfileManager().getProfile(player).getCollectedRecipes().add(recipe);
-				return ChatColor.GREEN + "Recipie was given to the player.";
+				return ChatColor.GREEN + "Recipe was given to the player.";
 			} else {
-				return ChatColor.RED + "Player already owns that recipie.";
+				return ChatColor.RED + "Player already owns that recipe.";
 			}
 		} else {
 			return ChatColor.RED + "That recipe does not exist! Check your spelling.";

@@ -1,10 +1,7 @@
 package com.forgestorm.spigotcore.help;
 
-import java.text.DecimalFormat;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.util.text.CenterChatText;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,24 +9,30 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.forgestorm.spigotcore.util.display.ActionBarText;
-import com.forgestorm.spigotcore.util.text.CenterChatText;
+import java.text.DecimalFormat;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class LocationTrackingManager extends BukkitRunnable {
-	
-	private Map<UUID, Location> targetLocations = new ConcurrentHashMap<>();
-	private DecimalFormat decimalFormater = new DecimalFormat("#.##");
+
+	private final SpigotCore plugin;
+	private final Map<UUID, Location> targetLocations = new ConcurrentHashMap<>();
+	private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
 	private boolean disable = false;
+
+	public LocationTrackingManager(SpigotCore plugin) {
+	    this.plugin = plugin;
+    }
 	
 	public void addToMap(Player player, Location location) {
-		if (targetLocations.containsKey(player)) targetLocations.remove(player.getUniqueId());
+		if (targetLocations.containsKey(player.getUniqueId())) targetLocations.remove(player.getUniqueId());
 		targetLocations.put(player.getUniqueId(), location);
 	}
 
 	public void removePlayer(Player player) {
 		if (targetLocations.containsKey(player.getUniqueId())) {
 			targetLocations.remove(player.getUniqueId());
-			
 		}
 	}
 	
@@ -62,7 +65,7 @@ public class LocationTrackingManager extends BukkitRunnable {
 				player.sendMessage("");
 				
 				//Send blank message to clear!
-				new ActionBarText().sendActionbarMessage(player, " ");
+				plugin.getTitleManagerAPI().sendActionbar(player, " ");
 				
 				//Reset the players compassTarget to the spawn location.
 				player.setCompassTarget(new Location(Bukkit.getWorlds().get(0), 0.5, 108, -24.5));
@@ -71,20 +74,20 @@ public class LocationTrackingManager extends BukkitRunnable {
 				player.playSound(player.getEyeLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1, .7f);
 				
 			} else { //Show them a message on the action bar.	
-				String xzString = ChatColor.BOLD + "Distance: " + ChatColor.YELLOW + decimalFormater.format(distance - offset);
+				String xzString = ChatColor.BOLD + "Distance: " + ChatColor.YELLOW + decimalFormat.format(distance - offset);
 				String yString = "";
 				
 			
 				//Show the player a message letting them know if they need to go up or down.
 				if (playerLocation.getY() > target.getY() + 4) {
 					//Go down
-					yString = ChatColor.RESET + "    " + ChatColor.BOLD + "Go Down: " + ChatColor.YELLOW + decimalFormater.format(yDistance) + " blocks";
+					yString = ChatColor.RESET + "    " + ChatColor.BOLD + "Go Down: " + ChatColor.YELLOW + decimalFormat.format(yDistance) + " blocks";
 				} else if (playerLocation.getY() < target.getY() - 4) {
 					//Go up
-					yString = ChatColor.RESET + "    " + ChatColor.BOLD + "Go Up: " + ChatColor.YELLOW + decimalFormater.format(yDistance) + " blocks";
+					yString = ChatColor.RESET + "    " + ChatColor.BOLD + "Go Up: " + ChatColor.YELLOW + decimalFormat.format(yDistance) + " blocks";
 				}
 
-				new ActionBarText().sendActionbarMessage(player, xzString + yString);
+                plugin.getTitleManagerAPI().sendActionbar(player, xzString + yString);
 			}
 		}
 	}

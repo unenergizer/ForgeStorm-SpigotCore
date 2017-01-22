@@ -1,14 +1,13 @@
 package com.forgestorm.spigotcore.commands;
 
-import java.util.List;
-
+import com.forgestorm.spigotcore.constants.Messages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import com.forgestorm.spigotcore.constants.Messages;
+import java.util.List;
 
 public class Roll implements CommandExecutor {
 
@@ -39,24 +38,22 @@ public class Roll implements CommandExecutor {
 
 			//Get players near by that will receive this message.
 			List<Entity> localPlayers = player.getNearbyEntities(20, 20, 20);
-			int messagesRecieved = 0;
+			int messagesReceived = 0;
 			
 			//Loop through the list of entities.
-			for (int i = 0; i < localPlayers.size(); i++) {
+			for (Entity entity : localPlayers) {
 				//The entity that is near by the player
-				Entity entity = localPlayers.get(i);
-
 				//If the entity is a player, then send them the message.
 				if (entity instanceof Player) {
 
 					//Finally display the local message to near by players.
 					entity.sendMessage(message);
-					messagesRecieved++;
+					messagesReceived++;
 				}
 			}
 			
 			//If no one is around to hear their message, let the player know.
-			if (messagesRecieved == 0) {
+			if (messagesReceived == 0) {
 				player.sendMessage("");
 				player.sendMessage(Messages.ROLL_UNHEARD.toString());
 			}
@@ -80,11 +77,9 @@ public class Roll implements CommandExecutor {
 	 */
 	private int onDiceRoll(int diceSize) {
 		if (diceSize < 10000) {
-			int roll = (int) (Math.random() * diceSize) + 1;
-			return roll;
+			return (int) (Math.random() * diceSize) + 1;
 		} else {
-			int fixedRoll = (int) (Math.random() * 10000) + 1;
-			return fixedRoll;
+			return (int) (Math.random() * 10000) + 1;
 		}
 	}
 }

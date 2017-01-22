@@ -13,14 +13,14 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class PlayerKick implements Listener {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@EventHandler
 	public void onPlayerKick(PlayerKickEvent event) {
 		Player player = event.getPlayer();
 		
 		//Remove the player
-		new RemoveNetworkPlayer(PLUGIN).removeNetworkPlayer(player);
+		new RemoveNetworkPlayer(plugin).removeNetworkPlayer(player);
 
 		//Do not show logout message.
 		event.setLeaveMessage("");

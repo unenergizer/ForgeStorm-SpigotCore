@@ -12,13 +12,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class InventoryDrag implements Listener {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@EventHandler
 	public void onInventoryDrag(InventoryDragEvent event) {
 		Player player = (Player) event.getWhoClicked();
 		
-		if (PLUGIN.getProfileManager().getProfile(player).getCurrentMenu() != null) {
+		if (plugin.getProfileManager().getProfile(player).getCurrentMenu() != null) {
 			event.setCancelled(true);
 		}
 	}

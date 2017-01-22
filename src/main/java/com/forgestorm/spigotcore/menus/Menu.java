@@ -1,5 +1,12 @@
 package com.forgestorm.spigotcore.menus;
 
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.menus.actions.ClickAction;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -7,22 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.menus.actions.ClickAction;
-
 public abstract class Menu {
 
 	private final SpigotCore PLUGIN;
 	private Inventory inventory;
-	private Map<Integer, Class<? extends Menu>> linkedMenus = new HashMap<>();
-	private Map<Integer, Menu> staticLinkedMenus = new HashMap<>();
-	private Map<Integer, ClickAction> clickActions = new HashMap<>();
-	private List<Integer> movableSlots = new ArrayList<>();
+	private final Map<Integer, Class<? extends Menu>> linkedMenus = new HashMap<>();
+	private final Map<Integer, Menu> staticLinkedMenus = new HashMap<>();
+	private final Map<Integer, ClickAction> clickActions = new HashMap<>();
+	private final List<Integer> movableSlots = new ArrayList<>();
 
 	public Menu(SpigotCore plugin) {
 		PLUGIN = plugin;

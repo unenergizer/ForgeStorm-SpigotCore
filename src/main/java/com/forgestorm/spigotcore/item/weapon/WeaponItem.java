@@ -1,13 +1,12 @@
 package com.forgestorm.spigotcore.item.weapon;
 
-import java.util.ArrayList;
-import java.util.Random;
-
-import org.bukkit.ChatColor;
-
 import com.forgestorm.spigotcore.item.Item;
 import com.forgestorm.spigotcore.item.ItemQuality;
 import com.forgestorm.spigotcore.item.ItemText;
+import org.bukkit.ChatColor;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 abstract class WeaponItem extends Item {
 
@@ -69,7 +68,7 @@ abstract class WeaponItem extends Item {
 
 
 		/*---- APPLY LORE ----*/
-		boolean elemantDamage = false;
+		boolean elementDamage = false;
 		int num1 = damageGen(damageMin, damageMax);
 		int num2 = damageGen(num1, damageMax + 1);
 		
@@ -92,22 +91,22 @@ abstract class WeaponItem extends Item {
 		if (pureDamage > 0) lores.add(ItemText.WEAPON_PURE_DAMAGE.toString().replace("%s", Integer.toString(pureDamage)));
 		if (armorPenetration > 0) lores.add(ItemText.WEAPON_ARMOR_PENETRATION.toString().replace("%s", Integer.toString(armorPenetration)));
 		
-		if (iceDamage > 0 && !elemantDamage) {
-			elemantDamage = true;
+		if (iceDamage > 0 && !elementDamage) {
+			elementDamage = true;
 			lores.add(ItemText.WEAPON_ICE_DAMAGE.toString().replace("%s", Integer.toString(iceDamage)));
 		}
-		if (fireDamage > 0 && !elemantDamage) {
-			elemantDamage = true;
+		if (fireDamage > 0 && !elementDamage) {
+			elementDamage = true;
 			lores.add(ItemText.WEAPON_FIRE_DAMAGE.toString().replace("%s", Integer.toString(fireDamage)));
 		}
-		if (poisonDamage > 0 && !elemantDamage) {
-			elemantDamage = true;
+		if (poisonDamage > 0 && !elementDamage) {
+			elementDamage = true;
 			lores.add(ItemText.WEAPON_POISON_DAMAGE.toString().replace("%s", Integer.toString(poisonDamage)));
 		}
 
 		String tiers = ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + tier.toString();
-		String qualitys = quality.colorToString() + ChatColor.ITALIC + quality.nameToString();
-		lores.add(tiers + ": " + qualitys);
+		String quality = this.quality.colorToString() + ChatColor.ITALIC + this.quality.nameToString();
+		lores.add(tiers + ": " + quality);
 
 		if (description != null) {
 			lores.add(" ");//Blank line

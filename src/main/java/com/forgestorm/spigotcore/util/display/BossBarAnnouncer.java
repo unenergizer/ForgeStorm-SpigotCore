@@ -1,7 +1,6 @@
 package com.forgestorm.spigotcore.util.display;
 
-import java.util.List;
-
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -9,14 +8,14 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
-import net.md_5.bungee.api.ChatColor;
+import java.util.List;
 
-public class BossBarAnnouncer {
+class BossBarAnnouncer {
 	
 	private BossBar bar;
-	private String message;
+	private final String message;
 	
-	public BossBarAnnouncer(String message) {
+	BossBarAnnouncer(String message) {
 		this.message = message;
 		setupBossBar();
 	}
@@ -25,7 +24,7 @@ public class BossBarAnnouncer {
 	 * This will setup a new bossbar.
 	 */
 	private void setupBossBar() {
-		bar = Bukkit.createBossBar(color(message), BarColor.PURPLE, BarStyle.SOLID, new BarFlag[] { BarFlag.DARKEN_SKY });
+		bar = Bukkit.createBossBar(color(message), BarColor.PURPLE, BarStyle.SOLID, BarFlag.DARKEN_SKY);
 		bar.setVisible(true);
 	}
 	
@@ -77,7 +76,7 @@ public class BossBarAnnouncer {
 	 * Sets a new title for the bar.
 	 * @param title The title of the bar.
 	 */
-	public void setBossBarTitle(String title) {
+	void setBossBarTitle(String title) {
 		bar.setTitle(color(title));
 	}
 	

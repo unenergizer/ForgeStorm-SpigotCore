@@ -1,21 +1,19 @@
 package com.forgestorm.spigotcore.util.player;
 
-import java.io.File;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.forgestorm.spigotcore.SpigotCore;
-
-import lombok.AllArgsConstructor;
+import java.io.File;
 
 @AllArgsConstructor
 public class DeletePlayerFiles {
 
-	private final SpigotCore PLUGIN;
-	private final boolean DEBUG_TEXT = false;
+	private final SpigotCore plugin;
+	private final boolean debugText = false;
 
 	/**
 	 * Deletes the specified player's save files. This does not delete all files
@@ -41,7 +39,7 @@ public class DeletePlayerFiles {
 					String folderPath = Bukkit.getWorld(worlds.getName()).getWorldFolder().getAbsolutePath();
 
 					//Delete Player Data Files
-					if (PLUGIN.getConfig().getBoolean("PlayerFiles.deleteData")) {
+					if (plugin.getConfig().getBoolean("PlayerFiles.deleteData")) {
 						String filePathData = folderPath + "/playerdata";
 
 						showDebugText(filePathData + "/" + uuid + ".dat");
@@ -50,7 +48,7 @@ public class DeletePlayerFiles {
 					}
 
 					//Delete Player Stat Files
-					if (PLUGIN.getConfig().getBoolean("PlayerFiles.deleteStats")) {
+					if (plugin.getConfig().getBoolean("PlayerFiles.deleteStats")) {
 						String filePathStats = folderPath + "/stats";
 
 						showDebugText(filePathStats + "/" + uuid + ".json");
@@ -60,7 +58,7 @@ public class DeletePlayerFiles {
 					showDebugText(" - Done");
 				}
 			}
-		}.runTaskLaterAsynchronously(PLUGIN, 0);
+		}.runTaskLaterAsynchronously(plugin, 0);
 	}
 
 	/**
@@ -93,7 +91,7 @@ public class DeletePlayerFiles {
 					showDebugText("Folders restored.");
 				}
 			}
-		}.runTaskLaterAsynchronously(PLUGIN, 0);
+		}.runTaskLaterAsynchronously(plugin, 0);
 	}
 
 	private void deleteFile(File file) {
@@ -113,6 +111,6 @@ public class DeletePlayerFiles {
 	}
 
 	private void showDebugText(String message) {
-		if (DEBUG_TEXT) System.out.println(message);
+		if (debugText) System.out.println(message);
 	}
 }

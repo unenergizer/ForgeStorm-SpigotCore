@@ -1,10 +1,11 @@
 package com.forgestorm.spigotcore.games.dragoneggtp;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.FilePaths;
+import com.forgestorm.spigotcore.util.display.Hologram;
+import com.forgestorm.spigotcore.util.math.RandomChance;
+import com.forgestorm.spigotcore.util.player.PlayerRewards;
+import com.forgestorm.spigotcore.util.text.CenterChatText;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -22,21 +23,19 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.FilePaths;
-import com.forgestorm.spigotcore.util.display.Hologram;
-import com.forgestorm.spigotcore.util.math.RandomChance;
-import com.forgestorm.spigotcore.util.player.PlayerRewards;
-import com.forgestorm.spigotcore.util.text.CenterChatText;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DragonEggTeleport {
 	
 	private final SpigotCore PLUGIN;
 	
-	private FileConfiguration config;
-	private List<Location> locations;
+	private final FileConfiguration config;
+	private final List<Location> locations;
+	private final Hologram hologram;
 	private Location eggLocation;
-	private Hologram hologram;
 
 	public DragonEggTeleport(SpigotCore plugin) {
 		PLUGIN = plugin;
@@ -47,11 +46,7 @@ public class DragonEggTeleport {
 		loadLocations();
 
 		//Spawn the egg after server startup.
-		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin,  new Runnable() {
-			public void run() {
-				spawnEgg();
-			}
-		}, 5 * 20L);
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, this::spawnEgg, 5 * 20L);
 	}
 
 	public void disable() {
@@ -69,7 +64,7 @@ public class DragonEggTeleport {
 		if (clickLocation.equals(eggLocation)) {
 			//TODO: Play Animation
 			for (double i = 0; i < 2; i++) {
-				Firework fw = (Firework) player.getWorld().spawn(clickLocation.subtract(0, -2, 0), Firework.class);
+				Firework fw = player.getWorld().spawn(clickLocation.subtract(0, -2, 0), Firework.class);
 				FireworkMeta fm = fw.getFireworkMeta();
 				fm.addEffect(FireworkEffect.builder()
 						.flicker(false)
@@ -140,7 +135,7 @@ public class DragonEggTeleport {
 		Bukkit.getWorlds().get(0).playSound(eggLocation, Sound.ENTITY_EGG_THROW, 1, .7f);
 		
 		//Spawn the hologram.		
-		ArrayList<String> hologramText = new ArrayList<String>();
+		ArrayList<String> hologramText = new ArrayList<>();
 		hologramText.add("&5&lTP EGG GAME");
 		hologramText.add(ChatColor.BOLD + "RIGHT-CLICK");
 		

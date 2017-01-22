@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Spawner implements CommandExecutor {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@Override
 	public boolean onCommand(CommandSender commandSender, Command command, String label, String[] args) {
@@ -28,8 +28,8 @@ public class Spawner implements CommandExecutor {
 			switch(args[0].toLowerCase()) {
 			case "tp":
 			case "teleport":
-				EntitySpawnerManager msm = PLUGIN.getEntitySpawnerManager();
-				int size = PLUGIN.getEntitySpawnerManager().getSpawners().size();
+				EntitySpawnerManager msm = plugin.getEntitySpawnerManager();
+				int size = plugin.getEntitySpawnerManager().getSpawners().size();
 				int id = Integer.parseInt(args[1]);
 				
 				if (id < size && id >= 0) {

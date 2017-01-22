@@ -25,7 +25,7 @@ public class PurchaseItemStack implements ClickAction {
 			player.getInventory().addItem(ITEM);
 			player.sendMessage(ChatColor.GREEN + "Your purchase was successful!!");
 		} else {
-			player.sendMessage(ChatColor.RED + "You do not have enouh money to make this purchase.");
+			player.sendMessage(ChatColor.RED + "You do not have enough money to make this purchase.");
 		}
 	}
 }

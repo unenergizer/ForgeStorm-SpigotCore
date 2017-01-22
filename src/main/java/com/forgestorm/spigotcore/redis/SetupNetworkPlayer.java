@@ -1,7 +1,12 @@
 package com.forgestorm.spigotcore.redis;
 
-import java.io.IOException;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.Messages;
+import com.forgestorm.spigotcore.experience.PlayerExperience;
+import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
+import com.forgestorm.spigotcore.util.item.AttributeReader;
+import com.forgestorm.spigotcore.util.item.InventoryStringDeSerializer;
+import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -9,15 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.Messages;
-import com.forgestorm.spigotcore.experience.PlayerExperience;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-import com.forgestorm.spigotcore.util.display.TabMenuText;
-import com.forgestorm.spigotcore.util.item.AttributeReader;
-import com.forgestorm.spigotcore.util.item.InventoryStringDeSerializer;
-
-import lombok.AllArgsConstructor;
+import java.io.IOException;
 
 @AllArgsConstructor
 public class SetupNetworkPlayer extends BukkitRunnable {
@@ -33,7 +30,11 @@ public class SetupNetworkPlayer extends BukkitRunnable {
 		//Then we finish setting up the player profile.
 		if (profile.isLoaded()) {
 			cancel();
+
 			PlayerExperience expCalc = new PlayerExperience();
+
+			//Add the player to the Player Manager.
+			PLUGIN.getPlayerManager().addPlayerProfile(player, profile);
 
 			//Additional profile setup.
 			profile.setOperatorRank();
@@ -46,11 +47,13 @@ public class SetupNetworkPlayer extends BukkitRunnable {
 			//Setup usergroup prefixes.
 			PLUGIN.getScoreboardManager().assignPlayer(player);
 
-			//Send the player a formatted tab menu.
-			TabMenuText tmt = new TabMenuText();
-			String header = Messages.DISPLAY_TAB_HEADRER.toString().replace("%s", player.getName());
+			//Send per player scoreboard
+			PLUGIN.getPuhaScoreboard().giveScoreboard(player);
+			
+			//Send the player a formatted tab menu
+			String header = Messages.DISPLAY_TAB_HEADER.toString().replace("%s", player.getName());
 			String footer = Messages.DISPLAY_TAB_FOOTER.toString();
-			tmt.sendHeaderAndFooter(player, header, footer);
+			PLUGIN.getTitleManagerAPI().setHeaderAndFooter(player, header, footer);
 
 			//If the player is on a mount. Dismount them, and remove the mount.
 			if (player.isInsideVehicle()) {

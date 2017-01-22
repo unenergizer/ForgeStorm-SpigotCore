@@ -49,7 +49,7 @@ public class PurchaseProfession implements ClickAction {
 				break;
 			}
 		} else {
-			player.sendMessage(ChatColor.RED + "You do not have enouh money to make this purchase.");
+			player.sendMessage(ChatColor.RED + "You do not have enough money to make this purchase.");
 		}
 	}
 }

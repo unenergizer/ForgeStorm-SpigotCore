@@ -8,7 +8,7 @@ import com.forgestorm.spigotcore.help.Tutorial;
 import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
 import com.forgestorm.spigotcore.util.item.InventoryStringDeSerializer;
 import com.forgestorm.spigotcore.util.player.DeletePlayerFiles;
-import com.forgestorm.spigotcore.world.instance.PlayerRealmManager;
+import com.forgestorm.spigotcore.world.instance.RealmManager;
 
 import lombok.AllArgsConstructor;
 
@@ -22,12 +22,16 @@ public class RemoveNetworkPlayer {
 		PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
 		Tutorial tutorial = PLUGIN.getTutorial();
 		LocationTrackingManager tracker = PLUGIN.getLocationTrackingManager();
-		PlayerRealmManager prm = PLUGIN.getPlayerRealmManager();
+		RealmManager prm = PLUGIN.getRealmManager();
 		
 		//Remove the player from the active tutorial.
 		if (tutorial.getActivePlayers().containsKey(player)) {
 			tutorial.endTutorial(player, true);
 		}
+		
+		//Remove Scoreboard
+		PLUGIN.getScoreboardManager().removePlayer(player);
+		PLUGIN.getPuhaScoreboard().removeScoreboard(player);
 		
 		//Remove player from tracking list.
 		tracker.removePlayer(player);

@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ChunkUnload implements Listener {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	@EventHandler
 	public void onChunkUnload(ChunkUnloadEvent event) {
@@ -33,7 +33,7 @@ public class ChunkUnload implements Listener {
 			//Clear living entities from unloaded chunks.
 			for (Entity entity: entities) {
 				if (entity instanceof LivingEntity && !(entity instanceof Player)) {
-					EntityManager mm = PLUGIN.getEntityManager();
+					EntityManager mm = plugin.getEntityManager();
 					
 					//Remove RPGEntity from Map.
 					if (mm.getRpgEntity().containsKey(entity.getUniqueId())) {
@@ -44,13 +44,13 @@ public class ChunkUnload implements Listener {
 				}
 			}
 			
-			//double timeLoaded = PLUGIN.getChunkManager().getChunkInfo(chunk).getTimeLoaded();
+			//double timeLoaded = plugin.getChunkManager().getChunkInfo(chunk).getTimeLoaded();
 			//System.out.println("[Unloaded Chunk] X: " + chunk.getX() + " - Z: " + chunk.getZ() + " -> TimeLoaded: " + timeLoaded);
 			//System.out.println("");
 			//System.out.println("---------------[ LOAD SPAWNERS ]--------------");
 			//System.out.println("[FSRPG] Chunk unloaded. Removed " + entitiesRemoved + " entities.");
 			
-			PLUGIN.getChunkManager().removeChunk(chunk);
+			plugin.getChunkManager().removeChunk(chunk);
 		}
 	}
 }

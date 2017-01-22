@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class Mod implements CommandExecutor {
 
-	private final SpigotCore PLUGIN; 
+	private final SpigotCore plugin;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -25,7 +25,7 @@ public class Mod implements CommandExecutor {
 		if (sender instanceof Player) {
 
 			Player commandSender = (Player) sender;
-			PlayerProfileData commandSenderProfile = PLUGIN.getProfileManager().getProfile(commandSender);
+			PlayerProfileData commandSenderProfile = plugin.getProfileManager().getProfile(commandSender);
 
 			if (!commandSenderProfile.isModerator() || !commandSenderProfile.isAdmin()) {
 				sender.sendMessage(Messages.NO_PERMISSION.toString());
@@ -35,7 +35,7 @@ public class Mod implements CommandExecutor {
 			if (args.length == 1) {
 				switch (args[0].toLowerCase()) {
 				case "kickall":
-					new ModActions(PLUGIN).kickAllPlayers(sender.getName());
+					new ModActions(plugin).kickAllPlayers(sender.getName());
 					break;
 				case "status":
 					//TODO: Later
@@ -53,7 +53,7 @@ public class Mod implements CommandExecutor {
 				}
 
 				Player player = Bukkit.getPlayer(args[1]);
-				PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
+				PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
 
 				switch (args[0].toLowerCase()){
 				case "ban":
@@ -85,7 +85,7 @@ public class Mod implements CommandExecutor {
 				}
 
 				Player player = Bukkit.getPlayer(args[2]);
-				PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
+				PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
 
 				switch (args[0].toLowerCase()){
 				case "get":
@@ -111,7 +111,7 @@ public class Mod implements CommandExecutor {
 				}
 
 				Player player = Bukkit.getPlayer(args[1]);
-				PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
+				PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
 				
 				switch (args[0].toLowerCase()) {
 				case "ban":
@@ -126,7 +126,7 @@ public class Mod implements CommandExecutor {
 						banMessage = banMessage.concat(args[i]);
 						
 						//Add a space if we need one.
-						if (i != args.length) {
+						if (i != args.length - 1) {
 							banMessage = banMessage.concat(" ");
 						}
 					}

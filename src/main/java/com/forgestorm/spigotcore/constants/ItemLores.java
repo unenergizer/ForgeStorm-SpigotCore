@@ -17,7 +17,7 @@ public enum ItemLores {
 	//Item Players Online
 	PLAYERS_ONLINE("&7%s players online!");
 	
-	private String message;
+	private final String message;
 	
 	//Constructor
 	ItemLores(String message) {

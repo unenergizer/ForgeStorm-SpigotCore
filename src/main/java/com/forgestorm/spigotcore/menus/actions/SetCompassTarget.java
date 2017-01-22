@@ -11,7 +11,7 @@ import com.forgestorm.spigotcore.util.text.CenterChatText;
 public class SetCompassTarget implements ClickAction {
 
 	private final SpigotCore PLUGIN;
-	private Location location;
+	private final Location location;
 	
 	public SetCompassTarget(SpigotCore plugin, Location location) {
 		PLUGIN = plugin;

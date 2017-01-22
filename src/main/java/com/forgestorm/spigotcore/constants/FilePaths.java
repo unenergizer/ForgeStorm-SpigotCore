@@ -33,7 +33,7 @@ public enum FilePaths {
 	WORLD_ANIMATE_ANIMATIONS("animations/animation.yml"),
 	WORLD_ANIMATE_SCHEMATIC("animations/schematics/");
 	
-	private String filePath;
+	private final String filePath;
 	
 	//Constructor
 	FilePaths(String filePath) {

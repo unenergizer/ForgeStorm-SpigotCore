@@ -1,27 +1,25 @@
 package com.forgestorm.spigotcore.redis;
 
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.Redis;
+import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
+import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.Redis;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-
-import lombok.Getter;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.Pipeline;
-
 @Getter
 public class RedisProfileManager {
 
 	private final SpigotCore PLUGIN;
-	private HashMap<String, PlayerProfileData> profiles = new HashMap<>();
+	private final HashMap<String, PlayerProfileData> profiles = new HashMap<>();
 
 	public RedisProfileManager(SpigotCore plugin) {
 		PLUGIN = plugin;
@@ -90,6 +88,11 @@ public class RedisProfileManager {
 		long lumberjackExp = -1;
 		long miningExp = -1;
 
+		//Realm Default Settings
+		String realmTitle = "Welcome to " + player.getName() + "'s realm!";
+		int realmTier = 1;
+		String realmInsideLocation = "8/95/8";
+
 		////////////////////////////////////
 		//// LOCAL PROFILE DATA  ///////////
 		////////////////////////////////////
@@ -129,6 +132,10 @@ public class RedisProfileManager {
 		profile.setFishingExperience(fishingExp);
 		profile.setLumberjackExperience(lumberjackExp);
 		profile.setMiningExperience(miningExp);
+
+		profile.setRealmTier(realmTier);
+		profile.setRealmTitle(realmTitle);
+		profile.setRealmInsideLocation(realmInsideLocation);
 
 		////////////////////////////////////
 		//// REDIS FIRST TIME SAVE  ////////
@@ -173,6 +180,11 @@ public class RedisProfileManager {
 			pipeline.set(Redis.PROFESSION_LUMBERJACK.toString(uuid), Long.toString(lumberjackExp));
 			pipeline.set(Redis.PROFESSION_MINING.toString(uuid), Long.toString(miningExp));
 
+			//Realm data
+			pipeline.set((Redis.REALM_TIER.toString(uuid)), Integer.toString(realmTier));
+			pipeline.set((Redis.REALM_TITLE.toString(uuid)), realmTitle);
+			pipeline.set((Redis.REALM_PORTAL_INSIDE_LOCATION.toString(uuid)), realmInsideLocation);
+
 			pipeline.sync();
 		}
 	}
@@ -180,7 +192,7 @@ public class RedisProfileManager {
 	/**
 	 * Called when a player log's into the server.
 	 * @param player The player who joined the server.
-	 * @return 
+	 * @return Returns a loaded profile.
 	 */
 	public PlayerProfileData loadProfile(Player player) {
 
@@ -191,7 +203,7 @@ public class RedisProfileManager {
 
 		PlayerProfileData profile = new PlayerProfileData(PLUGIN, player);
 		String uuid = player.getUniqueId().toString();	
-		String newPlayerTest = "";
+		String newPlayerTest;
 
 		//Save the profile for access later.
 		profiles.put(uuid, profile);
@@ -221,11 +233,11 @@ public class RedisProfileManager {
 				profile.setLifetimePremiumCurrency(Integer.parseInt(jedis.get(Redis.PROFILE_CURRENCY_PREMIUM_LIFE_TIME.toString(uuid))));
 				profile.setPlayTime(Long.parseLong(jedis.get((Redis.PROFILE_ONLINE_TIME.toString(uuid)))));
 				profile.setLevelTime(Long.parseLong(jedis.get((Redis.PROFILE_ONLINE_LEVEL_TIME.toString(uuid)))));
-				profile.setExperience(Long.valueOf(jedis.get(Redis.PROFILE_EXPERIENCE.toString(uuid))).longValue());
+				profile.setExperience(Long.valueOf(jedis.get(Redis.PROFILE_EXPERIENCE.toString(uuid))));
 				
 				//RPG Info
-				profile.setHealth(Double.valueOf(jedis.get(Redis.PROFILE_LOGOUT_HP.toString(uuid))).doubleValue());
-				profile.setEnergy(Double.valueOf(jedis.get(Redis.PROFILE_LOGOUT_ENERGY.toString(uuid))).doubleValue());
+				profile.setHealth(Double.valueOf(jedis.get(Redis.PROFILE_LOGOUT_HP.toString(uuid))));
+				profile.setEnergy(Double.valueOf(jedis.get(Redis.PROFILE_LOGOUT_ENERGY.toString(uuid))));
 				profile.setSerializedInventory(jedis.get(Redis.PROFILE_PLAYER_INVENTORY.toString(uuid)));
 
 				//We keep two lists to compare/contrast elements in it for
@@ -246,10 +258,15 @@ public class RedisProfileManager {
 				profile.setToggleDebug(Boolean.parseBoolean(jedis.get(Redis.SETTINGS_P_DEBUG_MESSAGES.toString(uuid))));
 
 				//Player profession
-				profile.setFarmingExperience(Long.valueOf(jedis.get(Redis.PROFESSION_FARMING.toString(uuid))).longValue());
-				profile.setFishingExperience(Long.valueOf(jedis.get(Redis.PROFESSION_FISHING.toString(uuid))).longValue());
-				profile.setLumberjackExperience(Long.valueOf(jedis.get(Redis.PROFESSION_LUMBERJACK.toString(uuid))).longValue());
-				profile.setMiningExperience(Long.valueOf(jedis.get(Redis.PROFESSION_MINING.toString(uuid))).longValue());
+				profile.setFarmingExperience(Long.valueOf(jedis.get(Redis.PROFESSION_FARMING.toString(uuid))));
+				profile.setFishingExperience(Long.valueOf(jedis.get(Redis.PROFESSION_FISHING.toString(uuid))));
+				profile.setLumberjackExperience(Long.valueOf(jedis.get(Redis.PROFESSION_LUMBERJACK.toString(uuid))));
+				profile.setMiningExperience(Long.valueOf(jedis.get(Redis.PROFESSION_MINING.toString(uuid))));
+
+				//Realm Data
+				profile.setRealmTier(Integer.valueOf(jedis.get((Redis.REALM_TIER.toString(uuid)))));
+				profile.setRealmTitle(jedis.get(Redis.REALM_TITLE.toString(uuid)));
+				profile.setRealmInsideLocation(jedis.get(Redis.REALM_PORTAL_INSIDE_LOCATION.toString(uuid)));
 			}
 		}
 
@@ -352,6 +369,11 @@ public class RedisProfileManager {
 			pipeline.set(Redis.PROFESSION_FISHING.toString(uuid), Long.toString(profile.getFishingExperience()));
 			pipeline.set(Redis.PROFESSION_LUMBERJACK.toString(uuid), Long.toString(profile.getLumberjackExperience()));
 			pipeline.set(Redis.PROFESSION_MINING.toString(uuid), Long.toString(profile.getMiningExperience()));
+
+			//Realm Info
+			pipeline.set(Redis.REALM_TIER.toString(uuid), Integer.toString(profile.getRealmTier()));
+			pipeline.set(Redis.REALM_TITLE.toString(uuid), profile.getRealmTitle());
+			pipeline.set(Redis.REALM_PORTAL_INSIDE_LOCATION.toString(uuid), profile.getRealmInsideLocation());
 
 			pipeline.sync();
 

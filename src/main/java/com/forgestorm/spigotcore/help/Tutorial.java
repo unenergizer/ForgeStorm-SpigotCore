@@ -1,13 +1,12 @@
 package com.forgestorm.spigotcore.help;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.FilePaths;
+import com.forgestorm.spigotcore.constants.Messages;
+import com.forgestorm.spigotcore.util.player.PlayerRewards;
+import com.forgestorm.spigotcore.util.text.CenterChatText;
+import lombok.Getter;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -17,27 +16,25 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.FilePaths;
-import com.forgestorm.spigotcore.constants.Messages;
-import com.forgestorm.spigotcore.util.display.FloatingMessage;
-import com.forgestorm.spigotcore.util.player.PlayerRewards;
-import com.forgestorm.spigotcore.util.text.CenterChatText;
-
-import lombok.Getter;
-import net.md_5.bungee.api.ChatColor;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Getter
 public class Tutorial {
 
 	private final SpigotCore PLUGIN;
 	private final int EMPTY_LINES;
-
+	private final String filePath;
+	private final Map<Player, String> activePlayers = new HashMap<>();
+	private final Map<UUID, Location> playerStartLocations;
 	private File file;
 	private FileConfiguration config;
-	private String filePath;
-	private Map<Player, String> activePlayers = new HashMap<>();
-	private Map<UUID, Location> playerStartLocations; 
+
 
 	public Tutorial(SpigotCore plugin) {
 		PLUGIN = plugin;
@@ -106,7 +103,8 @@ public class Tutorial {
 				if (!teleported) {
 					
 					if (config.getBoolean(path + ".showInTutorialMenu")) {
-						
+						//TODO: Prevent hidden tutorials from showing up in the menu.
+						//Hidden tutorials are usually ran at special times (first join, boss intro, etc).
 					}
 					
 					if (config.contains(path + "teleport.x") 
@@ -147,7 +145,7 @@ public class Tutorial {
 								subtitle = "";
 							}
 
-							new FloatingMessage().sendFloatingMessage(player, color(title), color(subtitle));
+							PLUGIN.getTitleManagerAPI().sendTitles(player, color(title), color(subtitle));
 							//System.out.println("[Tutorial] Floating message displayed!");
 						}
 
@@ -251,7 +249,7 @@ public class Tutorial {
 			}			
 
 			String tutorialID = activePlayers.get(player);
-			String rewardText = "";
+			String rewardText;
 			String rewardText2 = "";
 			
 			

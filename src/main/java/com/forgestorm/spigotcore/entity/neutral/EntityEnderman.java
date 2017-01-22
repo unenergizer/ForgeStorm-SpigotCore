@@ -1,13 +1,12 @@
 package com.forgestorm.spigotcore.entity.neutral;
 
+import com.forgestorm.spigotcore.profile.monster.MonsterProfileData;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 
-import com.forgestorm.spigotcore.profile.ProfileData;
-
 public class EntityEnderman extends NeutralEntity {
 
-	public EntityEnderman(String name, int level, Location location, ProfileData profile) {
+	public EntityEnderman(String name, int level, Location location, MonsterProfileData profile) {
 		super(name, level, location, profile);
 		entityType = EntityType.ENDERMAN;
 	}

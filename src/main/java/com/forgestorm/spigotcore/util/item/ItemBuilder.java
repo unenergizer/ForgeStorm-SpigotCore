@@ -1,11 +1,8 @@
 package com.forgestorm.spigotcore.util.item;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.forgestorm.spigotcore.util.text.StringSplitter;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -17,10 +14,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.potion.PotionEffectType;
 
-import com.forgestorm.spigotcore.util.text.StringSplitter;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author PaulBGD from https://gist.github.com/PaulBGD/9831d28b1c7bdba0cddd
@@ -34,8 +32,8 @@ public class ItemBuilder {
 	private int amount;
 	private Color color;
 	private final short data;
-	private final HashMap<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
-	private final List<String> lore = new ArrayList<String>();
+	private final HashMap<Enchantment, Integer> enchants = new HashMap<>();
+	private final List<String> lore = new ArrayList<>();
 	private Material mat;
 	private String title = null;
 

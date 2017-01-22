@@ -61,7 +61,7 @@ public class AttributeReader {
 		int oldHealthMax = profile.getMaxHealth();
 		int oldHealthRegen = profile.getArmorHealthRegen();
 		int oldIceResist = profile.getArmorIceResistance();
-		int oldIntellect = profile.getIntelect();
+		int oldIntellect = profile.getIntellect();
 		int oldItemFind = profile.getArmorItemFind();
 		int oldPoisonResist = profile.getArmorPoisonResistance();
 		int oldReflection = profile.getArmorReflection();
@@ -101,7 +101,7 @@ public class AttributeReader {
 		profile.setMaxHealth(healthMax);
 		profile.setArmorHealthRegen(healthRegen);
 		profile.setArmorIceResistance(iceResist);
-		profile.setIntelect(intellect);
+		profile.setIntellect(intellect);
 		profile.setArmorItemFind(itemFind);
 		profile.setArmorPoisonResistance(poisonResist);
 		profile.setArmorReflection(reflection);

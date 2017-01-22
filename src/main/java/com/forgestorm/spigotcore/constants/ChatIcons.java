@@ -44,5 +44,5 @@ public enum ChatIcons {
 	TROPHY,
 	WARNING,
 	ZOMBIE_MAD,
-	ZOMBIE_REGULAR;
+	ZOMBIE_REGULAR
 }

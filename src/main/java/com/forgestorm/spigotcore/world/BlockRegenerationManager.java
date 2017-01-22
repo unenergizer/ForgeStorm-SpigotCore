@@ -1,14 +1,13 @@
 package com.forgestorm.spigotcore.world;
 
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.forgestorm.spigotcore.SpigotCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.forgestorm.spigotcore.SpigotCore;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class will replace a block with another block.  After the time expires the block will switch back to its previous form.
@@ -20,19 +19,19 @@ import com.forgestorm.spigotcore.SpigotCore;
 public class BlockRegenerationManager {
 
 	//setup instance variables
-	private SpigotCore PLUGIN;
+	private final SpigotCore PLUGIN;
 
 	//Setup regeneration variables
-	private int chestRegenTime = 60 * 2;				//Time it takes for a chest to regenerate. 60 seconds * 15 (15 minutes)
-	private int blockRegenTime = 60 * 2; 			    //Time it takes for an block to regenerate. 120 = 2 Minutes (60*2)
-	private int blockRegenRate = 5; 					//The number of seconds the thread should update.
-	private int blockRegenTick = blockRegenRate * 20;   //How fast the thread is refreshed.
+	private final int chestRegenTime = 60 * 2;				//Time it takes for a chest to regenerate. 60 seconds * 15 (15 minutes)
+	private final int blockRegenTime = 60 * 2; 			    //Time it takes for an block to regenerate. 120 = 2 Minutes (60*2)
+	private final int blockRegenRate = 5; 					//The number of seconds the thread should update.
+	private final int blockRegenTick = blockRegenRate * 20;   //How fast the thread is refreshed.
 	private int blockID = 0;							//The current ID of the hashMaps.  Resets on reload.
 	private int blockIDsRemoved = 0;					//Keep track of how many blocks we have removed from the HashMaps.
 
-	private ConcurrentHashMap<Integer, Material> blockType = new ConcurrentHashMap<Integer, Material>();    //ID > BLOCK - They type of block to regenerate.
-	private ConcurrentHashMap<Integer, Integer>  blockTimeLeft = new ConcurrentHashMap<Integer, Integer>(); //ID > Respawn TimeLeft
-	private ConcurrentHashMap<Integer, Location> blockLoc = new ConcurrentHashMap<Integer, Location>(); 	//ID > Block Location
+	private final ConcurrentHashMap<Integer, Material> blockType = new ConcurrentHashMap<>();    //ID > BLOCK - They type of block to regenerate.
+	private final ConcurrentHashMap<Integer, Integer>  blockTimeLeft = new ConcurrentHashMap<>(); //ID > Respawn TimeLeft
+	private final ConcurrentHashMap<Integer, Location> blockLoc = new ConcurrentHashMap<>(); 	//ID > Block Location
 
 	//Setup BlockRegenerationManager
 	public BlockRegenerationManager(SpigotCore plugin) {
@@ -54,34 +53,31 @@ public class BlockRegenerationManager {
 	 */
 	private void startBlockResetTimer() {
 		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-		scheduler.scheduleSyncRepeatingTask(PLUGIN, new Runnable() {
-			@Override
-			public void run() {
+		scheduler.scheduleSyncRepeatingTask(PLUGIN, () -> {
 
-				//Lets loop through the hashMaps to find any blocks that need to be reverted.
-				for (int i = blockIDsRemoved; i < blockID; i++) {
-					
-					//Make sure the map for i exists.
-					if (blockTimeLeft.containsKey(i)) {
-						int timeLeft = blockTimeLeft.get(i);
+            //Lets loop through the hashMaps to find any blocks that need to be reverted.
+            for (int i = blockIDsRemoved; i < blockID; i++) {
 
-						if(timeLeft <= 0) {
-							Block block = blockLoc.get(i).getBlock();
-							block.setType(blockType.get(i));
+                //Make sure the map for i exists.
+                if (blockTimeLeft.containsKey(i)) {
+                    int timeLeft = blockTimeLeft.get(i);
 
-							blockType.remove(i);
-							blockTimeLeft.remove(i);
-							blockLoc.remove(i);
+                    if(timeLeft <= 0) {
+                        Block block = blockLoc.get(i).getBlock();
+                        block.setType(blockType.get(i));
 
-							blockIDsRemoved++;
-						} else {
-							blockTimeLeft.put(i, timeLeft - blockRegenRate);
+                        blockType.remove(i);
+                        blockTimeLeft.remove(i);
+                        blockLoc.remove(i);
 
-						}
-					}
-				}
-			}
-		}, 0L, blockRegenTick);
+                        blockIDsRemoved++;
+                    } else {
+                        blockTimeLeft.put(i, timeLeft - blockRegenRate);
+
+                    }
+                }
+            }
+        }, 0L, blockRegenTick);
 	}
 
 	/**
