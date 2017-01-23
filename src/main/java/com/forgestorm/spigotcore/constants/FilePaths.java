@@ -31,7 +31,11 @@ public enum FilePaths {
 	HELP_TUTORIAL("help/tutorial.yml"),
 	HELP_TRACKER("help/trackingLocations.yml"),
 	WORLD_ANIMATE_ANIMATIONS("animations/animation.yml"),
-	WORLD_ANIMATE_SCHEMATIC("animations/schematics/");
+	WORLD_ANIMATE_SCHEMATIC("animations/schematics/"),
+
+	//Hub
+	BOSS_BAR_ANNOUNCEMENTS("language/BossBarAnnouncements.yml"),
+	GAME_TIP_ANNOUNCER("language/tips.yml");
 	
 	private final String filePath;
 	

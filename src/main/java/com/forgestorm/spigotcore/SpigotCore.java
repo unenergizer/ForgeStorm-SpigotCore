@@ -1,10 +1,5 @@
 package com.forgestorm.spigotcore;
 
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.messaging.Messenger;
-
 import com.forgestorm.spigotcore.bungeecord.BungeeCord;
 import com.forgestorm.spigotcore.commands.Admin;
 import com.forgestorm.spigotcore.commands.Creative;
@@ -21,6 +16,7 @@ import com.forgestorm.spigotcore.commands.Mount;
 import com.forgestorm.spigotcore.commands.PlayTime;
 import com.forgestorm.spigotcore.commands.Realm;
 import com.forgestorm.spigotcore.commands.Roll;
+import com.forgestorm.spigotcore.commands.Spawn;
 import com.forgestorm.spigotcore.commands.Spawner;
 import com.forgestorm.spigotcore.commands.WorldAnimate;
 import com.forgestorm.spigotcore.entity.EntityManager;
@@ -28,7 +24,6 @@ import com.forgestorm.spigotcore.entity.EntityRespawner;
 import com.forgestorm.spigotcore.entity.EntitySpawnerManager;
 import com.forgestorm.spigotcore.entity.MountManager;
 import com.forgestorm.spigotcore.entity.human.CitizenManager;
-import com.forgestorm.spigotcore.entity.human.PlayerManager;
 import com.forgestorm.spigotcore.games.dragoneggtp.DragonEggTeleport;
 import com.forgestorm.spigotcore.help.LocationTrackingManager;
 import com.forgestorm.spigotcore.help.Tutorial;
@@ -60,25 +55,33 @@ import com.forgestorm.spigotcore.listeners.PlayerMove;
 import com.forgestorm.spigotcore.listeners.PlayerPickupItem;
 import com.forgestorm.spigotcore.listeners.PlayerPortal;
 import com.forgestorm.spigotcore.listeners.PlayerQuit;
+import com.forgestorm.spigotcore.listeners.PlayerToggleFlight;
 import com.forgestorm.spigotcore.listeners.WeatherChange;
 import com.forgestorm.spigotcore.menus.GameSelectionMenu;
 import com.forgestorm.spigotcore.menus.Menu;
+import com.forgestorm.spigotcore.player.BossBarAnnouncer;
+import com.forgestorm.spigotcore.player.GameTipAnnouncer;
+import com.forgestorm.spigotcore.player.PlayerManager;
+import com.forgestorm.spigotcore.player.TeleportSpawn;
 import com.forgestorm.spigotcore.profession.Profession;
 import com.forgestorm.spigotcore.redis.RedisProfileManager;
 import com.forgestorm.spigotcore.redis.RedisService;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
 import com.forgestorm.spigotcore.util.item.RecipeManager;
 import com.forgestorm.spigotcore.util.player.DeletePlayerFiles;
-import com.forgestorm.spigotcore.util.scoreboard.PuhaScoreboard;
+import com.forgestorm.spigotcore.util.scoreboard.TarkanScoreboard;
 import com.forgestorm.spigotcore.util.scoreboard.ScoreboardManager;
 import com.forgestorm.spigotcore.world.BlockRegenerationManager;
 import com.forgestorm.spigotcore.world.ChunkManager;
 import com.forgestorm.spigotcore.world.animate.WorldAnimator;
 import com.forgestorm.spigotcore.world.animate.WorldTimer;
 import com.forgestorm.spigotcore.world.instance.RealmManager;
-
 import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.Messenger;
 
 @Getter
 public class SpigotCore extends JavaPlugin {
@@ -108,7 +111,10 @@ public class SpigotCore extends JavaPlugin {
 	private MountManager mountManager;
 	private PlayerManager playerManager;
 	private RealmManager realmManager;
-	private PuhaScoreboard puhaScoreboard;
+	private TarkanScoreboard tarkanScoreboard;
+	private BossBarAnnouncer bossBarAnnouncer;
+	private GameTipAnnouncer gameTipAnnouncer;
+	private TeleportSpawn teleportSpawn;
 
 	//Menus
 	private Menu gameSelectionMenu;
@@ -136,7 +142,8 @@ public class SpigotCore extends JavaPlugin {
 		citizenManager.disable();
 		dragonEggTP.disable();
 		locationTrackingManager.disable();
-		puhaScoreboard.disable();
+		tarkanScoreboard.disable();
+        bossBarAnnouncer.disable();
 	}
 
 	private void loadClasses() {
@@ -165,7 +172,10 @@ public class SpigotCore extends JavaPlugin {
 		realmManager = new RealmManager(this);
 		mountManager = new MountManager();
 		playerManager = new PlayerManager(this);
-		puhaScoreboard = new PuhaScoreboard(this);
+		tarkanScoreboard = new TarkanScoreboard(this);
+		bossBarAnnouncer = new BossBarAnnouncer(this);
+		gameTipAnnouncer = new GameTipAnnouncer(this);
+		teleportSpawn = new TeleportSpawn();
 
 		//Run threads
 		citizenManager.runTaskTimer(this, 0, 5);
@@ -193,6 +203,7 @@ public class SpigotCore extends JavaPlugin {
 		getCommand("money").setExecutor(new Money(this));
 		getCommand("playtime").setExecutor(new PlayTime(this));
 		getCommand("roll").setExecutor(new Roll());
+		getCommand("spawn").setExecutor(new Spawn(this));
 		getCommand("wa").setExecutor(new WorldAnimate(this));
 
 		//Menu commands
@@ -232,6 +243,7 @@ public class SpigotCore extends JavaPlugin {
 		pm.registerEvents(new PlayerPickupItem(), this);
 		pm.registerEvents(new PlayerPortal(this), this);
 		pm.registerEvents(new PlayerQuit(this), this);
+		pm.registerEvents(new PlayerToggleFlight(this), this);
 		pm.registerEvents(new WeatherChange(this), this);
 	}
 

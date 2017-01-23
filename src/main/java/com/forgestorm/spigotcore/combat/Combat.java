@@ -3,6 +3,7 @@ package com.forgestorm.spigotcore.combat;
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.profile.ProfileData;
 import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
+import com.forgestorm.spigotcore.util.text.CenterChatText;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -79,7 +80,7 @@ abstract class Combat {
 		PLUGIN = plugin;
 		DAMAGER = damager;
 		DEFENDER = defender;
-		
+
 		worldName = damager.getWorld().getName();
 	}
 
@@ -149,12 +150,23 @@ abstract class Combat {
 				//TODO
 
 				//Send Life Steal Message
-				sendMessage(DEFENDER, ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "                   *OPPONENT LIFESTEAL* - " + ChatColor.RED + lifeTaken);
-				sendMessage(DAMAGER, ChatColor.RED + "" + ChatColor.BOLD + "                        *LIFESTEAL* +" + ChatColor.GREEN + lifeTaken);
+				sendMessage(DEFENDER, CenterChatText.centerChatMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "*OPPONENT LIFESTEAL* - " + ChatColor.RED + lifeTaken));
+				sendMessage(DAMAGER, CenterChatText.centerChatMessage(ChatColor.RED + "" + ChatColor.BOLD + "*LIFESTEAL* +" + ChatColor.GREEN + lifeTaken));
 			}
 
 			//Knockback
-			//TODO
+			//TODO: Make artificial knockback. Add knockback dmg.
+            if (attributeChance(damagerWeaponKnockback)) {
+                //damage += (damagerWeaponCriticalHit / 100) * damage;
+
+                System.out.println("knockback: " + damagerWeaponKnockback);
+                //Play knockback sound
+                //TODO
+
+                //Send messages.
+                sendMessage(DEFENDER, CenterChatText.centerChatMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "*KNOCKBACK HIT*"));
+                sendMessage(DAMAGER, CenterChatText.centerChatMessage(ChatColor.RED + "" + ChatColor.BOLD + "*KNOCKBACK HIT*"));
+            }
 
 			//CRITICAL HIT
 			if (attributeChance(damagerWeaponCriticalHit)) {
@@ -163,8 +175,8 @@ abstract class Combat {
 				System.out.println("crit: " + damage);
 
 				//Send messages.
-				sendMessage(DEFENDER, ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "                        *CRITICAL HIT*");
-				sendMessage(DAMAGER, ChatColor.RED + "" + ChatColor.BOLD + "                   *CRITICAL HIT* (" + ChatColor.RESET + defenderProfile.getName() + ChatColor.RED + ChatColor.BOLD + ")");
+				sendMessage(DEFENDER, CenterChatText.centerChatMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "*CRITICAL HIT*"));
+				sendMessage(DAMAGER, CenterChatText.centerChatMessage(ChatColor.RED + "" + ChatColor.BOLD + "*CRITICAL HIT* (" + ChatColor.RESET + defenderProfile.getName() + ChatColor.RED + ChatColor.BOLD + ")"));
 			}
 
 			//BLIND
@@ -277,8 +289,8 @@ abstract class Combat {
 			Bukkit.getWorld(worldName).playSound(location, Sound.BLOCK_METAL_HIT, 2F, 1.0F);
 
 			//Send messages.
-			sendMessage(DEFENDER, ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "                        *BLOCK*");
-			sendMessage(DAMAGER, ChatColor.RED + "" + ChatColor.BOLD + "                *OPPONENT BLOCKED* (" + ChatColor.RESET + defenderProfile.getName() + ChatColor.RED + ChatColor.BOLD + ")");
+			sendMessage(DEFENDER, CenterChatText.centerChatMessage(ChatColor.DARK_GREEN + "" + ChatColor.BOLD + "*BLOCK*"));
+			sendMessage(DAMAGER, CenterChatText.centerChatMessage(ChatColor.RED + "" + ChatColor.BOLD + "*OPPONENT BLOCKED* (" + ChatColor.RESET + defenderProfile.getName() + ChatColor.RED + ChatColor.BOLD + ")"));
 		}
 
 		//DODGE
@@ -289,8 +301,8 @@ abstract class Combat {
 			Bukkit.getWorld(worldName).playSound(location, Sound.ENTITY_ZOMBIE_INFECT, 2F, 1.5F);
 
 			//Send Message
-			sendMessage(DEFENDER, ChatColor.GREEN + "" + ChatColor.BOLD + "                        *DODGE*");
-			sendMessage(DAMAGER, ChatColor.RED + "" + ChatColor.BOLD + "                *OPPONENT DODGED* (" + ChatColor.RESET + defenderProfile.getName() + ChatColor.RED + ChatColor.BOLD + ")");
+			sendMessage(DEFENDER, CenterChatText.centerChatMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "*DODGE*"));
+			sendMessage(DAMAGER, CenterChatText.centerChatMessage(ChatColor.RED + "" + ChatColor.BOLD + "*OPPONENT DODGED* (" + ChatColor.RESET + defenderProfile.getName() + ChatColor.RED + ChatColor.BOLD + ")"));
 		}
 
 		//THORNS

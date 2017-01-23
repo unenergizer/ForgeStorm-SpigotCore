@@ -2,6 +2,7 @@ package com.forgestorm.spigotcore.world.instance;
 
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.Messages;
+import com.forgestorm.spigotcore.util.text.CenterChatText;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -22,13 +23,13 @@ import java.util.concurrent.ConcurrentHashMap;
 @Setter
 public class RealmManager extends BukkitRunnable {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	private Map<UUID, Realm> realms = new HashMap<>();
 	private Map<Player, PlayerRealmData> playerData = new HashMap<>();
 	
 	public RealmManager(SpigotCore plugin) {
-		PLUGIN = plugin;
+		this.plugin = plugin;
 		runJoinTimeCountdowns();
 	}
 
@@ -47,7 +48,7 @@ public class RealmManager extends BukkitRunnable {
 				}
 			}
 			
-		}.runTaskTimerAsynchronously(PLUGIN, 0, 20);
+		}.runTaskTimerAsynchronously(plugin, 0, 20);
 	}
 	
 	public void joinRealm(Player player, Location location) {
@@ -86,11 +87,11 @@ public class RealmManager extends BukkitRunnable {
 			
 			//Make sure the player isn't setting the realm close to another realm.
 			if (!getNearbyPortals(blockLocation, 2)) {
-				Realm realm = new Realm(PLUGIN, player, blockLocation);
+				Realm realm = new Realm(plugin, player, blockLocation);
 				
 				//Make sure we can actually set the portal. (Is the portal location 3 blocks high)
 				if (realm.setRealmPortal()) {
-					player.sendMessage(Messages.REALM_PORTAL_OPENED.toString());
+					player.sendMessage(CenterChatText.centerChatMessage(Messages.REALM_PORTAL_OPENED.toString()));
 					player.sendMessage(Messages.REALM_PORTAL_TITLE.toString());
 
 					realms.put(player.getUniqueId(), realm);
@@ -170,7 +171,7 @@ public class RealmManager extends BukkitRunnable {
 		if (hasRealm(player)) {
 			Realm realm = realms.get(player.getUniqueId());
 			realm.setTitle(title);
-			PLUGIN.getProfileManager().getProfile(player).setRealmTitle(title);
+			plugin.getProfileManager().getProfile(player).setRealmTitle(title);
 		}
 	}
 

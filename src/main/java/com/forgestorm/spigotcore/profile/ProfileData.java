@@ -14,13 +14,13 @@ public abstract class ProfileData {
 	protected String name;
 	protected double health;
 	protected int maxHealth;
-	protected double energy;
-	protected int maxEnergy = 100;
+	protected float energy;
+	protected float maxEnergy = 100;
 	
 	/*---- BASE STATS ----*/
 	protected int baseMaxHealth = 50;
 	protected int baseHealthRegen = 1;
-	protected int baseEnergyRegen = 1;
+	protected int baseEnergyRegen = 10; //10% Regen rate increase.
 	protected int baseMaxDamage = 1;
 	
 	/*---- ENTITY ----*/
@@ -57,7 +57,7 @@ public abstract class ProfileData {
 	protected int weaponIce;
 	protected int weaponFire;
 	protected int weaponPoison;
-	
+
 	public void setHealth(double amount) {
 		if (amount <= 0) {
 			health = 0;

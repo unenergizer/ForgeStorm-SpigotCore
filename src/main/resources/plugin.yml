@@ -1,6 +1,6 @@
 name: FS-SpigotCore
 main: com.forgestorm.spigotcore.SpigotCore
-version: 0.1
+version: 0.1.5
 description: ForgeStorm SpigotCore
 author: unenergizer
 website: http://www.forgestorm.com/
@@ -21,6 +21,7 @@ commands:
   money:
   mod:
   roll:
+  spawn:
   settings:
   playtime:
   wa:

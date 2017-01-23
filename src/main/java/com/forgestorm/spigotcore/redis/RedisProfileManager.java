@@ -2,6 +2,7 @@ package com.forgestorm.spigotcore.redis;
 
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.Redis;
+import com.forgestorm.spigotcore.player.SetupNetworkPlayer;
 import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -69,7 +70,7 @@ public class RedisProfileManager {
 		
 		//RPG SETTINGS
 		double health = profile.getBaseMaxHealth();
-		double energy = profile.getBaseEnergyRegen();
+		float energy = profile.getBaseEnergyRegen();
 		String serializedInventory = "";
 
 		//Player Default Settings
@@ -163,7 +164,7 @@ public class RedisProfileManager {
 			
 			//RPG INFO
 			pipeline.set(Redis.PROFILE_LOGOUT_HP.toString(uuid), Double.toString(health));
-			pipeline.set(Redis.PROFILE_LOGOUT_ENERGY.toString(uuid), Double.toString(energy));
+			pipeline.set(Redis.PROFILE_LOGOUT_ENERGY.toString(uuid), Float.toString(energy));
 			pipeline.set(Redis.PROFILE_PLAYER_INVENTORY.toString(uuid), serializedInventory);
 
 			//Player Settings
@@ -237,7 +238,7 @@ public class RedisProfileManager {
 				
 				//RPG Info
 				profile.setHealth(Double.valueOf(jedis.get(Redis.PROFILE_LOGOUT_HP.toString(uuid))));
-				profile.setEnergy(Double.valueOf(jedis.get(Redis.PROFILE_LOGOUT_ENERGY.toString(uuid))));
+				profile.setEnergy(Float.valueOf(jedis.get(Redis.PROFILE_LOGOUT_ENERGY.toString(uuid))));
 				profile.setSerializedInventory(jedis.get(Redis.PROFILE_PLAYER_INVENTORY.toString(uuid)));
 
 				//We keep two lists to compare/contrast elements in it for
@@ -315,7 +316,7 @@ public class RedisProfileManager {
 
 			//RPG INFO
 			pipeline.set(Redis.PROFILE_LOGOUT_HP.toString(uuid), Double.toString(profile.getHealth()));
-			pipeline.set(Redis.PROFILE_LOGOUT_ENERGY.toString(uuid), Double.toString(profile.getEnergy()));
+			pipeline.set(Redis.PROFILE_LOGOUT_ENERGY.toString(uuid), Float.toString(profile.getEnergy()));
 			pipeline.set(Redis.PROFILE_PLAYER_INVENTORY.toString(uuid), profile.getSerializedInventory());
 			
 			//////////////////////////////////////////////

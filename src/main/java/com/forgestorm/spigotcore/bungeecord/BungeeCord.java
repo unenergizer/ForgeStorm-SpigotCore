@@ -27,6 +27,7 @@ public class BungeeCord implements PluginMessageListener {
 
 	public void connectToBungeeServer(Player player, String server) {
 		//Send connection message.
+		player.sendMessage("");
 		player.sendMessage(Messages.BUNGEECORD_CONNECT_SERVER.toString().replace("%s", server));
 
 		try {

@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerKickEvent;
 
 import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.redis.RemoveNetworkPlayer;
+import com.forgestorm.spigotcore.player.RemoveNetworkPlayer;
 
 import lombok.AllArgsConstructor;
 

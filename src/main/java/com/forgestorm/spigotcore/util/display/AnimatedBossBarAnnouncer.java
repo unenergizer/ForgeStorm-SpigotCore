@@ -12,7 +12,7 @@ public class AnimatedBossBarAnnouncer extends BossBarAnnouncer {
 	private boolean isCanceled;
 	private int animatedFrame;
 	
-	private AnimatedBossBarAnnouncer(String message, SpigotCore plugin) {
+	public AnimatedBossBarAnnouncer(String message, SpigotCore plugin) {
 		super(message);
 		PLUGIN = plugin;
 		isCanceled = false;

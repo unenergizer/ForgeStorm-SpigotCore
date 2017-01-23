@@ -53,11 +53,13 @@ public enum Messages {
 	MOUNT_MOVED("&c&lSUMMONING CANCELED... DO NOT MOVE."),
 	MOUNT_LIQUID("&c&lCANNOT SUMMON MOUNT WHILE IN LIQUID."),
 	MOUNT_HAS_MOUNT("&c&lYOU ALREADY HAVE A MOUNT."),
-	
-	PLAYER_WELCOME(" \n \n                      &e&lForgeStorm: &r&lRPGMMO %s \n                  &7&nhttp://www.ForgeStorm.com/&r \n \n \n"),
-	
+
+	PLAYER_WELCOME_1("&e&lForgeStorm: &r&lRPG MINIGAME SERVER %s"),
+	PLAYER_WELCOME_2("&7&nhttp://www.ForgeStorm.com/"),
+	PLAYER_WELCOME_3("&c/help &e/mainmenu &a/settings &b/playtime &d/lobby"),
+
 	REALM_PORTAL_DUPLICATE("&cYou already have a realm opened! Close it to open your realm at another location."),
-	REALM_PORTAL_OPENED("                    &d&l* Realm Portal OPENED *"),
+	REALM_PORTAL_OPENED("&d&l* Realm Portal OPENED *"),
 	REALM_PORTAL_TITLE("&7Type /realm <TITLE> to set the description of your realm. It will be displayed to all visitors."),
 	REALM_PORTAL_PLACE_DENY_BLOCK("&cYou &ncannot&c open a realm portal here."),
 	REALM_PORTAL_PLACE_TOO_CLOSE("&cYou &ncannot&c place a realm portal so close to another one."),

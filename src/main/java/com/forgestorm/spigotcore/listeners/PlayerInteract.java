@@ -17,6 +17,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 @AllArgsConstructor
 public class PlayerInteract implements Listener {
@@ -61,6 +62,23 @@ public class PlayerInteract implements Listener {
 						return;
 					}
 				}
+			}
+		}
+
+		//Pressure plate actions.
+		if(event.getAction().equals(Action.PHYSICAL)) {
+			//The player triggered a physical interaction event
+
+			//Cancel the sound of walking over this stone plate.
+			if(block.getType().equals(Material.WOOD_PLATE)
+					|| block.getType().equals(Material.STONE_PLATE)) {
+				event.setCancelled(true);
+			}
+
+			//Launch pad
+			if(block.getType().equals(Material.GOLD_PLATE)) {
+				player.setVelocity(player.getLocation().getDirection().multiply(100));
+				player.setVelocity(new Vector(player.getVelocity().getX(), 10.0D, player.getVelocity().getZ()));
 			}
 		}
 		

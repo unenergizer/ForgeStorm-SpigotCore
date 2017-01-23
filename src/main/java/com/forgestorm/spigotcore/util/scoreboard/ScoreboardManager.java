@@ -40,7 +40,7 @@ public class ScoreboardManager {
 		
 		objectivePlayerHP = scoreboard.registerNewObjective("UserHP", "dummy");
 		objectivePlayerHP.setDisplaySlot(DisplaySlot.BELOW_NAME);
-		objectivePlayerHP.setDisplayName(ChatColor.RED + "<3");
+		objectivePlayerHP.setDisplayName(ChatColor.RED + "\u2764");
 	}
 	
 	public void updatePlayerHP(PlayerProfileData profile, Player player) {

@@ -128,7 +128,7 @@ public class PlayerProfileData extends ProfileData {
 	/// Combat related ///
 	//////////////////////
 	public void putInCombat() {
-		combatTime = 10;
+		combatTime = 10 * 20; //10 seconds
 	}
 	
 	public boolean isInCombat() {
@@ -140,10 +140,11 @@ public class PlayerProfileData extends ProfileData {
 	 * 
 	 * @param amount The amount of fatigue to add.
 	 */
-	public void addFatigue(double amount) {
-		double fatigue = energy - amount;
+	public void addFatigue(float amount) {
+		float fatigue = energy - amount;
 		
-		if (fatigue < 0) {
+		if (fatigue <= 0) {
+			player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "**EXHAUSTED**");
 			fatigue = 0;
 		}
 		

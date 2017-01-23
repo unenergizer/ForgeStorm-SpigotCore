@@ -1,5 +1,6 @@
-package com.forgestorm.spigotcore.redis;
+package com.forgestorm.spigotcore.player;
 
+import com.forgestorm.spigotcore.redis.RedisProfileManager;
 import org.bukkit.entity.Player;
 
 import com.forgestorm.spigotcore.SpigotCore;
@@ -31,7 +32,7 @@ public class RemoveNetworkPlayer {
 		
 		//Remove Scoreboard
 		PLUGIN.getScoreboardManager().removePlayer(player);
-		PLUGIN.getPuhaScoreboard().removeScoreboard(player);
+		PLUGIN.getTarkanScoreboard().removeScoreboard(player);
 		
 		//Remove player from tracking list.
 		tracker.removePlayer(player);
