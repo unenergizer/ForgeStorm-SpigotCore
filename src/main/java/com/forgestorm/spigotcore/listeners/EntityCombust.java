@@ -9,9 +9,9 @@ public class EntityCombust implements Listener {
 
 	@EventHandler
 	public void onEntityCombust(EntityCombustEvent event) {
-		//Prevent mobs from catching on fire.
-		if (!(event.getEntity() instanceof Player)) {
-			event.setCancelled(true);
-		}
+        // Prevent livingEntities from catching on fire.
+        if (!(event.getEntity() instanceof Player)) {
+            event.setCancelled(true);
+        }
 	}
 }

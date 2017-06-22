@@ -1,6 +1,6 @@
 package com.forgestorm.spigotcore.commands;
 
-import com.forgestorm.spigotcore.constants.Messages;
+import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,8 +33,8 @@ public class Roll implements CommandExecutor {
 			String num = Integer.toString(diceRoll);
 			int roll = onDiceRoll(diceRoll);
 
-			String message = Messages.ROLL.toString().replace("%player%", name).replace("%s", Integer.toString(roll)).replace("%f", num);
-			player.sendMessage(message);
+            String message = SpigotCoreMessages.ROLL.toString().replace("%player%", name).replace("%s", Integer.toString(roll)).replace("%f", num);
+            player.sendMessage(message);
 
 			//Get players near by that will receive this message.
 			List<Entity> localPlayers = player.getNearbyEntities(20, 20, 20);
@@ -55,19 +55,19 @@ public class Roll implements CommandExecutor {
 			//If no one is around to hear their message, let the player know.
 			if (messagesReceived == 0) {
 				player.sendMessage("");
-				player.sendMessage(Messages.ROLL_UNHEARD.toString());
-			}
+                player.sendMessage(SpigotCoreMessages.ROLL_UNHEARD.toString());
+            }
 
 		} catch (NumberFormatException e) {
 			player.sendMessage(" ");
-			player.sendMessage(Messages.GAME_BAR_ROLL.toString());
-			player.sendMessage(" ");
-			player.sendMessage(Messages.ROLL_ERROR.toString());
-			player.sendMessage(" ");
-			player.sendMessage(Messages.ROLL_EXAMPLE.toString());
-			player.sendMessage(Messages.BAR_BOTTOM.toString());
-		}
-	}
+            player.sendMessage(SpigotCoreMessages.GAME_BAR_ROLL.toString());
+            player.sendMessage(" ");
+            player.sendMessage(SpigotCoreMessages.ROLL_ERROR.toString());
+            player.sendMessage(" ");
+            player.sendMessage(SpigotCoreMessages.ROLL_EXAMPLE.toString());
+            player.sendMessage(SpigotCoreMessages.BAR_BOTTOM.toString());
+        }
+    }
 
 	/**
 	 * Displays a virtual dice roll in the players chat console.

@@ -1,6 +1,6 @@
 package com.forgestorm.spigotcore.util.item;
 
-import com.forgestorm.spigotcore.constants.CitizenType;
+import com.forgestorm.spigotcore.citizens.CitizenType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

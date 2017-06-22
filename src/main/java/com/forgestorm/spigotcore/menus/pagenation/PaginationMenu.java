@@ -14,16 +14,16 @@ import java.util.List;
 
 public abstract class PaginationMenu extends Menu {
 
-	private final SpigotCore PLUGIN;
-	private final List<MenuPage> pages = new ArrayList<>();
-	private final int rows;
-	
-	public PaginationMenu(SpigotCore plugin, String title, int rows) {
+    private final SpigotCore plugin;
+    private final List<MenuPage> pages = new ArrayList<>();
+    private final int rows;
+
+    public PaginationMenu(SpigotCore plugin, String title, int rows) {
 		super(plugin);
-		PLUGIN = plugin;
-		makeMenuItems();
-		this.rows = rows;
-		init(title, rows + 1);
+        this.plugin = plugin;
+        makeMenuItems();
+        this.rows = rows;
+        init(title, rows + 1);
 	}
 	
 	/**
@@ -43,17 +43,17 @@ public abstract class PaginationMenu extends Menu {
 	 * is called
 	 */
 	protected void makePages() {
-		
-		ItemGenerator itemGen = PLUGIN.getItemGen();
-		ItemStack page = itemGen.generateItem("", ItemTypes.MENU);
-		
-		for (int i = rows * 9; i < pages.size() + (rows * 9); i++) {
-			page.setAmount(i - (rows * 9));
-			setItem(page, i, new ChangePage(PLUGIN, i - (rows * 9)));	
-		}
-		
-		// Generate page 1
-		makePage(1);
+
+        ItemGenerator itemGen = plugin.getItemGen();
+        ItemStack page = itemGen.generateItem("", ItemTypes.MENU);
+
+        for (int i = rows * 9; i < pages.size() + (rows * 9); i++) {
+            page.setAmount(i - (rows * 9));
+            setItem(page, i, new ChangePage(plugin, i - (rows * 9)));
+        }
+
+        // Generate page 1
+        makePage(1);
 	}
 	
 	void changePage(int slot) {
@@ -68,13 +68,13 @@ public abstract class PaginationMenu extends Menu {
 	 */
 	private void makePage(int page) {
 		clear();
-		
-		List<SlotData> items = pages.get(page).generateItems(PLUGIN);
-		
-		for (SlotData slotData : items) {
-			
-			ItemStack item = slotData.getItem();
-			int slot = slotData.getSlot();
+
+        List<SlotData> items = pages.get(page).generateItems(plugin);
+
+        for (SlotData slotData : items) {
+
+            ItemStack item = slotData.getItem();
+            int slot = slotData.getSlot();
 			ClickAction action = slotData.getClickAction();
 			Class<? extends Menu> clazz = slotData.getClazz();
 			
@@ -95,20 +95,20 @@ public abstract class PaginationMenu extends Menu {
 
 class ChangePage implements ClickAction {
 
-	private final SpigotCore PLUGIN;
-	private int slot;
-	
-	ChangePage(SpigotCore plugin, int slot) {
-		PLUGIN = plugin;
-		this.slot = slot;
-	}
-	
-	@Override
+    private final SpigotCore plugin;
+    private int slot;
+
+    ChangePage(SpigotCore plugin, int slot) {
+        this.plugin = plugin;
+        this.slot = slot;
+    }
+
+    @Override
 	public void click(Player player) {
-		PaginationMenu menu = (PaginationMenu) PLUGIN.
-				getProfileManager().
-				getProfile(player).
-				getCurrentMenu();
+        PaginationMenu menu = (PaginationMenu) plugin.
+                getProfileManager().
+                getProfile(player).
+                getCurrentMenu();
 		
 		menu.changePage(slot);
 	}

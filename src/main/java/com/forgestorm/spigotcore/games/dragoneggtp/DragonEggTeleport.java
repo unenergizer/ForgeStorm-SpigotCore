@@ -24,34 +24,37 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class DragonEggTeleport {
-	
-	private final SpigotCore PLUGIN;
-	
-	private final FileConfiguration config;
-	private final List<Location> locations;
-	private final Hologram hologram;
+
+    private final SpigotCore plugin;
+
+    private final File file;
+    private final FileConfiguration config;
+    private final List<Location> locations;
+    private final Hologram hologram;
 	private Location eggLocation;
+    private int eggLocationId;
 
 	public DragonEggTeleport(SpigotCore plugin) {
-		PLUGIN = plugin;
-		config = YamlConfiguration.loadConfiguration(
-				new File(FilePaths.GAMES_DRAGONEGG.toString()));
-		locations = new ArrayList<>();
-		hologram = new Hologram();
-		loadLocations();
+        this.plugin = plugin;
+        file = new File(FilePaths.GAMES_DRAGONEGG.toString());
+        config = YamlConfiguration.loadConfiguration(file);
+        locations = new ArrayList<>();
+        hologram = new Hologram();
+        loadLocations();
 
 		//Spawn the egg after server startup.
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, this::spawnEgg, 5 * 20L);
 	}
 
-	public void disable() {
-		//Despawn the block
-		eggLocation.getBlock().setType(Material.AIR);
+    public void onDisable() {
+        //Despawn the block
+        eggLocation.getBlock().setType(Material.AIR);
 
 		//Remove the hologram.
 		hologram.removeHolograms();
@@ -107,11 +110,11 @@ public class DragonEggTeleport {
 			player.sendMessage("");
 			
 			//Give Reward
-			PlayerRewards reward = new PlayerRewards(PLUGIN, player);
-			reward.giveExp(100);
-			reward.giveMoney(100);
-			
-			//Play Sound
+            PlayerRewards reward = new PlayerRewards(plugin, player);
+            reward.giveExp(100);
+            reward.giveMoney(100);
+
+            //Play Sound
 			player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, .8f);
 			
 			//Spawn new egg!
@@ -120,16 +123,18 @@ public class DragonEggTeleport {
 	}
 
 	public void teleportToEgg(Player player) {
-		player.teleport(eggLocation);
-	}
+        player.teleport(eggLocation);
+        player.sendMessage(ChatColor.YELLOW + "Teleported you to egg location: " + eggLocationId);
+    }
 
 	private void spawnEgg() {
 
 		//Set the Block
 		int index = RandomChance.randomInt(0, locations.size() - 1);
 		eggLocation = locations.get(index); //Set new egg location
-		Block block = Bukkit.getWorlds().get(0).getBlockAt(eggLocation);
-		block.setType(Material.DRAGON_EGG);
+        eggLocationId = index;
+        Block block = Bukkit.getWorlds().get(0).getBlockAt(eggLocation);
+        block.setType(Material.DRAGON_EGG);
 
 		//Play sound
 		Bukkit.getWorlds().get(0).playSound(eggLocation, Sound.ENTITY_EGG_THROW, 1, .7f);
@@ -147,6 +152,23 @@ public class DragonEggTeleport {
 		Location hologramLoc = new Location(eggLocation.getWorld(), x, y, z);
 		hologram.createHologram(hologramText, hologramLoc);
 	}
+
+    public void addLocation(Player player) {
+        Location location = player.getLocation();
+        int x = location.getBlockX(), y = location.getBlockY(), z = location.getBlockZ();
+        int size = locations.size();
+
+        config.set("Locations." + size + ".x", x);
+        config.set("Locations." + size + ".y", y);
+        config.set("Locations." + size + ".z", z);
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        locations.add(new Location(location.getWorld(), x, y, z));
+        player.sendMessage(ChatColor.YELLOW + "Set Dragon Egg at X: " + x + "  Y: " + y + "  Z: " + z + " Total Locations: " + size);
+    }
 
 	private void loadLocations() {
 		World world = Bukkit.getWorlds().get(0);

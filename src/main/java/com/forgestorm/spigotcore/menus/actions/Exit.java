@@ -1,19 +1,17 @@
 package com.forgestorm.spigotcore.menus.actions;
 
-import org.bukkit.entity.Player;
-
 import com.forgestorm.spigotcore.SpigotCore;
-
 import lombok.AllArgsConstructor;
+import org.bukkit.entity.Player;
 
 @AllArgsConstructor
 public class Exit implements ClickAction {
 
-	private final SpigotCore PLUGIN;
-	
-	@Override
-	public void click(Player player) {
-		player.closeInventory();
-		PLUGIN.getProfileManager().getProfile(player).setCurrentMenu(null);
-	}
+    private final SpigotCore plugin;
+
+    @Override
+    public void click(Player player) {
+        player.closeInventory();
+        plugin.getProfileManager().getProfile(player).setCurrentMenu(null);
+    }
 }

@@ -1,7 +1,7 @@
 package com.forgestorm.spigotcore.bungeecord;
 
 import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.Messages;
+import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
 import com.forgestorm.spigotcore.menus.GameSelectionMenu;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataInput;
@@ -18,23 +18,23 @@ import java.util.logging.Logger;
 
 public class BungeeCord implements PluginMessageListener {
 
-	private final SpigotCore PLUGIN;
-	private final Logger log = Logger.getLogger("Minecraft");
+    private final SpigotCore plugin;
+    private final Logger log = Logger.getLogger("Minecraft");
 
 	public BungeeCord(SpigotCore plugin) {
-		PLUGIN = plugin;
-	}
+        this.plugin = plugin;
+    }
 
 	public void connectToBungeeServer(Player player, String server) {
 		//Send connection message.
 		player.sendMessage("");
-		player.sendMessage(Messages.BUNGEECORD_CONNECT_SERVER.toString().replace("%s", server));
+        player.sendMessage(SpigotCoreMessages.BUNGEECORD_CONNECT_SERVER.toString().replace("%s", server));
 
 		try {
 			Messenger messenger = Bukkit.getMessenger();
-			if (!messenger.isOutgoingChannelRegistered(PLUGIN, "BungeeCord")) {
-				messenger.registerOutgoingPluginChannel(PLUGIN, "BungeeCord");
-			}
+            if (!messenger.isOutgoingChannelRegistered(plugin, "BungeeCord")) {
+                messenger.registerOutgoingPluginChannel(plugin, "BungeeCord");
+            }
 
 			if (server.length() == 0) {
 				player.sendMessage("&cThe server name was empty!");
@@ -47,7 +47,7 @@ public class BungeeCord implements PluginMessageListener {
 			out.writeUTF("Connect");
 			out.writeUTF(server);
 
-			player.sendPluginMessage(PLUGIN, "BungeeCord", byteArray.toByteArray());
+            player.sendPluginMessage(plugin, "BungeeCord", byteArray.toByteArray());
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -67,11 +67,11 @@ public class BungeeCord implements PluginMessageListener {
 			out.writeUTF("PlayerCount");
 			out.writeUTF(serverName);
 
-			player.sendPluginMessage(PLUGIN, "BungeeCord", byteArray.toByteArray());
-			
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+            player.sendPluginMessage(plugin, "BungeeCord", byteArray.toByteArray());
+
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
 	}
 
 	@Override
@@ -89,12 +89,12 @@ public class BungeeCord implements PluginMessageListener {
 			
 			switch(server) {
 			case "mg-full-01":
-				((GameSelectionMenu) PLUGIN.getGameSelectionMenu()).setArcadePlayers(playerCount);
-				break;
-			case "creative":
-				((GameSelectionMenu) PLUGIN.getGameSelectionMenu()).setCreativePlayers(playerCount);
-				break;
-			}
-		}
+                ((GameSelectionMenu) plugin.getGameSelectionMenu()).setArcadePlayers(playerCount);
+                break;
+                case "creative":
+                    ((GameSelectionMenu) plugin.getGameSelectionMenu()).setCreativePlayers(playerCount);
+                    break;
+            }
+        }
 	}
 }

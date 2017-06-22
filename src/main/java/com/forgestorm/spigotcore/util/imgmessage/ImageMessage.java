@@ -14,16 +14,16 @@ import java.awt.image.BufferedImage;
  * Date: 1/25/14
  * Time: 10:28 PM
  * https://github.com/bobacadodl/ImageMessage
- * 
- * 
- *** Modified by Robert Andrew Brown ***
+ * <p>
+ * <p>
+ * ** Modified by Robert Andrew Brown ***
  * Date: 12/5/16
  * Time: 2:42 PM
  */
 public class ImageMessage {
     //private final static char TRANSPARENT_CHAR = " "; //Modified to use the bottom line.
-    private final static String TRANSPARENT_CHAR = ChatColor.DARK_GRAY + 
-    		Character.toString(ImageChar.MEDIUM_SHADE.getChar());
+    private final static String TRANSPARENT_CHAR = ChatColor.DARK_GRAY +
+            Character.toString(ImageChar.MEDIUM_SHADE.getChar());
 
     private final Color[] colors = {
             new Color(0, 0, 0),

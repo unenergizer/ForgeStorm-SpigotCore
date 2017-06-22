@@ -19,16 +19,16 @@ import java.util.Iterator;
 
 public class TrackBuildingMenu extends Menu {
 
-	private final SpigotCore PLUGIN;	
-	private final FileConfiguration config;
-	
-	public TrackBuildingMenu(SpigotCore plugin) {
-		super(plugin);
-		PLUGIN = plugin;
-		config = YamlConfiguration.loadConfiguration(
-				new File(FilePaths.HELP_TRACKER.toString()));
-		
-		ConfigurationSection outSection = config.getConfigurationSection("BuildingLocations");
+    private final SpigotCore plugin;
+    private final FileConfiguration config;
+
+    public TrackBuildingMenu(SpigotCore plugin) {
+        super(plugin);
+        this.plugin = plugin;
+        config = YamlConfiguration.loadConfiguration(
+                new File(FilePaths.HELP_TRACKER.toString()));
+
+        ConfigurationSection outSection = config.getConfigurationSection("BuildingLocations");
 		int total = outSection.getKeys(false).size();
 		
 		int neededRows = 1 + ((total + 2) / 9);
@@ -64,9 +64,9 @@ public class TrackBuildingMenu extends Menu {
 			
 			setItem(item,
 					invSlot++,
-					new SetCompassTarget(PLUGIN, new Location(Bukkit.getWorlds().get(0), x, y, z))
-					);
-		
-		}
-	}
+                    new SetCompassTarget(plugin, new Location(Bukkit.getWorlds().get(0), x, y, z))
+            );
+
+        }
+    }
 }

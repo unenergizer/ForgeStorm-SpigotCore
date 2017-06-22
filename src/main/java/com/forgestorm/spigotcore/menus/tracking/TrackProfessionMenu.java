@@ -19,16 +19,16 @@ import java.util.Iterator;
 
 public class TrackProfessionMenu extends Menu {
 
-	private final SpigotCore PLUGIN;	
-	private final FileConfiguration config;
-	
-	public TrackProfessionMenu(SpigotCore plugin) {
-		super(plugin);
-		PLUGIN = plugin;
-		config = YamlConfiguration.loadConfiguration(
-				new File(FilePaths.HELP_TRACKER.toString()));
-		
-		ConfigurationSection outSection = config.getConfigurationSection("ProfessionLocations");
+    private final SpigotCore plugin;
+    private final FileConfiguration config;
+
+    public TrackProfessionMenu(SpigotCore plugin) {
+        super(plugin);
+        this.plugin = plugin;
+        config = YamlConfiguration.loadConfiguration(
+                new File(FilePaths.HELP_TRACKER.toString()));
+
+        ConfigurationSection outSection = config.getConfigurationSection("ProfessionLocations");
 		Iterator<String> outIt = outSection.getKeys(false).iterator();
 		
 		int total = 0;
@@ -72,9 +72,9 @@ public class TrackProfessionMenu extends Menu {
 
 				setItem(item,
 						invSlot++,
-						new SetCompassTarget(PLUGIN, new Location(Bukkit.getWorlds().get(0), x, y, z))
-				);
-			}
-		}
+                        new SetCompassTarget(plugin, new Location(Bukkit.getWorlds().get(0), x, y, z))
+                );
+            }
+        }
 	}
 }

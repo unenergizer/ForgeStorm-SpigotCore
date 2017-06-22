@@ -1,29 +1,27 @@
 package com.forgestorm.spigotcore.menus.actions;
 
-import org.bukkit.entity.Player;
-
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.SettingTypes;
+import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.menus.SettingsMenu;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-
 import lombok.AllArgsConstructor;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 
 @AllArgsConstructor
 public class AdjustSettings implements ClickAction {
 
-	private final SpigotCore PLUGIN;
-	private final SettingTypes TYPE;
-	
+	private final SpigotCore plugin;
+	private final SettingTypes type;
+
 	@Override
 	public void click(Player player) {
-		PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
+		PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
 		SettingsMenu menu = (SettingsMenu) profile.getCurrentMenu();
 		
 		boolean tof;
-		switch (TYPE) {
-		case CHAT_FILTER:
+		switch (type) {
+			case CHAT_FILTER:
 			tof = !profile.isChatFilter();
 			profile.setChatFilter(tof);
 			player.sendMessage(color(tof ? "&aChat filter on." : "&cChat filter off."));
@@ -58,7 +56,7 @@ public class AdjustSettings implements ClickAction {
 		}
 		
 		//Update the menu
-		menu.updateMenuItems(TYPE);
+		menu.updateMenuItems(type);
 	}
 	
 	private String color(String msg) {

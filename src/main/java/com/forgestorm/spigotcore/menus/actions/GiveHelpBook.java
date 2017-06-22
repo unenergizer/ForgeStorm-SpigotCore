@@ -1,5 +1,6 @@
 package com.forgestorm.spigotcore.menus.actions;
 
+import com.forgestorm.spigotcore.constants.CommonSounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -39,9 +40,9 @@ public class GiveHelpBook implements ClickAction {
 				player.sendMessage(ChatColor.RED + "You already have a copy of the help book.");
 
 				//Play a sound.
-				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1F, .5F);
-			}
-		}
+                CommonSounds.ACTION_FAILED.playSound(player);
+            }
+        }
 
 		//Check to see if the player has a book.
 		if (!hasBook && freeSlots > 0) {
@@ -72,8 +73,8 @@ public class GiveHelpBook implements ClickAction {
 			player.sendMessage(ChatColor.RED + "You do not have room in your inventory for the help book.");
 
 			//Play a sound.
-			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BASS, 1F, .5F);
-		}
+            CommonSounds.ACTION_FAILED.playSound(player);
+        }
 
 	}
 

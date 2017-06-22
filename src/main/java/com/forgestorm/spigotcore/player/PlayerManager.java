@@ -1,190 +1,74 @@
 package com.forgestorm.spigotcore.player;
 
 import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+/*********************************************************************************
+ *
+ * OWNER: Robert Andrew Brown & Joseph Rugh
+ * PROGRAMMER: Robert Andrew Brown & Joseph Rugh
+ * PROJECT: forgestorm-spigotcore
+ * DATE: 6/13/2017
+ * _______________________________________________________________________________
+ *
+ * Copyright © 2017 ForgeStorm.com. All Rights Reserved.
+ *
+ * No part of this project and/or code and/or source code and/or source may be 
+ * reproduced, distributed, or transmitted in any form or by any means, 
+ * including photocopying, recording, or other electronic or mechanical methods, 
+ * without the prior written permission of the owner.
+ */
 
-@Getter
-public class PlayerManager {
+public class PlayerManager implements Listener {
 
-	private final SpigotCore PLUGIN;
+    private final SpigotCore plugin;
 
-    private final Map<UUID, PlayerProfileData> profiles = new HashMap<>();
-    private final Map<UUID, Integer> regenerationDelay = new HashMap<>();
+    public PlayerManager(SpigotCore plugin) {
+        this.plugin = plugin;
 
-	public PlayerManager(SpigotCore plugin) {
-		PLUGIN = plugin;
-        EntityType.pig
-		startPlayerAttributeUpdates();
-		startActionBarTitleUpdates();
-	}
+        // Register Events
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
 
-	/**
-	 * This will update action bar text showing the player useful info.
-	 * 
-	 * @param player The player what will see the data.
-	 */
-	private void updateActionBarText(Player player) {
-        PlayerProfileData profile = getPlayerProfile(player);
-        boolean isLooking = PLUGIN.getLocationTrackingManager().getTargetLocations().containsKey(player.getUniqueId());
+    public void onDisable() {
+        // Unregister Events
+        PlayerJoinEvent.getHandlerList().unregister(this);
+        PlayerKickEvent.getHandlerList().unregister(this);
+        PlayerQuitEvent.getHandlerList().unregister(this);
+    }
 
-        //Show player health if they are in combart and if they are not tracking anything.
-        if (profile.isInCombat() || !isLooking) {
-            String hp = Integer.toString((int) profile.getHealth());
-            String maxHP = Integer.toString(profile.getMaxHealth());
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
 
-            PLUGIN.getTitleManagerAPI().sendActionbar(player, ChatColor.RED + "" + ChatColor.BOLD + "\u2764 "
-                    + ChatColor.WHITE + ChatColor.BOLD + hp
-                    + ChatColor.RED + ChatColor.BOLD + "/"
-                    + ChatColor.WHITE + ChatColor.BOLD + maxHP);
-        }
-	}
+        // Load in the player data from MongoDB.
+        plugin.getProfileManager().getLoadingPlayers().add(player);
+    }
 
-	
-	private void startActionBarTitleUpdates() {
-		//for (Player player: Bukkit.getOnlinePlayers())
-		new BukkitRunnable() {
+    @EventHandler
+    public void onPlayerKick(PlayerKickEvent event) {
+        Player player = event.getPlayer();
 
-			@Override
-			public void run() {
-				for (Player player: Bukkit.getOnlinePlayers()) {
+        //Remove the player
+        new RemoveNetworkPlayer(plugin, player, false);
 
-					if (getPlayerProfile(player).isLoaded()) {
+        //Do not show logout message.
+        event.setLeaveMessage("");
+    }
 
-						updateActionBarText(player);
-					}
-				}
-			}
-		}.runTaskTimerAsynchronously(PLUGIN, 0, 1);
-	}
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
 
-	private long time = 0;
+        //Remove the player
+        new RemoveNetworkPlayer(plugin, player, false);
 
-	private void startPlayerAttributeUpdates() {
-		new BukkitRunnable() {
-
-			@Override
-			public void run() {
-				for (Player player: Bukkit.getOnlinePlayers()) {
-					PlayerProfileData profile = getPlayerProfile(player);
-
-					if (profile.isLoaded()) {
-
-					    //Update energy/fatigue every tick.
-                        adjustEnergyRegen(player, profile);
-
-                        //Update every 20 ticks.
-					    if (time++ % 5 == 0) {
-					        adjustHealthRegen(player, profile);
-                            PLUGIN.getTarkanScoreboard().updateScoreboard(player);
-                        }
-                    }
-				}
-			}
-		}.runTaskTimerAsynchronously(PLUGIN, 0, 1);
-	}
-	
-	private void adjustHealthRegen(Player player, PlayerProfileData profile) {
-		if (profile.isInCombat()) {
-			int combatTime = profile.getCombatTime() - 1;
-			profile.setCombatTime(combatTime);
-			
-			if (combatTime == 0) {
-				player.sendMessage(ChatColor.AQUA + "" + ChatColor.BOLD + "You have left combat.");
-			}
-			
-		} else {
-			double currentHP = profile.getHealth();
-			double maxHealthPoints = profile.getMaxHealth();
-			double healthRegen = profile.getArmorHealthRegen();
-			double healthPointsFinal = currentHP + healthRegen;
-
-			//Set the players health.
-			if (healthPointsFinal >= maxHealthPoints) {
-				profile.setHealth(maxHealthPoints);
-			} else {
-				profile.setHealth(healthPointsFinal);
-			}
-
-			double healthPercent = healthPointsFinal / maxHealthPoints;
-			double hpDisplay = healthPercent;
-
-			//Set hearts
-			if (hpDisplay > 20) {
-				player.setHealth(20);
-			} else if (hpDisplay <= 0) {
-				player.setHealth(1);
-			} else {
-				player.setHealth(hpDisplay);
-			}
-			
-			//Update the players HP under their name tag.
-			PLUGIN.getScoreboardManager().updatePlayerHP(profile, player);
-		}
-	}
-
-	private void adjustEnergyRegen(Player player, PlayerProfileData profile) {
-        float maxEnergy = profile.getMaxEnergy(); //100
-
-        float energyToAdd = profile.getArmorEnergyRegen() / maxEnergy;
-        float valueStoredCurrently = profile.getEnergy();
-
-        float baseAmount = profile.getBaseEnergyRegen() / maxEnergy;
-
-        float nextLevelNoTrun = energyToAdd + valueStoredCurrently + baseAmount;
-        float expAmount = nextLevelNoTrun / 100.0f;
-
-        int nextLevelTrun = (int)(nextLevelNoTrun);
-        if (nextLevelTrun >= 100) {
-            profile.setEnergy(maxEnergy); //Num between 0-100;
-            player.setLevel((int) maxEnergy); //Num between 0-100;
-            player.setExp(1.0f); //Num between 0-1f;
-        } else {
-
-            UUID uuid = player.getUniqueId();
-            boolean alreadyInMap = false;
-
-            if (!regenerationDelay.containsKey(uuid)) {
-
-                profile.setEnergy(nextLevelNoTrun); //Num between 0-100;
-                player.setLevel(nextLevelTrun); //Num between 0-100;
-                player.setExp(expAmount); //Num between 0-1f;
-            } else {
-
-                alreadyInMap = true;
-
-                int amount = regenerationDelay.get(uuid) + 1;
-
-                regenerationDelay.replace(uuid, amount);
-
-                if (amount > 20 * 2) {
-                    regenerationDelay.remove(uuid);
-                }
-            }
-
-            if (nextLevelTrun == 0 && !alreadyInMap) {
-                regenerationDelay.put(uuid, 0);
-            }
-        }
-	}
-
-	public void addPlayerProfile(Player player, PlayerProfileData profile) {
-		profiles.put(player.getUniqueId(), profile);
-	}
-
-	public PlayerProfileData getPlayerProfile(Player player) {
-		return profiles.get(player.getUniqueId());
-	}
-
-	public PlayerProfileData getRemovedProfile(Player player) {
-		return profiles.remove(player.getUniqueId());
-	}
+        //Do not show logout message.
+        event.setQuitMessage("");
+    }
 }

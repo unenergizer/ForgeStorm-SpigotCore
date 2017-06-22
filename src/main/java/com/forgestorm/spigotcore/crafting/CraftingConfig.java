@@ -14,14 +14,14 @@ import java.util.List;
 
 class CraftingConfig {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 	
 	private final FileConfiguration config;
 	
 	public CraftingConfig(SpigotCore plugin) {
-		PLUGIN = plugin;
+		this.plugin = plugin;
 		config = YamlConfiguration.loadConfiguration(
-				new File(FilePaths.ITEM_CRAFTING_RECIPES.toString()));
+				new File(FilePaths.ITEMS_CRAFTING_RECIPES.toString()));
 	}
 	
 	/**
@@ -33,9 +33,9 @@ class CraftingConfig {
 	public ItemStack makeRecipe(String recipeName) {
 		
 		String make = config.getString(recipeName + ".make");
-		ItemTypes type = ItemTypes.valueOf(config.getString(recipeName + ".type")); 
-		
-		return PLUGIN.getItemGen().generateItem(make, type);
+		ItemTypes type = ItemTypes.valueOf(config.getString(recipeName + ".type"));
+
+		return plugin.getItemGen().generateItem(make, type);
 	}
 	
 	/**
@@ -56,7 +56,7 @@ class CraftingConfig {
 			String name = section.getString(i + ".name");
 			int amount = section.getInt(i + ".amount");
 
-			items.add(PLUGIN.getItemGen().generateItem(name, ItemTypes.INGREDIENTS, amount));
+			items.add(plugin.getItemGen().generateItem(name, ItemTypes.INGREDIENTS, amount));
 		}
 		
 		return items;

@@ -1,66 +1,49 @@
 package com.forgestorm.spigotcore.player;
 
-import com.forgestorm.spigotcore.redis.RedisProfileManager;
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.database.MongoDatabaseManager;
+import com.forgestorm.spigotcore.database.PlayerProfileData;
+import com.forgestorm.spigotcore.help.AnimatedTutorial;
+import com.forgestorm.spigotcore.help.LocationTrackingManager;
+import com.forgestorm.spigotcore.realm.RealmManager;
 import org.bukkit.entity.Player;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.help.LocationTrackingManager;
-import com.forgestorm.spigotcore.help.Tutorial;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-import com.forgestorm.spigotcore.util.item.InventoryStringDeSerializer;
-import com.forgestorm.spigotcore.util.player.DeletePlayerFiles;
-import com.forgestorm.spigotcore.world.instance.RealmManager;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 public class RemoveNetworkPlayer {
 
-	private final SpigotCore PLUGIN;
-	
-	public void removeNetworkPlayer(Player player) {
-		RedisProfileManager profileManager = PLUGIN.getProfileManager();
-		PlayerProfileData profile = PLUGIN.getProfileManager().getProfile(player);
-		Tutorial tutorial = PLUGIN.getTutorial();
-		LocationTrackingManager tracker = PLUGIN.getLocationTrackingManager();
-		RealmManager prm = PLUGIN.getRealmManager();
-		
-		//Remove the player from the active tutorial.
-		if (tutorial.getActivePlayers().containsKey(player)) {
-			tutorial.endTutorial(player, true);
-		}
-		
-		//Remove Scoreboard
-		PLUGIN.getScoreboardManager().removePlayer(player);
-		PLUGIN.getTarkanScoreboard().removeScoreboard(player);
-		
-		//Remove player from tracking list.
-		tracker.removePlayer(player);
-		
-		//Serialize Inventory
-		profile.setSerializedInventory(InventoryStringDeSerializer.toBase64(player.getInventory().getContents()));
-		//System.out.println("SAVE InvData: " + profile.getSerializedInventory());
-		
-		//Close profile
-		profile.setCurrentMenu(null);
-		profileManager.unloadProfile(player);
-		
-		//Remove player world data.
-		new DeletePlayerFiles(PLUGIN).deleteSaveFiles(player);
+    public RemoveNetworkPlayer(SpigotCore plugin, Player player, boolean isServerShuttingDown) {
 
-		//Remove them from a players realm.
-		if (prm.getPlayerData().containsKey(player)) {
-			//Set new logout location.
-			//profile.setLocation(prm.getPlayerData().get(player).getJoinLocation());
-			prm.getPlayerData().remove(player);
-		}
+        MongoDatabaseManager profileManager = plugin.getProfileManager();
+        PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
+        AnimatedTutorial animatedTutorial = plugin.getAnimatedTutorial();
+        LocationTrackingManager tracker = plugin.getLocationTrackingManager();
+        RealmManager realmManager = plugin.getRealmManager();
 
-		//Remove/unload player realm
-		prm.removePlayerRealm(player);
-		
-		//Remove the players mount and HashMap entry.
-		if (PLUGIN.getMountManager().getPlayerMounts().containsKey(player)) {
-			PLUGIN.getMountManager().removePlayerMount(player);
-		}
-	}
+        //Remove the player from the active animatedTutorial.
+        if (animatedTutorial.getActivePlayers().containsKey(player)) {
+            animatedTutorial.endTutorial(player, true);
+        }
+
+        //Remove Scoreboard
+        plugin.getScoreboardManager().removePlayer(player);
+
+        //Remove player from tracking list.
+        tracker.removePlayer(player);
+
+        if (profile == null) return;
+
+        //Close profile
+        profile.setCurrentMenu(null);
+
+        // If the server is shutting down, we will NOT run the following code.
+        if (isServerShuttingDown) return;
+
+        profileManager.unloadProfile(player);
+
+        //Remove them from a players realm.
+        realmManager.getPlayerRealmData().remove(player);
+
+        //Remove/unload player realm
+        realmManager.removeLogoutPlayerRealm(player);
+    }
 }

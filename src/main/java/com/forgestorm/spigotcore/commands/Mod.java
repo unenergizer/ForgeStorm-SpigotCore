@@ -1,17 +1,15 @@
 package com.forgestorm.spigotcore.commands;
 
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
+import com.forgestorm.spigotcore.database.PlayerProfileData;
+import com.forgestorm.spigotcore.util.player.ModActions;
+import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.Messages;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-import com.forgestorm.spigotcore.util.player.ModActions;
-
-import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class Mod implements CommandExecutor {
@@ -28,7 +26,7 @@ public class Mod implements CommandExecutor {
 			PlayerProfileData commandSenderProfile = plugin.getProfileManager().getProfile(commandSender);
 
 			if (!commandSenderProfile.isModerator() || !commandSenderProfile.isAdmin()) {
-				sender.sendMessage(Messages.NO_PERMISSION.toString());
+				sender.sendMessage(SpigotCoreMessages.NO_PERMISSION.toString());
 				return false;
 			}
 
@@ -48,7 +46,7 @@ public class Mod implements CommandExecutor {
 			} else if (args.length == 2) {
 
 				if (Bukkit.getPlayer(args[1]) == null) {
-					commandSender.sendMessage(Messages.COMMAND_ADMIN_PLAYER_NOT_ONLINE.toString());
+					commandSender.sendMessage(SpigotCoreMessages.COMMAND_ADMIN_PLAYER_NOT_ONLINE.toString());
 					return false;
 				}
 
@@ -80,7 +78,7 @@ public class Mod implements CommandExecutor {
 			} else if (args.length == 3) {
 
 				if (Bukkit.getPlayer(args[2]) == null){
-					commandSender.sendMessage(Messages.COMMAND_ADMIN_PLAYER_NOT_ONLINE.toString());
+					commandSender.sendMessage(SpigotCoreMessages.COMMAND_ADMIN_PLAYER_NOT_ONLINE.toString());
 					return false;
 				}
 
@@ -106,7 +104,7 @@ public class Mod implements CommandExecutor {
 			} else if (args.length > 2) {
 				
 				if (Bukkit.getPlayer(args[1]) == null) {
-					commandSender.sendMessage(Messages.COMMAND_ADMIN_PLAYER_NOT_ONLINE.toString());
+					commandSender.sendMessage(SpigotCoreMessages.COMMAND_ADMIN_PLAYER_NOT_ONLINE.toString());
 					return false;
 				}
 

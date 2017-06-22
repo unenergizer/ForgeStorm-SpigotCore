@@ -22,7 +22,7 @@ import java.util.List;
 @Setter
 public class GameSelectionMenu extends Menu {
 
-	private final SpigotCore PLUGIN;
+    private final SpigotCore plugin;
 
 	private ItemStack arcade, creative;
 	private int arcadePlayers, creativePlayers;
@@ -30,24 +30,24 @@ public class GameSelectionMenu extends Menu {
 
 	public GameSelectionMenu(SpigotCore plugin) {
 		super(plugin);
-		PLUGIN = plugin;
-		init("Game Selection Menu", 1);
-		makeMenuItems();
-		updateMenu();
+        this.plugin = plugin;
+        init("Game Selection Menu", 1);
+        makeMenuItems();
+        updateMenu();
 	}
 
 	@Override
 	protected void makeMenuItems() {
 		ItemTypes type = ItemTypes.MENU;
-		ItemGenerator itemGen = PLUGIN.getItemGen();
-		ItemStack backButton, exitButton;
-		
-		backButton = itemGen.generateItem("back_button", type);
-		exitButton = itemGen.generateItem("exit_button", type);
+        ItemGenerator itemGen = plugin.getItemGen();
+        ItemStack backButton, exitButton;
+
+        backButton = itemGen.generateItem("back_button", type);
+        exitButton = itemGen.generateItem("exit_button", type);
 
 		setItem(backButton, 7, MainMenu.class);
-		setItem(exitButton, 8, new Exit(PLUGIN));
-	}
+        setItem(exitButton, 8, new Exit(plugin));
+    }
 
 	/**
 	 * This will create new items.
@@ -55,12 +55,12 @@ public class GameSelectionMenu extends Menu {
 	private void updateItems() {
 	
 		//Create the items
-		PLUGIN.getBungeecord().getPlayerCount("mg-full-01");
-		arcade = createItem(ItemLores.ARCADE_TITLE.toString(), ItemLores.ARCADE_LORE.toString(), Material.BOW, arcadePlayers);
-		
-		PLUGIN.getBungeecord().getPlayerCount("creative");
-		creative = createItem(ItemLores.CREATIVE_TITLE.toString(), ItemLores.CREATIVE_LORE.toString(), Material.GRASS, creativePlayers);
-	}
+        plugin.getBungeecord().getPlayerCount("mg-full-01");
+        arcade = createItem(ItemLores.ARCADE_TITLE.toString(), ItemLores.ARCADE_LORE.toString(), Material.BOW, arcadePlayers);
+
+        plugin.getBungeecord().getPlayerCount("creative");
+        creative = createItem(ItemLores.CREATIVE_TITLE.toString(), ItemLores.CREATIVE_LORE.toString(), Material.GRASS, creativePlayers);
+    }
 
 	/**
 	 * This will continuously update the players server selector menu.
@@ -69,8 +69,8 @@ public class GameSelectionMenu extends Menu {
 	private void updateMenu() {
 		final int UPDATE_TIME = 1;
 
-		ClickAction arcadeAction = new ConnectToBungeeServer(PLUGIN, "mg-full-01");
-		ClickAction creativeAction = new ConnectToBungeeServer(PLUGIN, "creative");
+        ClickAction arcadeAction = new ConnectToBungeeServer(plugin, "mg-full-01");
+        ClickAction creativeAction = new ConnectToBungeeServer(plugin, "creative");
 
 		//Start the thread to update the items.
 		new BukkitRunnable() {
@@ -97,8 +97,8 @@ public class GameSelectionMenu extends Menu {
 					setItem(creative, 1, creativeAction);
 				}
 			}
-		}.runTaskTimer(PLUGIN, 0, 20 * UPDATE_TIME);
-	}
+        }.runTaskTimer(plugin, 0, 20 * UPDATE_TIME);
+    }
 
 	/**
 	 * This will create a menu item.

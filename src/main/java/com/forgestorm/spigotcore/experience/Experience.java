@@ -3,13 +3,16 @@ package com.forgestorm.spigotcore.experience;
 import java.text.DecimalFormat;
 
 public abstract class Experience {
-	
-	private final int expOffSet = getExperience(1, true);
-	protected int minLevel = 1;
 	private final int maxLevel = 100;
-	int var1;
-	double var2;
-	double var3;
+    protected int expOffSet;
+    protected int minLevel = 1;
+    int var1;
+    double var2;
+    double var3;
+
+    public int getExpOffSet() {
+        return getExperience(1, false);
+    }
 
 	/**
 	 * This will return the experience needed for a given level.
@@ -23,9 +26,10 @@ public abstract class Experience {
 	/**
 	 * This will return the experience needed for a given level.
 	 * @param level The level we want to get an experience amount for.
-	 * @return The experience needed to obtain this level.
-	 */
-	public int getExperience(int level, boolean getOffSet) {
+     * @param getOffSet Includes the experience offset in this calculation.
+     * @return The experience needed to obtain this level.
+     */
+    public int getExperience(int level, boolean getOffSet) {
 		int points = 0;
 		int output;
 
@@ -65,11 +69,11 @@ public abstract class Experience {
 		int currentLVL = getLevel(experience);
 		int nextLVLxp = getExperience(currentLVL + 1);
 		double difference = nextLVLxp - experience;
-		return (difference / (nextLVLxp - getExperience(currentLVL))) * 100;
-	}
-	
-	/**
-	 * This will calculate a percentage for the players experience bar.
+        return (difference / (nextLVLxp - getExperience(currentLVL, true))) * 100;
+    }
+
+    /**
+     * This will calculate a percentage for the players experience bar.
 	 * @param experience The players current experience.
 	 * @return Returns a number between 1 and 100.
 	 */
@@ -77,10 +81,10 @@ public abstract class Experience {
 		int currentLVL = getLevel(experience);
 		int nextLVLxp = getExperience(currentLVL + 1);
 		float difference = nextLVLxp - experience;
-		float percent = difference / (nextLVLxp - getExperience(currentLVL));
-		DecimalFormat df = new DecimalFormat("#.##");
-		return Double.parseDouble(df.format((1 - percent) * 100));
-	}
+        float percent = difference / (nextLVLxp - getExperience(currentLVL, true));
+        DecimalFormat df = new DecimalFormat("#.##");
+        return Double.parseDouble(df.format((1 - percent) * 100));
+    }
 	
 	/**
 	 * This will calculate a percentage for the players experience bar.
@@ -91,7 +95,7 @@ public abstract class Experience {
 		int currentLVL = getLevel(experience);
 		int nextLVLxp = getExperience(currentLVL + 1);
 		float difference = nextLVLxp - experience;
-		float percent = difference / (nextLVLxp - getExperience(currentLVL));
-		return 1 - percent;
-	}
+        float percent = difference / (nextLVLxp - getExperience(currentLVL, true));
+        return 1 - percent;
+    }
 }

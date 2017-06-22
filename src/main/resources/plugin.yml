@@ -2,26 +2,28 @@ name: FS-SpigotCore
 main: com.forgestorm.spigotcore.SpigotCore
 version: 0.1.5
 description: ForgeStorm SpigotCore
-author: unenergizer
+author: unenergizer aka Robert Andrew Brown
 website: http://www.forgestorm.com/
+depend: [TitleManager]
 commands:
-  item:
-  monster:
-  mount:
-  playermenu:
-  realm:
-  spawner:
-  toggle:
-  admin:
-  creative:
-  help:
-  hub:
-  lobby:
-  mainmenu:
-  money:
-  mod:
-  roll:
-  spawn:
-  settings:
-  playtime:
-  wa:
+   admin:
+   creative:
+   compass:
+   lantern:
+   lobby:
+      aliases: [hub]
+   help:
+   mainmenu:
+   settings:
+   mod:
+   money:
+      aliases: [bal, balance, gems]
+   playtime:
+      aliases: [pt]
+   realm:
+   roll:
+   spawn:
+   safestop:
+   tutorial:
+   worldanimate:
+      aliases: [wa]

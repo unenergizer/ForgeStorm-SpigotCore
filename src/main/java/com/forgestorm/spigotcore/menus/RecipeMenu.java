@@ -2,9 +2,9 @@ package com.forgestorm.spigotcore.menus;
 
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.ItemTypes;
+import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.menus.actions.SelectRecipe;
 import com.forgestorm.spigotcore.menus.actions.SendChatText;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
@@ -15,19 +15,19 @@ import java.util.Set;
 
 public class RecipeMenu extends Menu {
 
-	private final SpigotCore PLUGIN;
-	private final boolean SHOW_ALL;
-	private final PlayerProfileData profile;
-	final int MAX_FOR_PAGE = 20; 
-	
-	public RecipeMenu(SpigotCore plugin, Player player, boolean showAll) {
+    final int MAX_FOR_PAGE = 20;
+    private final SpigotCore plugin;
+    private final boolean SHOW_ALL;
+    private final PlayerProfileData profile;
+
+    public RecipeMenu(SpigotCore plugin, Player player, boolean showAll) {
 		super(plugin);
-		PLUGIN = plugin;
-		SHOW_ALL = showAll;
-		init("Recipe Selection Menu", 5);
-		profile = PLUGIN.getProfileManager().getProfile(player);
-		makeMenuItems();
-	}
+        this.plugin = plugin;
+        SHOW_ALL = showAll;
+        init("Recipe Selection Menu", 5);
+        profile = this.plugin.getProfileManager().getProfile(player);
+        makeMenuItems();
+    }
 
 	@Override
 	protected void makeMenuItems() {
@@ -43,42 +43,42 @@ public class RecipeMenu extends Menu {
 		List<String> recipes = profile.getCollectedRecipes();
 		
 		ItemTypes type = ItemTypes.RECIPES_CRAFTING;
-		ItemGenerator itemGen = PLUGIN.getItemGen();
-		
-		int count = 0;
-		for (String recipe : recipes) {
-			if (count > MAX_FOR_PAGE) break;
-			
-			setItem(itemGen.generateItem(recipe, type), count++, new SelectRecipe(PLUGIN, recipe));
-		}
-	}
-	
-	/**
+        ItemGenerator itemGen = plugin.getItemGen();
+
+        int count = 0;
+        for (String recipe : recipes) {
+            if (count > MAX_FOR_PAGE) break;
+
+            setItem(itemGen.generateItem(recipe, type), count++, new SelectRecipe(plugin, recipe));
+        }
+    }
+
+    /**
 	 * This will show all the recipes on the server,
 	 * including the ones owned by the player.
 	 * 
 	 * TODO: Page Changing.
 	 */
 	private void showAll() {
-		Set<String> items = PLUGIN.getRecipeManager().getRecipes().keySet();
-		
-		ItemTypes type = ItemTypes.RECIPES_CRAFTING;
-		ItemGenerator itemGen = PLUGIN.getItemGen();
-		
-		Iterator<String> it = items.iterator();
-		
-		int count = 0;
-		while (it.hasNext()) {
+        Set<String> items = plugin.getRecipeManager().getRecipes().keySet();
+
+        ItemTypes type = ItemTypes.RECIPES_CRAFTING;
+        ItemGenerator itemGen = plugin.getItemGen();
+
+        Iterator<String> it = items.iterator();
+
+        int count = 0;
+        while (it.hasNext()) {
 			if (count > MAX_FOR_PAGE) break;
 			
 			//System.out.println("MENU OPENED: " + profile.getCollectedRecipes().toString());
 			
 			String key = it.next();
 			if (profile.getCollectedRecipes().contains(key)) {
-				setItem(itemGen.generateItem(key, type), count++, new SelectRecipe(PLUGIN, key));	
-			} else {
-				String error = ChatColor.RED + "You do not own this recipe.";
-				setItem(itemGen.generateItem(key, type), count++, new SendChatText(error));
+                setItem(itemGen.generateItem(key, type), count++, new SelectRecipe(plugin, key));
+            } else {
+                String error = ChatColor.RED + "You do not own this recipe.";
+                setItem(itemGen.generateItem(key, type), count++, new SendChatText(error));
 			}
 		}
 	}

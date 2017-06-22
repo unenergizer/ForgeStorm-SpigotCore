@@ -1,21 +1,20 @@
 package com.forgestorm.spigotcore.menus;
 
-import org.bukkit.inventory.ItemStack;
-
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.ItemTypes;
 import com.forgestorm.spigotcore.menus.actions.FeatureComingSoon;
 import com.forgestorm.spigotcore.menus.actions.OpenProfessionsMenu;
 import com.forgestorm.spigotcore.menus.help.HelpMenu;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
+import org.bukkit.inventory.ItemStack;
 
 public class MainMenu extends Menu {
 
-	private final SpigotCore PLUGIN;
+	private final SpigotCore plugin;
 
 	public MainMenu(SpigotCore plugin) {
 		super(plugin);
-		PLUGIN = plugin;
+		this.plugin = plugin;
 		init("Main Menu", 4);
 		makeMenuItems();
 	}
@@ -23,7 +22,7 @@ public class MainMenu extends Menu {
 	@Override
 	protected void makeMenuItems() {
 		ItemTypes type = ItemTypes.MENU;
-		ItemGenerator itemGen = PLUGIN.getItemGen();
+		ItemGenerator itemGen = plugin.getItemGen();
 		ItemStack playerInfo, help, guildManagement, friendManagement, gameSelection, lobbySelection, cosmeticMenu, professionsMenu;
 
 		playerInfo = itemGen.generateItem("main_player_info", type);
@@ -36,7 +35,7 @@ public class MainMenu extends Menu {
 		professionsMenu = itemGen.generateItem("main_professions", type);
 
 		//Row 1
-		setItem(gameSelection, 12, PLUGIN.getGameSelectionMenu(), false);
+		setItem(gameSelection, 12, plugin.getGameSelectionMenu(), false);
 		setItem(help, 13, HelpMenu.class, false);
 		setItem(lobbySelection, 14, new FeatureComingSoon(), false);
 
@@ -45,6 +44,6 @@ public class MainMenu extends Menu {
 		setItem(guildManagement, 21, new FeatureComingSoon(), false);
 		setItem(friendManagement, 22, new FeatureComingSoon(), false);
 		setItem(cosmeticMenu, 23, CosmeticMenu.class, false);
-		setItem(professionsMenu, 24, new OpenProfessionsMenu(PLUGIN), false);
+		setItem(professionsMenu, 24, new OpenProfessionsMenu(plugin), false);
 	}
 }

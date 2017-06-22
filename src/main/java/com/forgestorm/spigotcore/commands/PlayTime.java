@@ -1,16 +1,14 @@
 package com.forgestorm.spigotcore.commands;
 
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.database.PlayerProfileData;
+import com.forgestorm.spigotcore.util.math.TimeUnit;
+import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.profile.player.PlayerProfileData;
-import com.forgestorm.spigotcore.util.math.TimeUnit;
-
-import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public class PlayTime implements CommandExecutor {

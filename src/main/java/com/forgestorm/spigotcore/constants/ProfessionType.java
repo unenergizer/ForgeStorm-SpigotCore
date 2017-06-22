@@ -1,8 +1,10 @@
 package com.forgestorm.spigotcore.constants;
 
 public enum ProfessionType {
-	FARMING,
-	FISHING,
-	LUMBERJACK,
-	MINING
+    COOKING,
+    FARMING,
+    FISHING,
+    MINING,
+    SMELTING,
+    WOOD_CUTTING
 }

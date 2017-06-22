@@ -8,7 +8,8 @@ public class EntityChangeBlock implements Listener {
 	
 	@EventHandler
 	public void onEntityChangeBlock(EntityChangeBlockEvent event) {
-		//Cancel entity block changes.
-		event.setCancelled(true);
-	}
+        // Cancel entity block changes.
+        // Stop Enderman and other entities from removing blocks.
+        event.setCancelled(true);
+    }
 }

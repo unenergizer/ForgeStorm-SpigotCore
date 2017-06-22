@@ -1,133 +1,128 @@
 package com.forgestorm.spigotcore.world;
 
-import com.forgestorm.spigotcore.SpigotCore;
-import org.bukkit.Bukkit;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class will replace a block with another block.  After the time expires the block will switch back to its previous form.
- * <p>
  * This is great for block regeneration.  Professions, explosions, and more can be tracked here and regenerated after some time.
- * @author Andrew
- *
  */
-public class BlockRegenerationManager {
+public class BlockRegenerationManager extends BukkitRunnable {
 
-	//setup instance variables
-	private final SpigotCore PLUGIN;
+    private final int blockRegenTime = 60 * 3; // Time till a block respawn's.
+    private final Map<Integer, RegenerationInfo> regenInfo = new ConcurrentHashMap<>(); // <ID, RegenInfo>
+    private int blockID = 0;
+    private int blockIDsRemoved = 0;
 
-	//Setup regeneration variables
-	private final int chestRegenTime = 60 * 2;				//Time it takes for a chest to regenerate. 60 seconds * 15 (15 minutes)
-	private final int blockRegenTime = 60 * 2; 			    //Time it takes for an block to regenerate. 120 = 2 Minutes (60*2)
-	private final int blockRegenRate = 5; 					//The number of seconds the thread should update.
-	private final int blockRegenTick = blockRegenRate * 20;   //How fast the thread is refreshed.
-	private int blockID = 0;							//The current ID of the hashMaps.  Resets on reload.
-	private int blockIDsRemoved = 0;					//Keep track of how many blocks we have removed from the HashMaps.
 
-	private final ConcurrentHashMap<Integer, Material> blockType = new ConcurrentHashMap<>();    //ID > BLOCK - They type of block to regenerate.
-	private final ConcurrentHashMap<Integer, Integer>  blockTimeLeft = new ConcurrentHashMap<>(); //ID > Respawn TimeLeft
-	private final ConcurrentHashMap<Integer, Location> blockLoc = new ConcurrentHashMap<>(); 	//ID > Block Location
+    /**
+     * This will onDisable the block regeneration and replace all blocks back to original state.
+     */
+    public void onDisable() {
+        resetAllBlocks();
+    }
 
-	//Setup BlockRegenerationManager
-	public BlockRegenerationManager(SpigotCore plugin) {
-		this.PLUGIN = plugin;
+    /**
+     * Resets a block back to its original state.
+     */
+    @Override
+    public void run() {
+        // Lets loop through the hashMaps to find any blocks that need to be reverted.
+        for (int i = blockIDsRemoved; i < blockID; i++) {
 
-		//Start the timer used to reset blocks.
-		startBlockResetTimer();
-	}
+            //Make sure the map for i exists.
+            if (regenInfo.containsKey(i)) {
+                RegenerationInfo regenerationInfo = regenInfo.get(i);
+                int timeLeft = regenerationInfo.getTimeLeft();
 
-	/**
-	 * This will disable the block regeneration and replace all blocks back to original state.
-	 */
-	public void disable() {
-		resetAllBlocks();
-	}
+                if (timeLeft <= 0) {
+                    // Set the block in the world.
+                    Block block = regenerationInfo.getBlockLocation().getBlock();
+                    block.setType(regenerationInfo.getBlockMaterial());
+                    block.setData(regenerationInfo.getData());
 
-	/**
-	 * Resets a block back to its original state.
-	 */
-	private void startBlockResetTimer() {
-		BukkitScheduler scheduler = Bukkit.getServer().getScheduler();
-		scheduler.scheduleSyncRepeatingTask(PLUGIN, () -> {
-
-            //Lets loop through the hashMaps to find any blocks that need to be reverted.
-            for (int i = blockIDsRemoved; i < blockID; i++) {
-
-                //Make sure the map for i exists.
-                if (blockTimeLeft.containsKey(i)) {
-                    int timeLeft = blockTimeLeft.get(i);
-
-                    if(timeLeft <= 0) {
-                        Block block = blockLoc.get(i).getBlock();
-                        block.setType(blockType.get(i));
-
-                        blockType.remove(i);
-                        blockTimeLeft.remove(i);
-                        blockLoc.remove(i);
-
-                        blockIDsRemoved++;
-                    } else {
-                        blockTimeLeft.put(i, timeLeft - blockRegenRate);
-
-                    }
+                    // Remove entry
+                    regenInfo.remove(i);
+                    blockIDsRemoved++;
+                } else {
+                    // Adjust the time left.
+                    regenerationInfo.setTimeLeft(timeLeft - 1);
                 }
             }
-        }, 0L, blockRegenTick);
-	}
+        }
+    }
 
-	/**
-	 * Resets all blocks back to their original state.
-	 * <p>
-	 * This is used for server reloads.
-	 */
-	private void resetAllBlocks() {
-		for (int i = blockIDsRemoved; i < blockID; i++) {
-			Block block = blockLoc.get(i).getBlock();
-			block.setType(blockType.get(i));
+    /**
+     * Resets all blocks back to their original state.
+     * This is used for server reloads.
+     */
+    private void resetAllBlocks() {
+        for (int i = blockIDsRemoved; i < blockID; i++) {
+            RegenerationInfo regenerationInfo = regenInfo.get(i);
 
-			//System.out.println("[FSCore] ResettingAllBlocks: " + block.toString());
+            // Set the block in the world
+            Block block = regenerationInfo.getBlockLocation().getBlock();
+            block.setType(regenerationInfo.getBlockMaterial());
+            block.setData(regenerationInfo.getData());
 
-			blockType.remove(i);
-			blockTimeLeft.remove(i);
-			blockLoc.remove(i);
+            // Remove this entry
+            regenInfo.remove(i);
 
-			blockIDsRemoved++;
-		}
-	}
+            blockIDsRemoved++;
+        }
+    }
 
-	/**
-	 * This will set a temporary block in a broken blocks location.
-	 * 
-	 * @param type The type of block broken.
-	 * @param tempBlock The temporary block to replace the broken block.
-	 * @param location The XYZ location in the world the block was broken.
-	 */
-	public void setBlock(Material type, Material tempBlock, Location location) {
+    /**
+     * This will set a temporary block in a broken blocks location.
+     *
+     * @param type      The type of block broken.
+     * @param data      The original block data.
+     * @param tempBlock The temporary block to replace the broken block.
+     * @param location  The XYZ location in the world the block was broken.
+     */
+    public void setBlock(Material type, byte data, Material tempBlock, Location location) {
+        setBlock(type, data, tempBlock, (byte) 0, location);
+    }
 
-		Block block = location.getBlock();
+    /**
+     * This will set a temporary block in a broken blocks location.
+     *
+     * @param type      The type of block broken.
+     * @param data      The original block data.
+     * @param tempBlock The temporary block to replace the broken block.
+     * @param tempData  The temporary block data.
+     * @param location  The XYZ location in the world the block was broken.
+     */
+    public void setBlock(Material type, byte data, Material tempBlock, byte tempData, Location location) {
+        Block block = location.getBlock();
 
-		//Replace the broken block with a temporary block, until it has regenerated.
-		
-		block.setType(tempBlock);
+        // Replace the broken block with a temporary block, until it has regenerated.
+        block.setType(tempBlock);
+        block.setData(tempData);
 
-		//Save the block's information.
-		blockType.put(blockID, type);
+        // Save the block info for replacement later.
+        regenInfo.put(blockID, new RegenerationInfo(type, data, location, blockRegenTime));
 
-		//This will set the respawn times for chests and broken items.
-		if (type.equals(Material.CHEST)) {
-			blockTimeLeft.put(blockID, chestRegenTime);
-		} else {
-			blockTimeLeft.put(blockID, blockRegenTime);
-		}
+        // Increment the block counter (used to get the block's ID number.
+        blockID++;
+    }
 
-		blockLoc.put(blockID, location);
-		
-		//Increment the block counter (used to get the block's ID number.
-		blockID++;
-	}
+    @Getter
+    @AllArgsConstructor
+    class RegenerationInfo {
+        private final Material blockMaterial;
+        private final byte data;
+        private final Location blockLocation;
+
+        @Setter
+        private int timeLeft;
+    }
 }

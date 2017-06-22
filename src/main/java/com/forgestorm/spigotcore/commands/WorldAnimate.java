@@ -1,16 +1,14 @@
 package com.forgestorm.spigotcore.commands;
 
+import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
+import lombok.AllArgsConstructor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.Messages;
-
-import lombok.AllArgsConstructor;
-import net.md_5.bungee.api.ChatColor;
 
 @AllArgsConstructor
 public class WorldAnimate implements CommandExecutor {
@@ -22,7 +20,7 @@ public class WorldAnimate implements CommandExecutor {
 
 		//Check if the command sender is a server Operator
 		if (!(commandSender instanceof Player) || !commandSender.isOp()) {
-			commandSender.sendMessage(Messages.NO_PERMISSION.toString());
+			commandSender.sendMessage(SpigotCoreMessages.NO_PERMISSION.toString());
 			return false;
 		}
 

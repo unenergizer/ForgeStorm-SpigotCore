@@ -27,24 +27,22 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 @Getter
 public class WorldAnimator {
 
-	private final SpigotCore PLUGIN;
-	private final String FILE_PATH = FilePaths.WORLD_ANIMATE_ANIMATIONS.toString();
-
-	private File file;
-	private FileConfiguration config;
-	private final List<Long> animationTimes;
-	private World world;
+    private final static String FILE_PATH = FilePaths.WORLD_ANIMATE_ANIMATIONS.toString();
+    private final SpigotCore plugin;
+    private final List<Long> animationTimes;
+    private File file;
+    private FileConfiguration config;
+    private World world;
 	private boolean allowWeatherChange;
 
 	public WorldAnimator(SpigotCore plugin) {
 		//Init variables.
-		PLUGIN = plugin;
-		animationTimes = new ArrayList<>();
-		allowWeatherChange = false;
+        this.plugin = plugin;
+        animationTimes = new ArrayList<>();
+        allowWeatherChange = false;
 
 		//If the configuration does not exist, create the file. Otherwise lets load the file.
 		if(!(new File(FILE_PATH)).exists()){
@@ -238,24 +236,24 @@ public class WorldAnimator {
 		if (title != null && subtitle != null) {
 
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				PLUGIN.getTitleManagerAPI().sendTitles(player, title, subtitle);
-			}
-		} else if (title != null) {
+                plugin.getTitleManagerAPI().sendTitles(player, title, subtitle);
+            }
+        } else if (title != null) {
 
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				PLUGIN.getTitleManagerAPI().sendTitles(player, title, "");
-			}
-		} else if (subtitle != null) {
+                plugin.getTitleManagerAPI().sendTitles(player, title, "");
+            }
+        } else if (subtitle != null) {
 
 			for (Player player : Bukkit.getOnlinePlayers()) {
-				PLUGIN.getTitleManagerAPI().sendTitles(player, "", subtitle);
-			}
-		}
+                plugin.getTitleManagerAPI().sendTitles(player, "", subtitle);
+            }
+        }
 
 		/////////////////////
 		// SOUNDS
 		/////////////////////
-		suffix  = prefix + ".Sounds";
+        suffix = prefix + ".SoundFiles";
 
 		if (config.contains(suffix)) {
 			iterator = config.getConfigurationSection(suffix).getKeys(false).iterator();
@@ -331,8 +329,8 @@ public class WorldAnimator {
 		config.set("Animations.0.blocks", "tutorial");
 		config.set("Animations.0.particles", "7");
 		config.set("Animations.0.schematics", "2");
-		config.set("Animations.0.mobs", "Welcome!");
-		config.set("Animations.0.weather", "rain");
+        config.set("Animations.0.livingEntities", "Welcome!");
+        config.set("Animations.0.weather", "rain");
 
 		try {
 			config.save(file);
