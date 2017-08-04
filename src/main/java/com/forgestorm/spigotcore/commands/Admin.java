@@ -7,7 +7,6 @@ import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.experience.Experience;
 import com.forgestorm.spigotcore.experience.ProfessionExperience;
 import com.forgestorm.spigotcore.menus.RecipeOptionsMenu;
-import com.forgestorm.spigotcore.menus.realm.RealmShopPage1;
 import com.forgestorm.spigotcore.util.imgmessage.EzImgMessage;
 import com.forgestorm.spigotcore.util.math.TimeUnit;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -71,7 +70,6 @@ public class Admin implements CommandExecutor {
                     break;
 
                 case "status": //Shows the current stats to the administrator.
-                    int realms = plugin.getRealmManager().getLoadedRealms().size();
                     int armorStands = 0;
                     long statusCurrentTime = System.currentTimeMillis() / 1000;
                     long statusTotalTime = statusCurrentTime - plugin.getStartTime();
@@ -94,11 +92,6 @@ public class Admin implements CommandExecutor {
                     commandSender.sendMessage(ChatColor.GREEN + "Players Online: " + ChatColor.YELLOW + Bukkit.getOnlinePlayers().size());
                     commandSender.sendMessage(ChatColor.GREEN + "Holograms: " + ChatColor.YELLOW + armorStands);
                     commandSender.sendMessage(ChatColor.GREEN + "Worlds Loaded: " + ChatColor.YELLOW + Bukkit.getWorlds().size());
-                    commandSender.sendMessage(ChatColor.GREEN + "RealmsLoaded: " + ChatColor.YELLOW + realms);
-                    break;
-
-                case "shop":
-                    new RealmShopPage1(plugin).open((Player) commandSender);
                     break;
             }
 

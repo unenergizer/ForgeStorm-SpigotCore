@@ -92,7 +92,7 @@ public class Profession implements Listener {
      * @param tool  The tool being used.
      * @return True if the level requirement is met.
      */
-    public static boolean checkBlockBreakToolLevels(int level, Material tool) {
+    private static boolean checkBlockBreakToolLevels(int level, Material tool) {
         switch (tool) {
             case WOOD_PICKAXE:
             case WOOD_AXE:
@@ -155,12 +155,12 @@ public class Profession implements Listener {
      * @param tool   The tool the player was using when the event was toggled.
      * @param block  The block the player broke during the event.
      */
-    public void toggleBlockBreakProfession(Player player, Material tool, Block block) {
+    private void toggleBlockBreakProfession(Player player, Material tool, Block block) {
         PlayerProfileData playerProfileData = plugin.getProfileManager().getProfile(player);
         String toolName = tool.toString();
         String blockName = block.getType().toString();
         Material blockType = block.getType();
-        byte blockData = block.getData();
+        @SuppressWarnings("deprecation") byte blockData = block.getData();
         byte tempData = 0;
         ProfessionType professionType;
         FileConfiguration config = null;
@@ -275,8 +275,9 @@ public class Profession implements Listener {
         }
 
         // Drop item
-        ItemStack drop = null;
+        ItemStack drop;
         if (useDropData) {
+            //noinspection deprecation
             drop = new ItemStack(materialToDrop, 1, (short) 0, dropData);
         } else {
             drop = new ItemStack(materialToDrop);
@@ -296,7 +297,8 @@ public class Profession implements Listener {
      *
      * @param player The player who has successfully fished.
      */
-    public void toggleFishingProfession(Player player) {
+    @SuppressWarnings("deprecation")
+    private void toggleFishingProfession(Player player) {
         PlayerProfileData playerProfileData = plugin.getProfileManager().getProfile(player);
         long currentExperience = playerProfileData.getFishingExperience();
         long currentLevel = experienceCalculator.getLevel(currentExperience);
@@ -371,7 +373,7 @@ public class Profession implements Listener {
      * @param amount   The amount of items cooked or smelted.
      * @param material The material that was cooked or smelted.
      */
-    public void toggleFurnaceProfession(Player player, int amount, Material material) {
+    private void toggleFurnaceProfession(Player player, int amount, Material material) {
         String item = material.toString();
 
         if (!furnaceMaterials.contains(material)) {
@@ -480,7 +482,7 @@ public class Profession implements Listener {
      *
      * @param player The player we will send the message to.
      */
-    public void sendFailNotification(Player player, String message) {
+    private void sendFailNotification(Player player, String message) {
         // Send failed notifications.
         player.sendMessage(message);
         CommonSounds.ACTION_FAILED.playSound(player);

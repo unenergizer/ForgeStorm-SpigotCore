@@ -6,6 +6,11 @@ import com.forgestorm.spigotcore.database.PlayerProfileData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -15,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ScoreboardManager {
+public class ScoreboardManager implements Listener {
 
     private final SpigotCore plugin;
     private final Map<UUID, UserGroup> userGroup;
@@ -28,6 +33,14 @@ public class ScoreboardManager {
         registerScoreboard();
         registerObjectives();
         setupTeams();
+
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    public void onDisable() {
+        EntityDamageEvent.getHandlerList().unregister(this);
+        PlayerDeathEvent.getHandlerList().unregister(this);
+        PlayerRespawnEvent.getHandlerList().unregister(this);
     }
 
     /**
@@ -176,5 +189,23 @@ public class ScoreboardManager {
     public void setupNPC(Player npc) {
         addPlayer(npc, UserGroup.USER_PREFIX_NPC);
         updatePlayerHP(npc);
+    }
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        // Update the players health under their name.
+        updatePlayerHP(event.getEntity());
+    }
+
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        updatePlayerHP(event.getPlayer(), 20);
+    }
+
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
+        updatePlayerHP((Player) event.getEntity());
     }
 }

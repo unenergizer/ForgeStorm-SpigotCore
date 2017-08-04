@@ -5,7 +5,6 @@ import com.forgestorm.spigotcore.database.MongoDatabaseManager;
 import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.help.AnimatedTutorial;
 import com.forgestorm.spigotcore.help.LocationTrackingManager;
-import com.forgestorm.spigotcore.realm.RealmManager;
 import org.bukkit.entity.Player;
 
 
@@ -17,7 +16,6 @@ public class RemoveNetworkPlayer {
         PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
         AnimatedTutorial animatedTutorial = plugin.getAnimatedTutorial();
         LocationTrackingManager tracker = plugin.getLocationTrackingManager();
-        RealmManager realmManager = plugin.getRealmManager();
 
         //Remove the player from the active animatedTutorial.
         if (animatedTutorial.getActivePlayers().containsKey(player)) {
@@ -39,11 +37,5 @@ public class RemoveNetworkPlayer {
         if (isServerShuttingDown) return;
 
         profileManager.unloadProfile(player);
-
-        //Remove them from a players realm.
-        realmManager.getPlayerRealmData().remove(player);
-
-        //Remove/unload player realm
-        realmManager.removeLogoutPlayerRealm(player);
     }
 }

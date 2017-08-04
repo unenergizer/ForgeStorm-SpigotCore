@@ -4,7 +4,6 @@ import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.Database;
 import com.forgestorm.spigotcore.experience.PlayerExperience;
 import com.forgestorm.spigotcore.experience.ProfessionExperience;
-import com.forgestorm.spigotcore.realm.RealmManager;
 import com.forgestorm.spigotcore.util.item.InventoryStringDeSerializer;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
@@ -90,7 +89,6 @@ public class MongoDatabaseManager extends BukkitRunnable {
 
         String uuid = player.getUniqueId().toString();
         PlayerProfileData profile = profiles.get(player.getUniqueId());
-        RealmManager realmManager = plugin.getRealmManager();
 
         // DEFAULT VALUES
         int userGroup = 0;
@@ -138,10 +136,10 @@ public class MongoDatabaseManager extends BukkitRunnable {
         long cookingExp = professionExperience.getExperience(1);
         long smeltingExp = professionExperience.getExperience(1);
 
-        //Realm Default Settings
-        String realmTitle = realmManager.getDefaultRealmTitle();
+        //RealmCommands Default Settings
+        String realmTitle = "Hi! Welcome to my realm!!";
         int realmTier = 1;
-        String realmInsideLocation = realmManager.getDefaultInsidePortalLocation();
+        String realmInsideLocation = "11/19/7";
         boolean hasRealm = false;
 
         ////////////////////////////////////
@@ -242,7 +240,7 @@ public class MongoDatabaseManager extends BukkitRunnable {
                 .append(Database.PROFESSION_COOKING.toString(), cookingExp)
                 .append(Database.PROFESSION_SMELTING.toString(), smeltingExp)
 
-                //Realm data
+                //RealmCommands data
                 .append(Database.REALM_TIER.toString(), realmTier)
                 .append(Database.REALM_TITLE.toString(), realmTitle)
                 .append(Database.REALM_PORTAL_INSIDE_LOCATION.toString(), realmInsideLocation)
@@ -333,7 +331,7 @@ public class MongoDatabaseManager extends BukkitRunnable {
             profile.setCookingExperience(document.getLong(Database.PROFESSION_COOKING.toString()));
             profile.setSmeltingExperience(document.getLong(Database.PROFESSION_SMELTING.toString()));
 
-            //Realm Data
+            //RealmCommands Data
             profile.setRealmTier(document.getInteger(Database.REALM_TIER.toString()));
             profile.setRealmTitle(document.getString(Database.REALM_TITLE.toString()));
             profile.setRealmInsideLocation(document.getString(Database.REALM_PORTAL_INSIDE_LOCATION.toString()));
@@ -413,7 +411,7 @@ public class MongoDatabaseManager extends BukkitRunnable {
                 .append(Database.PROFESSION_COOKING.toString(), profile.getCookingExperience())
                 .append(Database.PROFESSION_SMELTING.toString(), profile.getSmeltingExperience())
 
-                //Realm Info
+                //RealmCommands Info
                 .append(Database.REALM_TIER.toString(), profile.getRealmTier())
                 .append(Database.REALM_TITLE.toString(), profile.getRealmTitle())
                 .append(Database.REALM_PORTAL_INSIDE_LOCATION.toString(), profile.getRealmInsideLocation())

@@ -24,7 +24,7 @@ public class BlockRegenerationManager extends BukkitRunnable {
 
 
     /**
-     * This will onDisable the block regeneration and replace all blocks back to original state.
+     * This will disable the block regeneration and replace all blocks back to original state.
      */
     public void onDisable() {
         resetAllBlocks();

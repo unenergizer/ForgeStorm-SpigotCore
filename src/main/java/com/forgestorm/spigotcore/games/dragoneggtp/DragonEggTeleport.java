@@ -21,6 +21,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import java.io.File;
@@ -29,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class DragonEggTeleport {
+public class DragonEggTeleport implements Listener {
 
     private final SpigotCore plugin;
 
@@ -50,7 +54,10 @@ public class DragonEggTeleport {
 
 		//Spawn the egg after server startup.
 		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, this::spawnEgg, 5 * 20L);
-	}
+
+        // Register listeners
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
 
     public void onDisable() {
         //Despawn the block
@@ -58,7 +65,10 @@ public class DragonEggTeleport {
 
 		//Remove the hologram.
 		hologram.removeHolograms();
-	}
+
+        // Unregister Listeners
+        PlayerInteractEvent.getHandlerList().unregister(this);
+    }
 
 	public void toggleEggClick(Player player, Location clickLocation) {
 
@@ -189,4 +199,20 @@ public class DragonEggTeleport {
 			locations.add(new Location(world, x, y, z));
 		}
 	}
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+
+        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && block.getType().equals(Material.DRAGON_EGG)
+                || event.getAction().equals(Action.LEFT_CLICK_BLOCK) && block.getType().equals(Material.DRAGON_EGG)) {
+
+            //Cancel the default egg respawn.
+            event.setCancelled(true);
+
+            //Toggle the egg click.
+            plugin.getDragonEggTP().toggleEggClick(player, event.getClickedBlock().getLocation());
+        }
+    }
 }

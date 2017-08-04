@@ -50,7 +50,7 @@ public class PrivateFurnace extends BukkitRunnable implements Listener {
     private boolean cancel = false;
     private Map<Inventory, LockedFurnace> lockedFurnaces = new HashMap<>();
 
-    public PrivateFurnace(SpigotCore plugin) {
+    PrivateFurnace(SpigotCore plugin) {
         this.plugin = plugin;
 
         // Register Listeners
@@ -93,7 +93,7 @@ public class PrivateFurnace extends BukkitRunnable implements Listener {
      * @param furnaceInventory The furnace the player is trying to use.
      * @return True if the furnace should not be opened, false otherwise.
      */
-    public boolean registerPrivateFurnace(Player player, Inventory furnaceInventory) {
+    private boolean registerPrivateFurnace(Player player, Inventory furnaceInventory) {
         int maxFurnaceCount = getMaxFurnaceCount(player);
         int furnaceCount = 0;
 
@@ -174,7 +174,7 @@ public class PrivateFurnace extends BukkitRunnable implements Listener {
 
     @Override
     public void run() {
-        // Stop the BukkitRunnable if the onDisable method is ran.
+        // Stop the BukkitRunnable if the disable method is ran.
         if (cancel) {
             cancel();
             return;
@@ -261,7 +261,7 @@ public class PrivateFurnace extends BukkitRunnable implements Listener {
 
     @Getter
     @AllArgsConstructor
-    class LockedFurnace {
+    private class LockedFurnace {
         private final Player owner;
         @Setter
         private int timeLeft;

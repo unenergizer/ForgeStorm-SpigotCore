@@ -24,7 +24,7 @@ public enum SpigotCoreMessages {
 
     BAR_REALM("&8&l&m--------------&r&l &l &l &f&lRealm Commands&l &l &l &8&l&m--------------"),
     REALM_PORTAL_DUPLICATE("&cYou already have a realm opened! Close it to open your realm at another location."),
-    REALM_PORTAL_OPENED("&d&l* Realm Portal OPENED *"),
+    REALM_PORTAL_OPENED("&d&l* RealmCommands Portal OPENED *"),
     REALM_PORTAL_TITLE("&7Type &3/realm help &7for a list of commands."),
     REALM_PORTAL_PLACE_DENY_BLOCK("&cYou &ncannot&c open a realm portal here."),
     REALM_PORTAL_PLACE_TOO_CLOSE("&cYou &ncannot&c place a realm portal so close to another one."),

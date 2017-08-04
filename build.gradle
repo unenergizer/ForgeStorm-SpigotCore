@@ -104,11 +104,6 @@ repositories {
         name 'puha-repo'
         url 'http://repo.puha.io/nexus/content/repositories/releases/'
     }
-
-    maven {
-        name 'jitpack.io'
-        url 'https://jitpack.io'
-    }
 }
 
 // ========================= Dependencies ========================= //
@@ -116,11 +111,8 @@ repositories {
 dependencies {
     compile group: 'org.mongodb.morphia', name: 'morphia', version: '1.3.2'
     compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.4.2'
-    compile group: 'org.zeroturnaround', name: 'zt-zip', version: '1.11'
-    compile group: 'org.apache.ant', name: 'ant-commons-net', version: '1.10.0'
-    compile group: 'org.apache.commons', name: 'commons-io', version: '1.3.2'
 
-    provided group: 'org.spigotmc', name: 'spigot-api', version: '1.11-R0.1-SNAPSHOT'
+    provided group: 'org.spigotmc', name: 'spigot-api', version: '1.12-R0.1-SNAPSHOT'
     provided group: 'org.projectlombok', name: 'lombok', version: '1.16.10'
     provided group: 'net.md-5', name: 'bungeecord-api', version: '1.10-SNAPSHOT'
     provided group: 'io.puharesource.mc', name: 'TitleManager', version: '2.0.0'

@@ -81,8 +81,8 @@ public class PlayerProfileData {
     private long cookingExperience;
     private long smeltingExperience;
 
-	//Realm data
-	private int realmTier;
+    //RealmCommands data
+    private int realmTier;
 	private String realmTitle;
 	private String realmInsideLocation;
     private boolean hasRealm;

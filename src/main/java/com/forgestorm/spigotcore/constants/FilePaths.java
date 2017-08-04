@@ -1,13 +1,8 @@
 package com.forgestorm.spigotcore.constants;
 
 public enum FilePaths {
-	
-	
-	//RPG CODE
-	LOOT_TABLE_CHEST("loot/Chest.yml"),
-	LOOT_TABLE_MOBS("loot/Monster.yml"),
-	
-	SETTINGS("settings.yml"),
+
+    SETTINGS("settings.yml"),
 
 	SOUND("sounds"),
 	

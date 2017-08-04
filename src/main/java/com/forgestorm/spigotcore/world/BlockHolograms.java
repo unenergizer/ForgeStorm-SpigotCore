@@ -54,7 +54,7 @@ public class BlockHolograms {
     }
 
     /**
-     * This will onDisable this class.
+     * This will disable this class.
      */
     public void onDisable() {
         removeHolograms();

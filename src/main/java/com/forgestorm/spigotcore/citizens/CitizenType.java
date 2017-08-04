@@ -11,7 +11,7 @@ public enum CitizenType {
     LOBBY("Back To Lobby"),
     MERCHANT("Item Merchant"),
     MERCHANT_BOAT("Boat Merchant"),
-    MERCHANT_REALM("Realm Merchant"),
+    MERCHANT_REALM("RealmCommands Merchant"),
     MERCHANT_FARMING("Farming Merchant"),
     MERCHANT_FISHING("Fishing Merchant"),
     MERCHANT_MINING("Mining Merchant"),

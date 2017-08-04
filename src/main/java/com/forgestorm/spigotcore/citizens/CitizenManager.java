@@ -97,7 +97,7 @@ public class CitizenManager extends BukkitRunnable implements Listener {
     }
 
     /**
-     * This will onDisable this class.
+     * This will disable this class.
      */
     public void onDisable() {
         // Cancel the animate thread.
@@ -326,8 +326,8 @@ public class CitizenManager extends BukkitRunnable implements Listener {
                 skippedTutorial = true;
             case TUTORIAL_EXIT:
                 // Teleport the player to the main spawn.
-                //TODO: RELOCATE
-                //plugin.getTeleports().teleportSpawn(player);
+                TutorialExitEvent tutorialExitEvent = new TutorialExitEvent(player);
+                Bukkit.getPluginManager().callEvent(tutorialExitEvent);
 
                 // Mark the tutorial as completed.
                 plugin.getProfileManager().getProfile(player).setTutorialFinished(true);
