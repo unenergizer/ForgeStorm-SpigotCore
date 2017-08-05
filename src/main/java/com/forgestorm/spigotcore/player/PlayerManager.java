@@ -4,6 +4,8 @@ import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.CommonSounds;
 import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
 import com.forgestorm.spigotcore.database.PlayerProfileData;
+import com.forgestorm.spigotcore.help.AnimatedTutorial;
+import com.forgestorm.spigotcore.help.LocationTrackingManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -57,6 +59,27 @@ public class PlayerManager implements Listener {
         PlayerQuitEvent.getHandlerList().unregister(this);
     }
 
+
+    public void removeNetworkPlayer(Player player) {
+        AnimatedTutorial animatedTutorial = plugin.getAnimatedTutorial();
+        LocationTrackingManager tracker = plugin.getLocationTrackingManager();
+
+        //Remove the player from the active animatedTutorial.
+        if (animatedTutorial.getActivePlayers().containsKey(player)) {
+            animatedTutorial.endTutorial(player, true);
+        }
+
+        //Remove Scoreboard
+        plugin.getScoreboardManager().removePlayer(player);
+
+        //Remove player from tracking list.
+        tracker.removePlayer(player);
+    }
+
+    public void saveProfileData(Player player) {
+        plugin.getProfileManager().unloadProfile(player);
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
@@ -69,22 +92,28 @@ public class PlayerManager implements Listener {
     public void onPlayerKick(PlayerKickEvent event) {
         Player player = event.getPlayer();
 
-        //Remove the player
-        new RemoveNetworkPlayer(plugin, player, false);
-
         //Do not show logout message.
         event.setLeaveMessage("");
+
+        PlayerProfileData playerProfileData = plugin.getProfileManager().getProfile(player);
+
+        if (playerProfileData == null || playerProfileData.isSavingData()) return;
+        saveProfileData(player);
+        removeNetworkPlayer(player);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        //Remove the player
-        new RemoveNetworkPlayer(plugin, player, false);
-
         //Do not show logout message.
         event.setQuitMessage("");
+
+        PlayerProfileData playerProfileData = plugin.getProfileManager().getProfile(player);
+
+        if (playerProfileData == null || playerProfileData.isSavingData()) return;
+        saveProfileData(player);
+        removeNetworkPlayer(player);
     }
 
     @EventHandler

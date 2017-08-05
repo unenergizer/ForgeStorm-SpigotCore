@@ -5,6 +5,7 @@ import com.forgestorm.spigotcore.constants.Database;
 import com.forgestorm.spigotcore.experience.PlayerExperience;
 import com.forgestorm.spigotcore.experience.ProfessionExperience;
 import com.forgestorm.spigotcore.util.item.InventoryStringDeSerializer;
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -260,6 +261,9 @@ public class MongoDatabaseManager extends BukkitRunnable {
         if (loadingPlayers.isEmpty()) return;
 
         Player player = loadingPlayers.remove();
+
+        // If player's data has been saved then load otherwise skip
+
         loadProfile(player);
     }
 
@@ -269,6 +273,7 @@ public class MongoDatabaseManager extends BukkitRunnable {
      * @param player The player who joined the server.
      */
     public void loadProfile(Player player) {
+        ColorLogger.ERROR.printLog("LoadingProfile");
         //Prevent NPC's from getting profiles.
         if (player.hasMetadata("NPC")) return;
 
@@ -349,6 +354,7 @@ public class MongoDatabaseManager extends BukkitRunnable {
      * @param player The player who logged out.
      */
     public void unloadProfile(Player player) {
+        ColorLogger.FATAL.printLog("UnloadingProfile");
         //Prevent NPC's from unloading profiles.
         if (player.hasMetadata("NPC")) {
             return;

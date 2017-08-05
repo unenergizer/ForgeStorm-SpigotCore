@@ -96,6 +96,7 @@ public class PlayerProfileData {
 	private Location location;
 	private Menu currentMenu;
     private String chatPrefix;
+    private boolean savingData = false;
 
     //PluginCommand info
     private boolean inTutorial;

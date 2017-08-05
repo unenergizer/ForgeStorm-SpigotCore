@@ -28,7 +28,6 @@ import com.forgestorm.spigotcore.menus.GameSelectionMenu;
 import com.forgestorm.spigotcore.menus.Menu;
 import com.forgestorm.spigotcore.menus.MenuListener;
 import com.forgestorm.spigotcore.player.PlayerManager;
-import com.forgestorm.spigotcore.player.RemoveNetworkPlayer;
 import com.forgestorm.spigotcore.player.SetupNetworkPlayer;
 import com.forgestorm.spigotcore.sound.InventorySounds;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
@@ -44,7 +43,6 @@ import com.forgestorm.spigotcore.world.animate.WorldTimer;
 import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.messaging.Messenger;
@@ -104,9 +102,9 @@ public class SpigotCore extends JavaPlugin {
 	@Override
 	public void onDisable() {
         // Save All Players
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            new RemoveNetworkPlayer(this, player, true);
-        }
+//        for (Player player : Bukkit.getOnlinePlayers()) {
+//            new RemoveNetworkPlayer(this, player, true);
+//        }
 
         // Disable Classes
         profileManager.onDisable();
