@@ -6,6 +6,7 @@ import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
 import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.help.AnimatedTutorial;
 import com.forgestorm.spigotcore.help.LocationTrackingManager;
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -128,7 +129,7 @@ public class PlayerManager implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
-        System.out.println("Compass drop");
+        ColorLogger.INFO.printLog("Compass drop");
         if (event.getItemDrop().getItemStack().getType() == Material.COMPASS) {
             event.getPlayer().sendMessage(ChatColor.RED + "You can not drop your compass.");
             CommonSounds.ACTION_FAILED.playSound(event.getPlayer());

@@ -12,16 +12,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class BungeeCord implements PluginMessageListener {
 
     private final SpigotCore plugin;
-    private final Logger log = Logger.getLogger("Minecraft");
 
     public BungeeCord(SpigotCore plugin) {
 
@@ -37,37 +36,44 @@ public class BungeeCord implements PluginMessageListener {
         plugin.getProfileManager().getProfile(player).setSavingData(true);
         PlayerManager playerManager = plugin.getPlayerManager();
 
+
         playerManager.saveProfileData(player);
         playerManager.removeNetworkPlayer(player);
 
+        new BukkitRunnable() {
 
-        // TODO: AFTER SAVE CONFIRMATION, CONTINUE
+            @Override
+            public void run() {
+                // We wait for mongo to save.
+                //TODO: This is not really ideal. We should get a call back instead and then continue.
 
-        try {
-            Messenger messenger = Bukkit.getMessenger();
-            if (!messenger.isOutgoingChannelRegistered(plugin, "BungeeCord")) {
-                messenger.registerOutgoingPluginChannel(plugin, "BungeeCord");
+                try {
+                    Messenger messenger = Bukkit.getMessenger();
+                    if (!messenger.isOutgoingChannelRegistered(plugin, "BungeeCord")) {
+                        messenger.registerOutgoingPluginChannel(plugin, "BungeeCord");
+                    }
+
+                    if (server.length() == 0) {
+                        player.sendMessage("&cThe server name was empty!");
+                        return;
+                    }
+
+                    ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
+                    DataOutputStream out = new DataOutputStream(byteArray);
+
+                    out.writeUTF("Connect");
+                    out.writeUTF(server);
+
+                    player.sendPluginMessage(plugin, "BungeeCord", byteArray.toByteArray());
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    ColorLogger.FATAL.printLog("Could not handle BungeeCord command from " + player.getName() + ": tried to connect to \"" + server + "\".");
+
+                    return;
+                }
             }
-
-            if (server.length() == 0) {
-                player.sendMessage("&cThe server name was empty!");
-                return;
-            }
-
-            ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
-            DataOutputStream out = new DataOutputStream(byteArray);
-
-            out.writeUTF("Connect");
-            out.writeUTF(server);
-
-            player.sendPluginMessage(plugin, "BungeeCord", byteArray.toByteArray());
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            log.warning("Could not handle BungeeCord command from " + player.getName() + ": tried to connect to \"" + server + "\".");
-
-            return;
-        }
+        }.runTaskLater(plugin, 20 * 3); //3 seconds
     }
 
     public void getPlayerCount(String serverName) {
@@ -94,9 +100,9 @@ public class BungeeCord implements PluginMessageListener {
         }
 
         ByteArrayDataInput in = ByteStreams.newDataInput(message);
-        String subchannel = in.readUTF();
+        String subChannel = in.readUTF();
 
-        if (subchannel.equals("PlayerCount")) {
+        if (subChannel.equals("PlayerCount")) {
             String server = in.readUTF(); // Name of server, as given in the arguments
             int playerCount = in.readInt();
 
@@ -108,18 +114,6 @@ public class BungeeCord implements PluginMessageListener {
                     ((GameSelectionMenu) plugin.getGameSelectionMenu()).setCreativePlayers(playerCount);
                     break;
             }
-        }
-
-        if (subchannel.equals("MongoUpdate")) {
-
-            // unload profile into database
-            // load from database
-
-
-            String playerName = in.readUTF();
-
-            // TODO: UPDATE DATABASE
-            ColorLogger.WARNING.printLog(true, "MONGO MSG: " + playerName);
         }
     }
 }

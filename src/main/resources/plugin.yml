@@ -10,8 +10,6 @@ commands:
    creative:
    compass:
    lantern:
-   lobby:
-      aliases: [hub]
    help:
    mainmenu:
    settings:

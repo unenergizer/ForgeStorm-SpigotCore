@@ -1,6 +1,7 @@
 package com.forgestorm.spigotcore.util.player;
 
 import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -111,6 +112,6 @@ public class DeletePlayerFiles {
     }
 
     private void showDebugText(String message) {
-        if (debugText) System.out.println(message);
+        if (debugText) ColorLogger.DEBUG.printLog(message);
     }
 }

@@ -7,7 +7,6 @@ import com.forgestorm.spigotcore.commands.Admin;
 import com.forgestorm.spigotcore.commands.Compass;
 import com.forgestorm.spigotcore.commands.Creative;
 import com.forgestorm.spigotcore.commands.LanternCommand;
-import com.forgestorm.spigotcore.commands.Lobby;
 import com.forgestorm.spigotcore.commands.MenuHelp;
 import com.forgestorm.spigotcore.commands.MenuMain;
 import com.forgestorm.spigotcore.commands.MenuSettings;
@@ -166,7 +165,6 @@ public class SpigotCore extends JavaPlugin {
 		getCommand("admin").setExecutor(new Admin(this));
 		getCommand("creative").setExecutor(new Creative(this));
         getCommand("lantern").setExecutor(new LanternCommand(this));
-        getCommand("lobby").setExecutor(new Lobby(this));
         getCommand("mod").setExecutor(new Mod(this));
         getCommand("money").setExecutor(new Money(this));
         getCommand("playtime").setExecutor(new PlayTime(this));

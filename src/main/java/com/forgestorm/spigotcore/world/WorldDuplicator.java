@@ -1,5 +1,6 @@
 package com.forgestorm.spigotcore.world;
 
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -100,8 +101,8 @@ public class WorldDuplicator {
 		} else {
 
 			if (dest.isDirectory()) {
-				System.out.println("YOU FUCKED UP!");
-			}
+                ColorLogger.FATAL.printLog("YOU FUCKED UP!");
+            }
 
 			// if file, then copy it
 			// Use bytes stream to support all file types

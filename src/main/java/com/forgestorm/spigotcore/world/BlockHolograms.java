@@ -3,6 +3,7 @@ package com.forgestorm.spigotcore.world;
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.FilePaths;
 import com.forgestorm.spigotcore.util.display.Hologram;
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,7 +49,7 @@ public class BlockHolograms {
         //Apply Citizens Configuration after server startup.
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             applyBlockHolograms();
-            System.out.println("[FSCore] Applied Block Holograms.");
+            ColorLogger.INFO.printLog("[FSCore] Applied Block Holograms.");
         }, 4 * 20L);
 
     }
@@ -104,7 +105,7 @@ public class BlockHolograms {
             hologramInfos.add(new HologramInfo(x, y, z, text, centerOnBlock));
             totalHolograms++;
         }
-        System.out.println("[FS-CORE] Loaded " + totalHolograms + " block hologramInfos.");
+        ColorLogger.INFO.printLog("[FS-CORE] Loaded " + totalHolograms + " block hologramInfos.");
     }
 
     /**

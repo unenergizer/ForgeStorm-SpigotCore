@@ -8,6 +8,7 @@ import com.forgestorm.spigotcore.experience.Experience;
 import com.forgestorm.spigotcore.experience.ProfessionExperience;
 import com.forgestorm.spigotcore.menus.RecipeOptionsMenu;
 import com.forgestorm.spigotcore.util.imgmessage.EzImgMessage;
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import com.forgestorm.spigotcore.util.math.TimeUnit;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.Selection;
@@ -99,7 +100,7 @@ public class Admin implements CommandExecutor {
 
             switch (args[0].toLowerCase()) {
                 case "chaticon":
-                    System.out.println("Sending chat icon...");
+                    ColorLogger.INFO.printLog("Sending chat icon...");
                     commandSender.sendMessage("");
                     new EzImgMessage().sendEzImgMessage((Player) commandSender, ChatIcons.valueOf(args[1].toUpperCase()), "This is test text!");
                     break;

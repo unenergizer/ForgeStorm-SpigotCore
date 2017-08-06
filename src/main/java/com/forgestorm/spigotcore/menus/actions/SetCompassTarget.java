@@ -38,6 +38,4 @@ public class SetCompassTarget implements ClickAction {
 		//Play sound.
 		player.playSound(player.getEyeLocation(), Sound.BLOCK_NOTE_PLING, .8f, .7f);
 	}
-	
-	
 }

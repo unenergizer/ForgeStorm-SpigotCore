@@ -2,6 +2,7 @@ package com.forgestorm.spigotcore.world.animate;
 
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.TimesOfTheDay;
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -39,7 +40,7 @@ public class WorldTimer extends BukkitRunnable {
             // AFTERNOON
             if (time == 0) {
                 day++;
-                System.out.println("Day: " + day);
+                ColorLogger.INFO.printLog("Day: " + day);
                 timesOfTheDay = TimesOfTheDay.AFTERNOON;
                 triggerEvent(timesOfTheDay);
             }

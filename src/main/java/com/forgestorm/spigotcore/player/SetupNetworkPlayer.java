@@ -7,21 +7,14 @@ import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.database.ProfileLoadedEvent;
 import com.forgestorm.spigotcore.experience.PlayerExperience;
 import com.forgestorm.spigotcore.util.item.InventoryStringDeSerializer;
-import com.forgestorm.spigotcore.util.item.ItemGenerator;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -51,10 +44,6 @@ public class SetupNetworkPlayer extends BukkitRunnable {
      */
     private void setupPlayer(PlayerProfileData profileData) {
         Player player = profileData.getPlayer();
-
-        // Trigger profile loaded event
-        ProfileLoadedEvent profileLoadedEvent = new ProfileLoadedEvent(player);
-        Bukkit.getPluginManager().callEvent(profileLoadedEvent);
 
         //Additional profileData setup.
         profileData.setOperatorRank();
@@ -91,56 +80,8 @@ public class SetupNetworkPlayer extends BukkitRunnable {
         // Set the player compass menu, just encase it gets deleted.
         player.getInventory().setItem(0, plugin.getItemGen().generateItem("main_menu", ItemTypes.MENU));
 
-        //Reset the players compass.
-        player.setCompassTarget(new Location(Bukkit.getWorlds().get(0), 0.5, 108, -24.5));
-
-        //Put the player in adventure mode.
-        player.setGameMode(GameMode.SURVIVAL);
-
-        //Set player health and food level.
-        player.setHealth(20);
-        player.setFoodLevel(20);
-
-        //Give player starting items.
-        if (profileData.getSerializedInventory().equals("")) {
-            giveStartingItems(player);
-        }
-    }
-
-    private void giveStartingItems(final Player player) {
-        ItemGenerator itemGen = plugin.getItemGen();
-        List<ItemStack> beginnerItems = new ArrayList<>();
-        int timePerItem = 1;
-        int delayTime = 3;
-
-        //Generate Items
-        beginnerItems.add(itemGen.generateItem("main_menu", ItemTypes.MENU));
-        beginnerItems.add(itemGen.generateItem("beginner_boots", ItemTypes.ARMOR));
-        beginnerItems.add(itemGen.generateItem("beginner_leggings", ItemTypes.ARMOR));
-        beginnerItems.add(itemGen.generateItem("beginner_chestplate", ItemTypes.ARMOR));
-        beginnerItems.add(itemGen.generateItem("beginner_helmet", ItemTypes.ARMOR));
-        beginnerItems.add(itemGen.generateItem("beginner_sword", ItemTypes.WEAPON));
-        beginnerItems.add(itemGen.generateItem("beginner_bread", ItemTypes.FOOD, 6));
-
-        //Set Items
-        new BukkitRunnable() {
-
-            private int i;
-
-            @Override
-            public void run() {
-                Material material = beginnerItems.get(i).getType();
-                player.getInventory().setItem(i, beginnerItems.get(i));
-
-                if (material == Material.BREAD) {
-                    player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EAT, 1, .6f);
-                } else {
-                    player.playSound(player.getLocation(), Sound.ITEM_ARMOR_EQUIP_LEATHER, 1, .6f);
-                }
-
-                i++;
-                if (i == beginnerItems.size()) cancel();
-            }
-        }.runTaskTimer(plugin, 20 * delayTime, 20 * timePerItem);
+        // Trigger profile loaded event
+        ProfileLoadedEvent profileLoadedEvent = new ProfileLoadedEvent(player);
+        Bukkit.getPluginManager().callEvent(profileLoadedEvent);
     }
 }

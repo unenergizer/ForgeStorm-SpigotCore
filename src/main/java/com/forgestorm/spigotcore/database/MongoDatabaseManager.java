@@ -81,7 +81,7 @@ public class MongoDatabaseManager extends BukkitRunnable {
 
         // Close the database connection
         mongoClient.close();
-        System.out.println("[FSCore] Closing MongoDB connection.");
+        ColorLogger.INFO.printLog("[FSCore] Closing MongoDB connection.");
     }
 
     private void createProfile(Player player) {

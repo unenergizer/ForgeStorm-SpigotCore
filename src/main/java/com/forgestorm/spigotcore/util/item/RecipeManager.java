@@ -3,6 +3,7 @@ package com.forgestorm.spigotcore.util.item;
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.FilePaths;
 import com.forgestorm.spigotcore.constants.ItemTypes;
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.ChatColor;
@@ -135,7 +136,7 @@ public class RecipeManager {
         if (plugin.getProfileManager().getProfile(player).getCollectedRecipes().contains(recipe)) {
             plugin.getProfileManager().getProfile(player).getCollectedRecipes().remove(recipe);
 
-            System.out.println("REMOVE CALL: " + plugin.getProfileManager().getProfile(player).getCollectedRecipes().toString());
+            ColorLogger.WARNING.printLog("REMOVE CALL: " + plugin.getProfileManager().getProfile(player).getCollectedRecipes().toString());
 
             return ChatColor.GREEN + "Recipe was removed from player.";
         } else {

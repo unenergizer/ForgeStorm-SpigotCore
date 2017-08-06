@@ -22,6 +22,7 @@ import com.forgestorm.spigotcore.menus.profession.SmeltingTrainerMenu;
 import com.forgestorm.spigotcore.menus.profession.WoodCuttingTrainerMenu;
 import com.forgestorm.spigotcore.util.display.Hologram;
 import com.forgestorm.spigotcore.util.item.NPCSkullBuilder;
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import com.forgestorm.spigotcore.util.math.RandomChance;
 import com.forgestorm.spigotcore.util.text.CenterChatText;
 import lombok.Getter;
@@ -89,7 +90,7 @@ public class CitizenManager extends BukkitRunnable implements Listener {
         //Apply Citizens Configuration after server startup.
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             applyCitizensConfiguration();
-            System.out.println("[FSCore] Applied Citizens HP and Holograms.");
+            ColorLogger.INFO.printLog("[FSCore] Applied Citizens HP and Holograms.");
         }, 5 * 20L);
 
         // Register Listeners
@@ -472,7 +473,7 @@ public class CitizenManager extends BukkitRunnable implements Listener {
         private final Map<Player, Integer> countDowns = new ConcurrentHashMap<>();
 
         public ResetTimer() {
-            System.out.println("ResetTimer created!");
+            ColorLogger.INFO.printLog("ResetTimer created!");
         }
 
         @Override
