@@ -7,6 +7,7 @@ import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
 import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.professions.Profession;
 import com.forgestorm.spigotcore.util.math.RandomChance;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -39,6 +40,12 @@ public class FishingProfession extends Profession {
         super(plugin,
                 YamlConfiguration.loadConfiguration(new File(FilePaths.PROFESSION_FISHING.toString())),
                 ProfessionType.FISHING);
+        Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
+    }
+
+    @Override
+    public void onEnable() {
+        Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override

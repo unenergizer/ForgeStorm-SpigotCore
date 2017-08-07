@@ -8,6 +8,7 @@ import com.forgestorm.spigotcore.professions.LoadConfiguration;
 import com.forgestorm.spigotcore.professions.Profession;
 import com.forgestorm.spigotcore.util.math.RandomChance;
 import com.forgestorm.spigotcore.world.BlockRegenerationManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -87,6 +88,11 @@ public abstract class BlockBreakProfession extends Profession implements LoadCon
                 break;
         }
         return false; //The player does not meet the requirements to use the tool.
+    }
+
+    @Override
+    public void onEnable() {
+        Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override

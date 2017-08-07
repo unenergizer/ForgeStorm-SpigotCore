@@ -6,6 +6,7 @@ import com.forgestorm.spigotcore.constants.ProfessionType;
 import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.professions.LoadConfiguration;
 import com.forgestorm.spigotcore.professions.Profession;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -41,6 +42,11 @@ public abstract class FurnaceProfession extends Profession implements LoadConfig
         super(plugin, fileConfiguration, professionType);
 
         loadConfiguration();
+    }
+
+    @Override
+    public void onEnable() {
+        Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override

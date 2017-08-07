@@ -29,6 +29,7 @@ import java.util.List;
  * without the prior written permission of the owner.
  */
 
+@SuppressWarnings("unused")
 public class ProfessionToggle {
 
     private final SpigotCore plugin;
@@ -65,9 +66,7 @@ public class ProfessionToggle {
      */
     public void enableProfessions() {
         professionsEnabled = true;
-        for (Profession profession : professions) {
-            profession.onEnable();
-        }
+        for (Profession profession : professions) profession.onEnable();
 
         // Startup private furnace manager.
         privateFurnaces = new PrivateFurnace(plugin);
@@ -79,9 +78,7 @@ public class ProfessionToggle {
      */
     public void disableProfessions() {
         professionsEnabled = false;
-        for (Profession profession : professions) {
-            profession.onDisable();
-        }
+        for (Profession profession : professions) profession.onDisable();
 
         // Disable the private furnaces.
         privateFurnaces.onDisable();

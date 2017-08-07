@@ -7,7 +7,6 @@ import com.forgestorm.spigotcore.experience.Experience;
 import com.forgestorm.spigotcore.experience.ProfessionExperience;
 import com.forgestorm.spigotcore.util.math.RandomChance;
 import com.forgestorm.spigotcore.util.text.ProgressBarString;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -71,12 +70,7 @@ public abstract class Profession implements Listener {
         return null;
     }
 
-    /**
-     * When a profession is enabled, lets register it's events.
-     */
-    void onEnable() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
-    }
+    public abstract void onEnable();
 
     public abstract void onDisable();
 
