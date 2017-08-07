@@ -40,7 +40,6 @@ public class FishingProfession extends Profession {
         super(plugin,
                 YamlConfiguration.loadConfiguration(new File(FilePaths.PROFESSION_FISHING.toString())),
                 ProfessionType.FISHING);
-        Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     @Override
@@ -132,24 +131,19 @@ public class FishingProfession extends Profession {
     @EventHandler
     public void onPlayerFish(PlayerFishEvent event) {
         event.setExpToDrop(0); // Prevent player from getting exp
+        PlayerFishEvent.State state = event.getState();
+        Player player = event.getPlayer();
 
-        switch (event.getState()) {
-            case FISHING:
-                break;
-            case CAUGHT_FISH:
-                toggleFishingProfession(event.getPlayer());
-                event.getCaught().remove();
-                break;
-            case CAUGHT_ENTITY:
-                toggleFishingProfession(event.getPlayer());
-                event.getCaught().remove();
-                break;
-            case IN_GROUND:
-                break;
-            case FAILED_ATTEMPT:
-                break;
-            case BITE:
-                break;
-        }
+        // Fishing profession can only happen on "CAUGHT" states.
+        if (state != PlayerFishEvent.State.CAUGHT_FISH && state != PlayerFishEvent.State.CAUGHT_ENTITY) return;
+
+        // Call the event. If canceled, stop execution.
+        if (professionToggleEvent(player)) return;
+
+        // Toggle the fishing profession.
+        toggleFishingProfession(event.getPlayer());
+
+        // Remove the default fish. Will replace with our own.
+        event.getCaught().remove();
     }
 }

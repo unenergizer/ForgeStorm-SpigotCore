@@ -19,8 +19,6 @@ commands:
    playtime:
       aliases: [pt]
    roll:
-   spawn:
    safestop:
-   tutorial:
    worldanimate:
       aliases: [wa]

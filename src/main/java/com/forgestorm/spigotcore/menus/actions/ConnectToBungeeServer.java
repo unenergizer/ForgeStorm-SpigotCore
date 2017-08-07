@@ -13,5 +13,6 @@ public class ConnectToBungeeServer implements ClickAction {
     @Override
     public void click(Player player) {
         plugin.getBungeecord().connectToBungeeServer(player, server);
+        if (player.getInventory() != null) player.closeInventory();
     }
 }

@@ -7,6 +7,7 @@ import com.forgestorm.spigotcore.experience.Experience;
 import com.forgestorm.spigotcore.experience.ProfessionExperience;
 import com.forgestorm.spigotcore.util.math.RandomChance;
 import com.forgestorm.spigotcore.util.text.ProgressBarString;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -73,6 +74,19 @@ public abstract class Profession implements Listener {
     public abstract void onEnable();
 
     public abstract void onDisable();
+
+    /**
+     * Calls the profession toggle event. Great if a profession needs to be canceled for
+     * whatever reason.
+     *
+     * @param player The player who performed a profession action.
+     * @return True if the event is cancelled, false otherwise.
+     */
+    protected boolean professionToggleEvent(Player player) {
+        ProfessionToggleEvent professionToggleEvent = new ProfessionToggleEvent(player, professionType);
+        Bukkit.getPluginManager().callEvent(professionToggleEvent);
+        return professionToggleEvent.isCancelled();
+    }
 
     /**
      * This will show the experience gained to the player and show leveling notifications.

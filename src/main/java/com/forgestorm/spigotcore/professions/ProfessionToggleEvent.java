@@ -2,7 +2,9 @@ package com.forgestorm.spigotcore.professions;
 
 import com.forgestorm.spigotcore.constants.ProfessionType;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
@@ -21,14 +23,15 @@ import org.bukkit.event.HandlerList;
  * including photocopying, recording, or other electronic or mechanical methods, 
  * without the prior written permission of the owner.
  */
+@SuppressWarnings("WeakerAccess")
+@Getter
+public class ProfessionToggleEvent extends Event implements Cancellable {
 
-public class ProfessionToggleEvent extends Event {
-
-    private static final HandlerList handlerList = new HandlerList();
-    @Getter
+    private static final HandlerList handlers = new HandlerList();
     private final Player player;
-    @Getter
     private final ProfessionType professionType;
+    @Setter
+    private boolean cancelled;
 
     public ProfessionToggleEvent(Player player, ProfessionType professionType) {
         this.player = player;
@@ -37,6 +40,6 @@ public class ProfessionToggleEvent extends Event {
 
     @Override
     public HandlerList getHandlers() {
-        return handlerList;
+        return handlers;
     }
 }

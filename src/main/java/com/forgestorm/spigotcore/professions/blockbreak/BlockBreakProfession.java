@@ -219,6 +219,10 @@ public abstract class BlockBreakProfession extends Profession implements LoadCon
     public void onBlockBreak(BlockBreakEvent event) {
         event.setCancelled(true);
         Player player = event.getPlayer();
+
+        // Call the event. If canceled, stop execution.
+        if (professionToggleEvent(player)) return;
+
         Material tool = player.getInventory().getItemInMainHand().getType();
         toggleProfession(player, tool, event.getBlock());
     }

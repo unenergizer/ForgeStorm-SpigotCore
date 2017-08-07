@@ -15,7 +15,6 @@ import com.forgestorm.spigotcore.commands.Money;
 import com.forgestorm.spigotcore.commands.PlayTime;
 import com.forgestorm.spigotcore.commands.Roll;
 import com.forgestorm.spigotcore.commands.SafeStop;
-import com.forgestorm.spigotcore.commands.Tutorial;
 import com.forgestorm.spigotcore.commands.WorldAnimate;
 import com.forgestorm.spigotcore.database.MongoDatabaseManager;
 import com.forgestorm.spigotcore.games.dragoneggtp.DragonEggTeleport;
@@ -170,7 +169,6 @@ public class SpigotCore extends JavaPlugin {
         getCommand("playtime").setExecutor(new PlayTime(this));
         getCommand("roll").setExecutor(new Roll());
         getCommand("safestop").setExecutor(new SafeStop(this));
-        getCommand("tutorial").setExecutor(new Tutorial(this));
         getCommand("worldanimate").setExecutor(new WorldAnimate(this));
 
         //Menu commands

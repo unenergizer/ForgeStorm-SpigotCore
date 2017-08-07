@@ -8,6 +8,7 @@ import com.forgestorm.spigotcore.professions.fishing.FishingProfession;
 import com.forgestorm.spigotcore.professions.furnace.Cooking;
 import com.forgestorm.spigotcore.professions.furnace.PrivateFurnace;
 import com.forgestorm.spigotcore.professions.furnace.Smelting;
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -66,7 +67,10 @@ public class ProfessionToggle {
      */
     public void enableProfessions() {
         professionsEnabled = true;
-        for (Profession profession : professions) profession.onEnable();
+        for (Profession profession : professions) {
+            profession.onEnable();
+            ColorLogger.DEBUG.printLog(profession.getClass().getSimpleName() + " enabled");
+        }
 
         // Startup private furnace manager.
         privateFurnaces = new PrivateFurnace(plugin);
@@ -78,7 +82,10 @@ public class ProfessionToggle {
      */
     public void disableProfessions() {
         professionsEnabled = false;
-        for (Profession profession : professions) profession.onDisable();
+        for (Profession profession : professions) {
+            profession.onDisable();
+            ColorLogger.DEBUG.printLog(profession.getClass().getSimpleName() + " disabled");
+        }
 
         // Disable the private furnaces.
         privateFurnaces.onDisable();

@@ -2,6 +2,7 @@ package com.forgestorm.spigotcore.professions.furnace;
 
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.CommonSounds;
+import com.forgestorm.spigotcore.constants.FilePaths;
 import com.forgestorm.spigotcore.constants.ProfessionType;
 import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.professions.LoadConfiguration;
@@ -10,11 +11,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +40,10 @@ public abstract class FurnaceProfession extends Profession implements LoadConfig
 
     private final List<Material> furnaceMaterials = new ArrayList<>();
 
-    FurnaceProfession(SpigotCore plugin, FileConfiguration fileConfiguration, ProfessionType professionType) {
-        super(plugin, fileConfiguration, professionType);
+    FurnaceProfession(SpigotCore plugin, ProfessionType professionType) {
+        super(plugin,
+                YamlConfiguration.loadConfiguration(new File(FilePaths.PROFESSION_COOKING_AND_SMELTING.toString())),
+                professionType);
 
         loadConfiguration();
     }
@@ -104,6 +108,11 @@ public abstract class FurnaceProfession extends Profession implements LoadConfig
     @EventHandler
     public void onFurnaceExtract(FurnaceExtractEvent event) {
         event.setExpToDrop(0); // Do not give default Minecraft experience.
-        toggleFurnaceProfession(event.getPlayer(), event.getItemAmount(), event.getItemType());
+        Player player = event.getPlayer();
+
+        // Call the event. If canceled, stop execution.
+        if (professionToggleEvent(player)) return;
+
+        toggleFurnaceProfession(player, event.getItemAmount(), event.getItemType());
     }
 }

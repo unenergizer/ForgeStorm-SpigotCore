@@ -1,12 +1,8 @@
 package com.forgestorm.spigotcore.professions.furnace;
 
 import com.forgestorm.spigotcore.SpigotCore;
-import com.forgestorm.spigotcore.constants.FilePaths;
 import com.forgestorm.spigotcore.constants.ProfessionType;
 import com.forgestorm.spigotcore.database.PlayerProfileData;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
 
 /*********************************************************************************
  *
@@ -27,9 +23,7 @@ import java.io.File;
 public class Cooking extends FurnaceProfession {
 
     public Cooking(SpigotCore plugin) {
-        super(plugin,
-                YamlConfiguration.loadConfiguration(new File(FilePaths.PROFESSION_COOKING_AND_SMELTING.toString())),
-                ProfessionType.COOKING);
+        super(plugin, ProfessionType.COOKING);
     }
 
     @Override
