@@ -97,8 +97,8 @@ public class GameSelectionMenu extends Menu {
 					setItem(creative, 1, creativeAction);
 				}
 			}
-        }.runTaskTimer(plugin, 0, 20 * UPDATE_TIME);
-    }
+		}.runTaskTimer(plugin, 0, 20 * UPDATE_TIME);
+	}
 
 	/**
 	 * This will create a menu item.

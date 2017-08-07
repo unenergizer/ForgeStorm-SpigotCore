@@ -10,7 +10,7 @@ import com.forgestorm.spigotcore.menus.Menu;
 import com.forgestorm.spigotcore.menus.actions.Exit;
 import com.forgestorm.spigotcore.menus.actions.OpenProfessionsMenu;
 import com.forgestorm.spigotcore.menus.actions.PurchaseProfession;
-import com.forgestorm.spigotcore.profession.Profession;
+import com.forgestorm.spigotcore.professions.Profession;
 import com.forgestorm.spigotcore.util.item.ItemBuilder;
 import com.forgestorm.spigotcore.util.item.ItemGenerator;
 import com.forgestorm.spigotcore.util.text.ProgressBarString;

@@ -1,4 +1,4 @@
-package com.forgestorm.spigotcore.profession;
+package com.forgestorm.spigotcore.professions.furnace;
 
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.CommonSounds;
@@ -50,7 +50,7 @@ public class PrivateFurnace extends BukkitRunnable implements Listener {
     private boolean cancel = false;
     private Map<Inventory, LockedFurnace> lockedFurnaces = new HashMap<>();
 
-    PrivateFurnace(SpigotCore plugin) {
+    public PrivateFurnace(SpigotCore plugin) {
         this.plugin = plugin;
 
         // Register Listeners

@@ -56,9 +56,9 @@ public class SpigotCore extends JavaPlugin {
     private BlockRegenerationManager blockRegen;
     private BungeeCord bungeecord;
     private CitizenManager citizenManager;
-	private DragonEggTeleport dragonEggTP;
-	private ItemGenerator itemGen;
-	private LocationTrackingManager locationTrackingManager;
+    private DragonEggTeleport dragonEggTP;
+    private ItemGenerator itemGen;
+    private LocationTrackingManager locationTrackingManager;
     private MongoDatabaseManager profileManager;
     private SetupNetworkPlayer setupNetworkPlayer;
     private PlayerManager playerManager;
@@ -81,8 +81,8 @@ public class SpigotCore extends JavaPlugin {
     // Stats
     private long startTime;
 
-	@Override
-	public void onEnable() {
+    @Override
+    public void onEnable() {
 
         // Delete any existing player files.
         new DeletePlayerFiles(this).deleteSaveDirectory();
@@ -91,15 +91,15 @@ public class SpigotCore extends JavaPlugin {
         loadClasses();
         registerSpigotListeners();
         registerCommands();
-		registerBungeecordChannels();
-		registerMenus();
+        registerBungeecordChannels();
+        registerMenus();
 
         // Set stats
         startTime = System.currentTimeMillis() / 1000;
     }
 
-	@Override
-	public void onDisable() {
+    @Override
+    public void onDisable() {
         // Save All Players
 //        for (Player player : Bukkit.getOnlinePlayers()) {
 //            new RemoveNetworkPlayer(this, player, true);
@@ -117,11 +117,11 @@ public class SpigotCore extends JavaPlugin {
         chestLoot.onDisable();
     }
 
-	private void loadClasses() {
+    private void loadClasses() {
         //Load API
         titleManagerAPI = (TitleManagerAPI) Bukkit.getServer().getPluginManager().getPlugin("TitleManager");
 
-		//Load classes (do not rearrange)
+        //Load classes (do not rearrange)
         profileManager = new MongoDatabaseManager(
                 this,
                 "localhost",
@@ -139,7 +139,7 @@ public class SpigotCore extends JavaPlugin {
         dragonEggTP = new DragonEggTeleport(this);
         recipeManager = new RecipeManager(this);
         locationTrackingManager = new LocationTrackingManager(this);
-		scoreboardManager = new ScoreboardManager(this);
+        scoreboardManager = new ScoreboardManager(this);
         citizenManager = new CitizenManager(this);
         blockHolograms = new BlockHolograms(this);
         lantern = new Lantern(this);
@@ -150,7 +150,7 @@ public class SpigotCore extends JavaPlugin {
         playerManager = new PlayerManager(this);
         worldSettings = new WorldSettings(this);
 
-		//Run threads
+        //Run threads
         profileManager.runTaskTimerAsynchronously(this, 0, 1);
         setupNetworkPlayer.runTaskTimer(this, 0, 1);
         citizenManager.runTaskTimer(this, 0, 5);
@@ -160,20 +160,20 @@ public class SpigotCore extends JavaPlugin {
         chestLoot.runTaskTimer(this, 0, 20);
     }
 
-	private void registerCommands() {
-		getCommand("roll").setExecutor(new Roll());
-		getCommand("admin").setExecutor(new Admin(this));
-		getCommand("creative").setExecutor(new Creative(this));
+    private void registerCommands() {
+        getCommand("roll").setExecutor(new Roll());
+        getCommand("admin").setExecutor(new Admin(this));
+        getCommand("creative").setExecutor(new Creative(this));
         getCommand("lantern").setExecutor(new LanternCommand(this));
         getCommand("mod").setExecutor(new Mod(this));
         getCommand("money").setExecutor(new Money(this));
         getCommand("playtime").setExecutor(new PlayTime(this));
-		getCommand("roll").setExecutor(new Roll());
+        getCommand("roll").setExecutor(new Roll());
         getCommand("safestop").setExecutor(new SafeStop(this));
         getCommand("tutorial").setExecutor(new Tutorial(this));
         getCommand("worldanimate").setExecutor(new WorldAnimate(this));
 
-		//Menu commands
+        //Menu commands
         getCommand("compass").setExecutor(new Compass(this));
         getCommand("help").setExecutor(new MenuHelp(this));
         getCommand("mainmenu").setExecutor(new MenuMain(this));

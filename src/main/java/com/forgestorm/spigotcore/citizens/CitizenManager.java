@@ -4,7 +4,6 @@ import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.CommonSounds;
 import com.forgestorm.spigotcore.constants.FilePaths;
 import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
-import com.forgestorm.spigotcore.menus.GameSelectionMenu;
 import com.forgestorm.spigotcore.menus.help.LinksMenu;
 import com.forgestorm.spigotcore.menus.help.TutorialMenu;
 import com.forgestorm.spigotcore.menus.merchant.BartenderMenu;
@@ -284,7 +283,7 @@ public class CitizenManager extends BukkitRunnable implements Listener {
                 new MerchantWoodCuttingMenu(plugin).open(player);
                 break;
             case PLAY_MINIGAMES:
-                new GameSelectionMenu(plugin).open(player);
+                plugin.getGameSelectionMenu().open(player);
                 break;
             case PROFESSION_COOKING:
                 new CookingTrainerMenu(plugin, player, true).open(player);

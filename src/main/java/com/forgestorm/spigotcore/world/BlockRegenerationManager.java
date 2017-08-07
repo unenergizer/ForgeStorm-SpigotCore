@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class BlockRegenerationManager extends BukkitRunnable {
 
-    private final int blockRegenTime = 60 * 3; // Time till a block respawn's.
+    private static final int blockRegenTime = 60 * 3; // Time till a block respawn's.
     private final Map<Integer, RegenerationInfo> regenInfo = new ConcurrentHashMap<>(); // <ID, RegenInfo>
     private int blockID = 0;
     private int blockIDsRemoved = 0;
@@ -35,6 +35,7 @@ public class BlockRegenerationManager extends BukkitRunnable {
      */
     @Override
     public void run() {
+        //TODO: Change loop to iterator and remove the ID from Map. Change Map to List.
         // Lets loop through the hashMaps to find any blocks that need to be reverted.
         for (int i = blockIDsRemoved; i < blockID; i++) {
 

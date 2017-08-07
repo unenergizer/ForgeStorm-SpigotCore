@@ -60,12 +60,14 @@ public class MenuListener implements Listener {
         if (!(event.getWhoClicked() instanceof Player)) return;
 
         Player player = (Player) event.getWhoClicked();
+        PlayerProfileData playerProfileData = plugin.getProfileManager().getProfile(player);
 
+        if (playerProfileData == null) return;
         if (event.getClickedInventory() == null) return;
 
         if (event.getCurrentItem().getType().equals(Material.COMPASS)) event.setCancelled(true);
 
-        Menu menu = plugin.getProfileManager().getProfile(player).getCurrentMenu();
+        Menu menu = playerProfileData.getCurrentMenu();
 
         if (menu == null) return;
 
