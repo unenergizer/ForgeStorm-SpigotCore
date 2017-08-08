@@ -35,4 +35,21 @@ public class Smelting extends FurnaceProfession {
     public void setExperience(PlayerProfileData playerProfileData, long experience) {
         playerProfileData.setSmeltingExperience(experience);
     }
+
+    @Override
+    public String getUpgrades(int rankUpgradeLevel) {
+        String result = "";
+        if (rankUpgradeLevel == 20) {
+            result = "&aUse 2x Furnaces";
+        } else if (rankUpgradeLevel == 40) {
+            result = "&aUse 3x Furnaces";
+        } else if (rankUpgradeLevel == 60) {
+            result = "&aUse 4x Furnaces";
+        } else if (rankUpgradeLevel == 80) {
+            result = "&aUse 5x Furnaces";
+        } else if (rankUpgradeLevel == 100) {
+            result = "&aPrestige level 1";
+        }
+        return color(result);
+    }
 }

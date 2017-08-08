@@ -17,7 +17,7 @@ public enum SpigotCoreMessages {
     SCOREBOARD_BLANK_LINE_2("&r&r"),
     SCOREBOARD_SERVER("&b&lSERVER&7&l:&r "),
 
-    PROFESSION_ACTION_FAILED("&cYour profession action was unsuccessful."),
+    PROFESSION_ACTION_FAILED("Your profession action was unsuccessful."),
     PROFESSION_NOT_LEARNED("&cYou have not learned this profession."),
     PROFESSION_LEVEL_NOT_HIGH_ENOUGH("&cYou don't have the required level to use this tool."),
     PROFESSION_WRONG_TOOL("&cYou're using the wrong tool for this."),
@@ -63,6 +63,9 @@ public enum SpigotCoreMessages {
     COMMAND_ADMIN_REMOVE_PREMIUM_CURRENCY_SUCCESS("&aPlayer's premium currency has been decreased. &e%c &c-> &e%s&a."),
     COMMAND_ADMIN_REMOVE_EXPERIENCE_SUCCESS("&aPlayer's experience has been decreased. &e%c &c-> &e%s&a."),
     COMMAND_ADMIN_REMOVE_LEVEL_SUCCESS("&aPlayer's level has been decreased. &e%c &c-> &e%s&a."),
+
+    BAR_LEVEL_UP("&8&l&m----------------&r&l &l &l &b&lLevel Up!&l &l &l &8&l&m-----------------"),
+    LEVEL_UP_01("&e\u2748 \u2748 \u2748 Congratulations!! \u2748 \u2748 \u2748 "),
 
     BAR_DISCORD("&8&l&m-----------------&r&l &l &l &9&lDiscord&l &l &l &8&l&m-----------------"),
     DISCORD_INFO_1("&7Want to voice chat with staff and our members?"),

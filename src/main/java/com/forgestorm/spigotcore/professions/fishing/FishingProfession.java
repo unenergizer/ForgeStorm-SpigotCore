@@ -66,7 +66,7 @@ public class FishingProfession extends Profession {
 
         // Make sure the user has learned the profession first.
         if (!playerProfileData.isFishingActive()) {
-            sendFailNotification(player, SpigotCoreMessages.PROFESSION_NOT_LEARNED.toString());
+            sendChatFailMessage(player, SpigotCoreMessages.PROFESSION_NOT_LEARNED.toString());
             return;
         }
 
@@ -145,5 +145,22 @@ public class FishingProfession extends Profession {
 
         // Remove the default fish. Will replace with our own.
         event.getCaught().remove();
+    }
+
+    @Override
+    public String getUpgrades(int rankUpgradeLevel) {
+        String result = "";
+        if (rankUpgradeLevel == 20) {
+            result = "&aCatch Better Fish";
+        } else if (rankUpgradeLevel == 40) {
+            result = "&aCatch Better Fish";
+        } else if (rankUpgradeLevel == 60) {
+            result = "&aCatch Better Fish";
+        } else if (rankUpgradeLevel == 80) {
+            result = "&aCatch Better Fish";
+        } else if (rankUpgradeLevel == 100) {
+            result = "&aPrestige level 1";
+        }
+        return color(result);
     }
 }

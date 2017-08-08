@@ -135,27 +135,27 @@ public abstract class BlockBreakProfession extends Profession implements LoadCon
         // Make sure the user has learned the profession first.
         if (!hasProfession(playerProfileData)) {
             // TODO: Implement profession specific message.
-            sendFailNotification(player, SpigotCoreMessages.PROFESSION_NOT_LEARNED.toString());
+            sendChatFailMessage(player, SpigotCoreMessages.PROFESSION_NOT_LEARNED.toString());
             return;
         }
 
         // Make sure the block to break is happening with the right tool.
         if (!fileConfiguration.contains(toolName + ".breaks." + blockName + "-" + blockData)) {
             // TODO: Implement profession specific message.
-            sendFailNotification(player, SpigotCoreMessages.PROFESSION_WRONG_TOOL.toString());
+            //sendChatFailMessage(player, SpigotCoreMessages.PROFESSION_WRONG_TOOL.toString());
             return;
         }
 
         // Test to see if the profession action roll is a success.
         if (!RandomChance.testChance(fileConfiguration.getInt(toolName + ".breaks." + blockName + "-" + blockData + ".success_rate"))) {
             // Send failed notifications.
-            sendFailNotification(player, SpigotCoreMessages.PROFESSION_ACTION_FAILED.toString());
+            sendActionBarFailMessage(player, SpigotCoreMessages.PROFESSION_ACTION_FAILED.toString());
             return;
         }
 
         // Make sure the player has a high enough level to use this tool
         if (!checkBlockBreakToolLevels(getLevel(playerProfileData), toolMaterial)) {
-            sendFailNotification(player, SpigotCoreMessages.PROFESSION_LEVEL_NOT_HIGH_ENOUGH.toString());
+            sendChatFailMessage(player, SpigotCoreMessages.PROFESSION_LEVEL_NOT_HIGH_ENOUGH.toString());
             return;
         }
 

@@ -3,9 +3,11 @@ package com.forgestorm.spigotcore.professions;
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.CommonSounds;
 import com.forgestorm.spigotcore.constants.ProfessionType;
+import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
 import com.forgestorm.spigotcore.experience.Experience;
 import com.forgestorm.spigotcore.experience.ProfessionExperience;
 import com.forgestorm.spigotcore.util.math.RandomChance;
+import com.forgestorm.spigotcore.util.text.CenterChatText;
 import com.forgestorm.spigotcore.util.text.ProgressBarString;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -71,9 +73,30 @@ public abstract class Profession implements Listener {
         return null;
     }
 
+    /**
+     * This is mainly used by profession menu's to get the players stat rank.
+     *
+     * @param level The profession level.
+     * @return A rank message.
+     */
+    private static int getNextProfessionUpgradeLevel(int level) {
+        if (level >= 20 && level < 40) {
+            return 40;
+        } else if (level >= 40 && level < 60) {
+            return 60;
+        } else if (level >= 60 && level < 80) {
+            return 80;
+        } else if (level >= 80) {
+            return 100;
+        }
+        return 20;
+    }
+
     public abstract void onEnable();
 
     public abstract void onDisable();
+
+    public abstract String getUpgrades(int rankUpgradeLevel);
 
     /**
      * Calls the profession toggle event. Great if a profession needs to be canceled for
@@ -98,6 +121,9 @@ public abstract class Profession implements Listener {
     protected void showExperienceMessages(Player player, long currentExperience, long experienceGained) {
         int oldLevel = experienceCalculator.getLevel(currentExperience);
         int level = experienceCalculator.getLevel(currentExperience + experienceGained);
+        int upgradeLevel = getNextProfessionUpgradeLevel(level);
+        double percentTillUpgrade = (level * 100) / upgradeLevel;
+        String percentString = Integer.toString((int) percentTillUpgrade);
         long exp = currentExperience + experienceGained;
         String professionName = professionType.getProfessionName();
 
@@ -105,37 +131,46 @@ public abstract class Profession implements Listener {
         plugin.getTitleManagerAPI().sendActionbar(player, generateActionBarMessage(experienceGained, exp, level));
 
         //Level up check
-        if (oldLevel != level) {
+        if (oldLevel == level) return;
 
-            // Show Leveling message!
-            player.sendMessage("");
-            player.sendMessage(ChatColor.GOLD + "Congratulations! Your " + professionName + " skill has leveled up!");
+        // Show Leveling message!
+        player.sendMessage("");
+        player.sendMessage(SpigotCoreMessages.BAR_LEVEL_UP.toString());
+        player.sendMessage("");
+        player.sendMessage(formatLevelUpMessage(SpigotCoreMessages.LEVEL_UP_01.toString()));
+        player.sendMessage(formatLevelUpMessage("&7Your &3" + professionName + " &7profession is now level &3" + level + "&7!!!"));
+        player.sendMessage("");
+        player.sendMessage(formatLevelUpMessage("&7Upgrade Progression: &d" + percentString + "&7% (level " + level + "/" + upgradeLevel + ")"));
+        player.sendMessage(formatLevelUpMessage("&bLevel " + level + " " + ProgressBarString.buildBar(percentTillUpgrade) + " &bLevel " + upgradeLevel));
+        player.sendMessage(formatLevelUpMessage("&7Level " + upgradeLevel + " Unlocks: " + getUpgrades(upgradeLevel)));
+        player.sendMessage(SpigotCoreMessages.BAR_BOTTOM.toString());
 
-            if (level == 20 || level == 40 || level == 60 || level == 80) {
-                player.sendMessage(ChatColor.AQUA + "You can now upgrade your profession tool!"); //TODO: Make this more specific!
-                player.sendMessage(ChatColor.AQUA + "Visit your profession trainer for more details!");
-            }
+        // Play success sound
+        CommonSounds.ACTION_SUCCESS.playSound(player);
 
-            // Send success message
-            player.sendMessage(ChatColor.GREEN + "Your " + professionName + " is now level " + ChatColor.GOLD + level + ChatColor.GREEN + ".");
-
-            // Play success sound
-            CommonSounds.ACTION_SUCCESS.playSound(player);
-
-            // Show Fireworks for leveling!
-            for (double i = 0; i < 2; i++) {
-                Firework fw = player.getWorld().spawn(player.getLocation().subtract(0, -1, 0), Firework.class);
-                FireworkMeta fm = fw.getFireworkMeta();
-                fm.addEffect(FireworkEffect.builder()
-                        .flicker(false)
-                        .trail(false)
-                        .with(FireworkEffect.Type.STAR)
-                        .withColor(Color.YELLOW)
-                        .withFade(Color.YELLOW)
-                        .build());
-                fw.setFireworkMeta(fm);
-            }
+        // Show Fireworks for leveling!
+        for (double i = 0; i < 2; i++) {
+            Firework fw = player.getWorld().spawn(player.getLocation().subtract(0, -1, 0), Firework.class);
+            FireworkMeta fm = fw.getFireworkMeta();
+            fm.addEffect(FireworkEffect.builder()
+                    .flicker(false)
+                    .trail(false)
+                    .with(FireworkEffect.Type.STAR)
+                    .withColor(Color.YELLOW)
+                    .withFade(Color.YELLOW)
+                    .build());
+            fw.setFireworkMeta(fm);
         }
+    }
+
+    /**
+     * Helper method to auto center and color a message.
+     *
+     * @param message The message to format.
+     * @return A formatted message.
+     */
+    private String formatLevelUpMessage(String message) {
+        return CenterChatText.centerChatMessage(color(message));
     }
 
     /**
@@ -166,9 +201,20 @@ public abstract class Profession implements Listener {
      *
      * @param player The player we will send the message to.
      */
-    protected void sendFailNotification(Player player, String message) {
+    protected void sendChatFailMessage(Player player, String message) {
         // Send failed notifications.
         player.sendMessage(message);
+        CommonSounds.ACTION_FAILED.playSound(player);
+    }
+
+    /**
+     * Generic fail notification to show the user if the profession action failed.
+     *
+     * @param player The player we will send the message to.
+     */
+    protected void sendActionBarFailMessage(Player player, String message) {
+        // Send failed notifications.
+        plugin.getTitleManagerAPI().sendActionbar(player, ChatColor.RED + "" + ChatColor.BOLD + message);
         CommonSounds.ACTION_FAILED.playSound(player);
     }
 
@@ -185,5 +231,15 @@ public abstract class Profession implements Listener {
             gems.setAmount(amount);
             player.getWorld().dropItemNaturally(location, gems);
         }
+    }
+
+    /**
+     * Colors a chat message.
+     *
+     * @param message The message to color.
+     * @return A color message.
+     */
+    protected String color(String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }

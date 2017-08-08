@@ -74,4 +74,21 @@ public class Mining extends BlockBreakProfession {
     public void setBlockRegen(Material blockType, byte blockData, byte tempData, Location blockLocation) {
         blockRegen.setBlock(blockType, blockData, Material.STONE, blockLocation);
     }
+
+    @Override
+    public String getUpgrades(int rankUpgradeLevel) {
+        String result = "";
+        if (rankUpgradeLevel == 20) {
+            result = "&aStone Pickaxe &7and &aMine Iron Ore";
+        } else if (rankUpgradeLevel == 40) {
+            result = "&aIron Pickaxe &7and &aMine Emerald Ore";
+        } else if (rankUpgradeLevel == 60) {
+            result = "&aDiamond Pickaxe &7and &aMine Lapis Ore";
+        } else if (rankUpgradeLevel == 80) {
+            result = "&aGold Pickaxe &7and &aMine Gold Ore";
+        } else if (rankUpgradeLevel == 100) {
+            result = "&aPrestige level 1";
+        }
+        return color(result);
+    }
 }

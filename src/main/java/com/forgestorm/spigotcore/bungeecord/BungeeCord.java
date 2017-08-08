@@ -69,11 +69,9 @@ public class BungeeCord implements PluginMessageListener {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     ColorLogger.FATAL.printLog("Could not handle BungeeCord command from " + player.getName() + ": tried to connect to \"" + server + "\".");
-
-                    return;
                 }
             }
-        }.runTaskLater(plugin, 20 * 3); //3 seconds
+        }.runTaskLater(plugin, 20 * 2); //2 seconds
     }
 
     public void getPlayerCount(String serverName) {

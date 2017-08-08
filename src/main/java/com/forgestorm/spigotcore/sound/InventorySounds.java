@@ -143,6 +143,13 @@ public class InventorySounds implements Listener {
 
                 player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.4F);
             }
+
+            if (itemStack.getType() == Material.WOOD_PICKAXE || itemStack.getType() == Material.STONE_PICKAXE
+                    || itemStack.getType() == Material.IRON_PICKAXE || itemStack.getType() == Material.DIAMOND_PICKAXE
+                    || itemStack.getType() == Material.GOLD_PICKAXE) {
+
+                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.4F);
+            }
         }
     }
 }

@@ -74,4 +74,21 @@ public class WoodCutting extends BlockBreakProfession {
     public void setBlockRegen(Material blockType, byte blockData, byte tempData, Location blockLocation) {
         blockRegen.setBlock(blockType, blockData, Material.STAINED_CLAY, tempData, blockLocation);
     }
+
+    @Override
+    public String getUpgrades(int rankUpgradeLevel) {
+        String result = "";
+        if (rankUpgradeLevel == 20) {
+            result = "&aStone Pick &7and &aChop Spruce Logs";
+        } else if (rankUpgradeLevel == 40) {
+            result = "&aIron Pick &7and &aChop Birch Logs";
+        } else if (rankUpgradeLevel == 60) {
+            result = "&aDiamond Pick &7and &aChop Jungle Logs";
+        } else if (rankUpgradeLevel == 80) {
+            result = "&aGold Pick &7and &aChop Acacia Logs";
+        } else if (rankUpgradeLevel == 100) {
+            result = "&aPrestige level 1";
+        }
+        return color(result);
+    }
 }

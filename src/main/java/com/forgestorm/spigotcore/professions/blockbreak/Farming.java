@@ -74,4 +74,21 @@ public class Farming extends BlockBreakProfession {
     public void setBlockRegen(Material blockType, byte blockData, byte tempData, Location blockLocation) {
         blockRegen.setBlock(blockType, (byte) 0, Material.AIR, blockLocation);
     }
+
+    @Override
+    public String getUpgrades(int rankUpgradeLevel) {
+        String result = "";
+        if (rankUpgradeLevel == 20) {
+            result = "&aStone Hoe &7and &aCarrot Harvesting";
+        } else if (rankUpgradeLevel == 40) {
+            result = "&aIron Hoe &7and &aPotato Harvesting";
+        } else if (rankUpgradeLevel == 60) {
+            result = "&aDiamond Hoe &7and &aBeetroot Harvesting";
+        } else if (rankUpgradeLevel == 80) {
+            result = "&aGold Hoe &7and &aMelon Harvesting";
+        } else if (rankUpgradeLevel == 100) {
+            result = "&aPrestige level 1";
+        }
+        return color(result);
+    }
 }
