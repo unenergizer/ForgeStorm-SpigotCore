@@ -37,7 +37,7 @@ public class MainMenu extends Menu {
 		//Row 1
 		setItem(gameSelection, 12, plugin.getGameSelectionMenu(), false);
 		setItem(help, 13, HelpMenu.class, false);
-		setItem(lobbySelection, 14, new FeatureComingSoon(), false);
+        setItem(lobbySelection, 14, plugin.getLobbySelectionMenu(), false);
 
 		//Row 2
 		setItem(playerInfo, 20, PlayerMenu.class, false);

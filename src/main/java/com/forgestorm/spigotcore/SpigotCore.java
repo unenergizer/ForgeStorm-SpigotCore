@@ -23,6 +23,7 @@ import com.forgestorm.spigotcore.help.LocationTrackingManager;
 import com.forgestorm.spigotcore.hiddenpaths.HiddenPaths;
 import com.forgestorm.spigotcore.listeners.PlayerInteract;
 import com.forgestorm.spigotcore.menus.GameSelectionMenu;
+import com.forgestorm.spigotcore.menus.LobbySelectionMenu;
 import com.forgestorm.spigotcore.menus.Menu;
 import com.forgestorm.spigotcore.menus.MenuListener;
 import com.forgestorm.spigotcore.player.PlayerManager;
@@ -76,6 +77,7 @@ public class SpigotCore extends JavaPlugin {
 
     // Menus
     private Menu gameSelectionMenu;
+    private Menu lobbySelectionMenu;
 
     // Stats
     private long startTime;
@@ -204,5 +206,6 @@ public class SpigotCore extends JavaPlugin {
      */
     private void registerMenus() {
         gameSelectionMenu = new GameSelectionMenu(this);
+        lobbySelectionMenu = new LobbySelectionMenu(this);
     }
 }

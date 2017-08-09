@@ -14,8 +14,6 @@ public enum UserGroup {
     MODERATOR("mod", "&9&lMOD ", ChatColor.YELLOW),
     ADMINISTRATOR("admin", "&c&lADMIN ", ChatColor.YELLOW),
     NPC("npc", "&7[&9NPC&7] ", ChatColor.WHITE),
-    //    MINIGAME_TEAM("mgTeam", "&7[&aTeam&7] ", ChatColor.WHITE),
-//    MINIGAME_KIT("mgKit", "&7[&bKit&7] ", ChatColor.WHITE),
     MINIGAME_TEAM("mgTeam", "&lTEAM&7&l:&r ", ChatColor.WHITE),
     MINIGAME_KIT("mgKit", "&lKIT&7&l:&r ", ChatColor.WHITE),
     MINIGAME_SPECTATOR("mgSpectator", "&7[&8bKit&7] ", ChatColor.DARK_GRAY);

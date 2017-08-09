@@ -3,6 +3,7 @@ package com.forgestorm.spigotcore.bungeecord;
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
 import com.forgestorm.spigotcore.menus.GameSelectionMenu;
+import com.forgestorm.spigotcore.menus.LobbySelectionMenu;
 import com.forgestorm.spigotcore.player.PlayerManager;
 import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import com.google.common.collect.Iterables;
@@ -110,6 +111,9 @@ public class BungeeCord implements PluginMessageListener {
                     break;
                 case "creative":
                     ((GameSelectionMenu) plugin.getGameSelectionMenu()).setCreativePlayers(playerCount);
+                    break;
+                case "hub-01":
+                    ((LobbySelectionMenu) plugin.getLobbySelectionMenu()).setLobbyPlayers(playerCount);
                     break;
             }
         }

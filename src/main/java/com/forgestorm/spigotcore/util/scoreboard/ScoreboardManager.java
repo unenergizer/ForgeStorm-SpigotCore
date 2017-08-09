@@ -4,8 +4,8 @@ package com.forgestorm.spigotcore.util.scoreboard;
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.UserGroup;
 import com.forgestorm.spigotcore.util.text.ColorMessage;
-import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -16,7 +16,6 @@ import org.bukkit.scoreboard.Team;
 public class ScoreboardManager implements Listener {
 
     private final SpigotCore plugin;
-    @Getter
     private Scoreboard scoreboard;
 
     public ScoreboardManager(SpigotCore plugin) {
@@ -48,13 +47,13 @@ public class ScoreboardManager implements Listener {
         for (UserGroup userGroup : UserGroup.values()) {
             // Register the new Team.
             Team team = scoreboard.registerNewTeam(userGroup.getTeamName());
+            team.setCanSeeFriendlyInvisibles(true);
 
             // If the prefix does not exist, skip the part below.
             if (userGroup.getUserGroupPrefix().isEmpty()) continue;
 
             // Add the prefix.
             team.setPrefix(userGroup.getUserGroupPrefix());
-            team.setCanSeeFriendlyInvisibles(true);
         }
     }
 
@@ -84,6 +83,28 @@ public class ScoreboardManager implements Listener {
      */
     private void removeTeam(String teamName) {
         scoreboard.getTeam(teamName).unregister();
+    }
+
+    /**
+     * This will add a team prefix/suffix combo to a LivingEntity. Currently mainly used
+     * to put "Kit" and "Team" next to minigame framework mobs.
+     *
+     * @param livingEntity The living entity to add to the team.
+     * @param teamName     The team the living entity should join.
+     */
+    public void addEntityToTeam(LivingEntity livingEntity, String teamName) {
+        scoreboard.getTeam(teamName).addEntry(livingEntity.getUniqueId().toString());
+    }
+
+    /**
+     * This will remove a team prefix/suffix combo from a LivingEntity. Currently mainly used
+     * to remove "Kit" and "Team" from the minigame framework mobs.
+     *
+     * @param livingEntity The living entity to remove from the team.
+     * @param teamName     The team the living entity should quit.
+     */
+    public void removeEntityFromTeam(LivingEntity livingEntity, String teamName) {
+        scoreboard.getTeam(teamName).removeEntry(livingEntity.getUniqueId().toString());
     }
 
     /**
