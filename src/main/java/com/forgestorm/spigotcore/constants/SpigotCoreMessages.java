@@ -1,6 +1,6 @@
 package com.forgestorm.spigotcore.constants;
 
-import org.bukkit.ChatColor;
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 
 public enum SpigotCoreMessages {
 
@@ -20,7 +20,6 @@ public enum SpigotCoreMessages {
     PROFESSION_ACTION_FAILED("Your profession action was unsuccessful."),
     PROFESSION_NOT_LEARNED("&cYou have not learned this profession."),
     PROFESSION_LEVEL_NOT_HIGH_ENOUGH("&cYou don't have the required level to use this tool."),
-    PROFESSION_WRONG_TOOL("&cYou're using the wrong tool for this."),
 
     BAR_REALM("&8&l&m--------------&r&l &l &l &f&lRealm Commands&l &l &l &8&l&m--------------"),
     REALM_PORTAL_DUPLICATE("&cYou already have a realm opened! Close it to open your realm at another location."),
@@ -102,18 +101,7 @@ public enum SpigotCoreMessages {
 	
 	//Constructor
     SpigotCoreMessages(String message) {
-        this.message = color(message);
-    }
-
-    /**
-	 * Converts special characters in text into Minecraft client color codes.
-	 * <p>
-	 * This will give the messages color.
-	 * @param msg The message that needs to have its color codes converted.
-	 * @return Returns a colored message!
-	 */
-	private static String color(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
+        this.message = ColorMessage.color(message);
     }
 
     /**

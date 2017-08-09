@@ -6,6 +6,7 @@ import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.experience.Experience;
 import com.forgestorm.spigotcore.experience.ProfessionExperience;
 import com.forgestorm.spigotcore.util.math.TimeUnit;
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,10 +56,6 @@ public class PrivateFurnace extends BukkitRunnable implements Listener {
 
         // Register Listeners
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    }
-
-    private static String color(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
     /**
@@ -226,11 +223,11 @@ public class PrivateFurnace extends BukkitRunnable implements Listener {
     private void sendTimeLeftMessage(Player player, String time, boolean warning) {
         if (warning) {
             String message = "&aYou have &c%s &auntil the furnace is unlocked.";
-            player.sendMessage(color(message.replace("%s", time)));
+            player.sendMessage(ColorMessage.color(message.replace("%s", time)));
             CommonSounds.ACTION_FAILED.playSound(player);
         } else {
             String message = ChatColor.GREEN + "&aYou have &e%s &auntil the furnace is unlocked.";
-            player.sendMessage(color(message.replace("%s", time)));
+            player.sendMessage(ColorMessage.color(message.replace("%s", time)));
         }
     }
 

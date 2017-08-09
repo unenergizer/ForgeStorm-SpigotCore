@@ -1,6 +1,6 @@
 package com.forgestorm.spigotcore.util.display;
 
-import net.md_5.bungee.api.ChatColor;
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -24,7 +24,7 @@ public class BossBarAnnouncer {
      * This will setup a new bossbar.
      */
     private void setupBossBar() {
-        bar = Bukkit.createBossBar(color(message), BarColor.PURPLE, BarStyle.SOLID, BarFlag.DARKEN_SKY);
+        bar = Bukkit.createBossBar(ColorMessage.color(message), BarColor.PURPLE, BarStyle.SOLID, BarFlag.DARKEN_SKY);
         bar.setVisible(true);
     }
 
@@ -56,18 +56,6 @@ public class BossBarAnnouncer {
     }
 
     /**
-     * Converts special characters in text into Minecraft client color codes.
-     * <p>
-     * This will give the messages color.
-     *
-     * @param msg The message that needs to have its color codes converted.
-     * @return Returns a colored message!
-     */
-    private String color(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
-    }
-
-    /**
      * Sets the progress of the current bar. From 0 - 1;
      *
      * @param progress The progress of the current bar.
@@ -82,7 +70,7 @@ public class BossBarAnnouncer {
      * @param title The title of the bar.
      */
     public void setBossBarTitle(String title) {
-        bar.setTitle(color(title));
+        bar.setTitle(ColorMessage.color(title));
     }
 
     /**

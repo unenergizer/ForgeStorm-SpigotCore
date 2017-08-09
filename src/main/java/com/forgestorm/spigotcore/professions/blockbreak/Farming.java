@@ -4,6 +4,7 @@ import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.FilePaths;
 import com.forgestorm.spigotcore.constants.ProfessionType;
 import com.forgestorm.spigotcore.database.PlayerProfileData;
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -89,6 +90,6 @@ public class Farming extends BlockBreakProfession {
         } else if (rankUpgradeLevel == 100) {
             result = "&aPrestige level 1";
         }
-        return color(result);
+        return ColorMessage.color(result);
     }
 }

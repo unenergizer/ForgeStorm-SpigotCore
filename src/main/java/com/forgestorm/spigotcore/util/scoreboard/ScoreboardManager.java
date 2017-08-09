@@ -1,211 +1,204 @@
 package com.forgestorm.spigotcore.util.scoreboard;
 
+
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.UserGroup;
-import com.forgestorm.spigotcore.database.PlayerProfileData;
+import com.forgestorm.spigotcore.util.text.ColorMessage;
+import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 public class ScoreboardManager implements Listener {
 
     private final SpigotCore plugin;
-    private final Map<UUID, UserGroup> userGroup;
+    @Getter
     private Scoreboard scoreboard;
-    private Objective objectivePlayerHP;
 
     public ScoreboardManager(SpigotCore plugin) {
         this.plugin = plugin;
-        userGroup = new HashMap<>();
-        registerScoreboard();
-        registerObjectives();
-        setupTeams();
 
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    }
-
-    public void onDisable() {
-        EntityDamageEvent.getHandlerList().unregister(this);
-        PlayerDeathEvent.getHandlerList().unregister(this);
-        PlayerRespawnEvent.getHandlerList().unregister(this);
+        initScoreboard();
+        initDefaultTeams();
     }
 
     /**
-     * This will register the scoreboard.
+     * Enables the scoreboard manager. This will register listener
+     * events and this will also create a new scoreboard,
+     * overwriting the old one.
      */
-    private void registerScoreboard() {
+    private void initScoreboard() {
+        // Register all events.
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+
+        // Register new scoreboard.
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     }
 
     /**
-     * This will register the objectives for the scoreboard. So..
-     * This will add the HP bar under the players name tag and
-     * this will add setup teams for the players to join.
+     * This will enable all the default scoreboard teams.
      */
-    private void registerObjectives() {
-        Objective objectivePlayerList = scoreboard.registerNewObjective("UsergroupManager", "dummy");
-        objectivePlayerList.setDisplaySlot(DisplaySlot.PLAYER_LIST);
+    private void initDefaultTeams() {
+        // Loop through the list of user groups and register
+        // them as teams.
+        for (UserGroup userGroup : UserGroup.values()) {
+            // Register the new Team.
+            Team team = scoreboard.registerNewTeam(userGroup.getTeamName());
 
-        objectivePlayerHP = scoreboard.registerNewObjective("UserHP", "dummy");
-        objectivePlayerHP.setDisplaySlot(DisplaySlot.BELOW_NAME);
-        objectivePlayerHP.setDisplayName(ChatColor.RED + "\u2764");
-    }
+            // If the prefix does not exist, skip the part below.
+            if (userGroup.getUserGroupPrefix().isEmpty()) continue;
 
-    /**
-     * Updates the HP under a players username.
-     *
-     * @param player The player HP we want to update.
-     */
-    public void updatePlayerHP(Player player) {
-        objectivePlayerHP.getScore(player.getName()).setScore((int) player.getHealth());
-    }
-
-    /**
-     * Updates the HP under a players username.
-     *
-     * @param player The player HP we want to update.
-     * @param health The health to set in the scoreboard.
-     */
-    public void updatePlayerHP(Player player, int health) {
-        objectivePlayerHP.getScore(player.getName()).setScore(health);
-    }
-
-    /**
-     * This will setup all of the teams the player can join. This is used to show
-     * tags next to their names.
-     */
-    private void setupTeams() {
-        Team newPlayer = scoreboard.registerNewTeam(UserGroup.USER_PREFIX_USER_GROUP_NEW.getTeamName());
-        Team free = scoreboard.registerNewTeam(UserGroup.USER_PREFIX_USER_GROUP_0.getTeamName());
-        Team paid1 = scoreboard.registerNewTeam(UserGroup.USER_PREFIX_USER_GROUP_1.getTeamName());
-        Team paid2 = scoreboard.registerNewTeam(UserGroup.USER_PREFIX_USER_GROUP_2.getTeamName());
-        Team paid3 = scoreboard.registerNewTeam(UserGroup.USER_PREFIX_USER_GROUP_3.getTeamName());
-        Team paid4 = scoreboard.registerNewTeam(UserGroup.USER_PREFIX_USER_GROUP_4.getTeamName());
-        Team mod = scoreboard.registerNewTeam(UserGroup.USER_PREFIX_MODERATOR.getTeamName());
-        Team admin = scoreboard.registerNewTeam(UserGroup.USER_PREFIX_ADMINISTRATOR.getTeamName());
-        Team npc = scoreboard.registerNewTeam(UserGroup.USER_PREFIX_NPC.getTeamName());
-
-        newPlayer.setPrefix(UserGroup.USER_PREFIX_USER_GROUP_NEW.getUserGroupPrefix());
-        free.setPrefix(UserGroup.USER_PREFIX_USER_GROUP_0.getUserGroupPrefix());
-        paid1.setPrefix(UserGroup.USER_PREFIX_USER_GROUP_1.getUserGroupPrefix());
-        paid2.setPrefix(UserGroup.USER_PREFIX_USER_GROUP_2.getUserGroupPrefix());
-        paid3.setPrefix(UserGroup.USER_PREFIX_USER_GROUP_3.getUserGroupPrefix());
-        paid4.setPrefix(UserGroup.USER_PREFIX_USER_GROUP_4.getUserGroupPrefix());
-
-        mod.setPrefix(UserGroup.USER_PREFIX_MODERATOR.getUserGroupPrefix());
-        mod.setCanSeeFriendlyInvisibles(true);
-
-        admin.setPrefix(UserGroup.USER_PREFIX_ADMINISTRATOR.getUserGroupPrefix());
-        admin.setCanSeeFriendlyInvisibles(true);
-
-        npc.setPrefix(UserGroup.USER_PREFIX_NPC.getUserGroupPrefix());
-    }
-
-    /**
-     * This will add a player to this scoreboard.
-     *
-     * @param player The player to add.
-     * @param group  The User group they are in.
-     * @return True if they were added, false otherwise.
-     */
-    private boolean addPlayer(Player player, UserGroup group) {
-        userGroup.put(player.getUniqueId(), group);
-        player.setScoreboard(scoreboard);
-        Team tryTeam = scoreboard.getTeam(group.getTeamName());
-
-        if (tryTeam == null) return false;
-
-        tryTeam.addEntry(player.getName());
-        return true;
-    }
-
-    /**
-     * This will remove the player from this scoreboard.
-     *
-     * @param player The player to remove.
-     * @return True if removed, false otherwise.
-     */
-    public boolean removePlayer(Player player) {
-
-        Team tryTeam = scoreboard.getTeam(userGroup.get(player.getUniqueId()).getTeamName());
-
-        if (tryTeam == null) return false;
-
-        tryTeam.removeEntry(player.getName());
-        return true;
-    }
-
-    /**
-     * This will assign the player their Username Tax and add the HP bar under their name.
-     *
-     * @param player The player to add.
-     */
-    public void assignPlayer(Player player) {
-        PlayerProfileData profile = plugin.getProfileManager().getProfile(player);
-        UserGroup group = null;
-
-        //Free
-        if (profile.getUserGroup() == 0) {
-            // If they are a new player, show the new player tag.
-            if (profile.shouldShowNewPlayerTag()) {
-                group = UserGroup.USER_PREFIX_USER_GROUP_NEW;
-            } else {
-                group = UserGroup.USER_PREFIX_USER_GROUP_0;
-            }
+            // Add the prefix.
+            team.setPrefix(userGroup.getUserGroupPrefix());
+            team.setCanSeeFriendlyInvisibles(true);
         }
-
-        //Paid
-        if (profile.getUserGroup() == 1) group = UserGroup.USER_PREFIX_USER_GROUP_1;
-        if (profile.getUserGroup() == 2) group = UserGroup.USER_PREFIX_USER_GROUP_2;
-        if (profile.getUserGroup() == 3) group = UserGroup.USER_PREFIX_USER_GROUP_3;
-        if (profile.getUserGroup() == 4) group = UserGroup.USER_PREFIX_USER_GROUP_4;
-
-        //Staff
-        if (profile.isModerator()) group = UserGroup.USER_PREFIX_MODERATOR;
-        if (profile.isAdmin()) group = UserGroup.USER_PREFIX_ADMINISTRATOR;
-
-        addPlayer(player, group);
-        updatePlayerHP(player);
     }
 
     /**
-     * This will setup a NPC player to add their TAG prefix.
+     * This will create a new scoreboard team.
      *
-     * @param npc The NPC player to add.
+     * @param teamName The name of the team. This is how the scoreboard knows
+     *                 one team from another. This name is never displayed to
+     *                 the player. So it may be best to not use spaces.
+     * @param prefix   The prefix of the team name.
+     * @param suffix   The suffix of the team name.
      */
-    public void setupNPC(Player npc) {
-        addPlayer(npc, UserGroup.USER_PREFIX_NPC);
-        updatePlayerHP(npc);
+    private void addTeam(String teamName, String prefix, String suffix) {
+        Team team = scoreboard.registerNewTeam(teamName);
+
+        // Set the prefix.
+        if (prefix != null && !prefix.isEmpty()) team.setPrefix(prefix);
+
+        // Set ths suffix.
+        if (suffix != null && !suffix.isEmpty()) team.setSuffix(suffix);
     }
 
-    @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        // Update the players health under their name.
-        updatePlayerHP(event.getEntity());
+    /**
+     * This will remove a team from the scoreboard.
+     *
+     * @param teamName The team to remove.
+     */
+    private void removeTeam(String teamName) {
+        scoreboard.getTeam(teamName).unregister();
     }
 
-    @EventHandler
-    public void onPlayerRespawn(PlayerRespawnEvent event) {
-        updatePlayerHP(event.getPlayer(), 20);
+    /**
+     * This will add an objective to the players scoreboard. This can
+     * be used to show the players level, hit points, and other things.
+     *
+     * @param objectiveName The name of the objective.
+     * @param criteria      The objective criteria. Typically we call this "dummy."
+     * @param displaySlot   The display slot to place the objective.
+     * @param displayName   The name of the criteria.
+     */
+    public void addObjective(String objectiveName, String criteria, DisplaySlot displaySlot, String displayName) {
+        Objective objective = scoreboard.registerNewObjective(objectiveName, criteria);
+        objective.setDisplaySlot(displaySlot);
+
+        if (displayName == null) return;
+        objective.setDisplayName(ColorMessage.color(displayName));
     }
 
+    /**
+     * This will remove an objective from the scoreboard manager.
+     *
+     * @param objectiveName The name of the objective we want to remove.
+     */
+    public void removeObjective(String objectiveName) {
+        scoreboard.getObjective(objectiveName).unregister();
+    }
 
-    @EventHandler
-    public void onEntityDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
-        updatePlayerHP((Player) event.getEntity());
+    /**
+     * This will set a score for the players objective.
+     *
+     * @param name   The name of the objective to modify.
+     * @param player The player to modify the score for.
+     * @param value  The new value of the score to be set.
+     */
+    public void setObjectiveScore(String name, Player player, int value) {
+        scoreboard.getObjective(name).getScore(player.getName()).setScore(value);
+    }
+
+    /**
+     * This will add a player to the scoreboard with UserGroup properties.
+     *
+     * @param player    The player we want to add to the scoreboard.
+     * @param userGroup The usergroup we want to assign the player to.
+     */
+    public void addPlayer(Player player, UserGroup userGroup) {
+        addPlayer(player, userGroup.getTeamName(), userGroup.getUserGroupPrefix(), null);
+    }
+
+    /**
+     * This will add a player to the scoreboard.
+     *
+     * @param player   The player we want to add.
+     * @param teamName The team we want the player to join.
+     * @param prefix   The text to prefix the players name.
+     * @param suffix   The text to suffix the players name.
+     */
+    public void addPlayer(Player player, String teamName, String prefix, String suffix) {
+        // Give the player the current scoreboard.
+        player.setScoreboard(scoreboard);
+
+        // If the team does not exist, lets add the team to the scoreboard.
+        if (!teamExist(teamName)) addTeam(teamName, prefix, suffix);
+
+        // Add the player to the team.
+        scoreboard.getTeam(teamName).addEntry(player.getName());
+    }
+
+    /**
+     * This will remove a player from the current team. This
+     * will also unregister any unused teams from the score-
+     * board.
+     *
+     * @param player The player to remove from the team.
+     */
+    @SuppressWarnings("DanglingJavadoc")
+    public void removePlayer(Player player) {
+        String entry = player.getName();
+        Team currentTeam = null;
+
+        // Find player team.
+        for (Team team : scoreboard.getTeams()) if (team.hasEntry(entry)) currentTeam = team;
+
+        // If no team is found, do not continue.
+        if (currentTeam == null) return;
+
+        // Remove player from the team.
+        currentTeam.removeEntry(entry);
+
+        ////////////////////////////////////////////////
+        // Begin checking to see if we can remove this
+        // team from the scoreboard.
+        ////////////////////////////////////////////////
+
+        // Check if the team has players.
+        if (currentTeam.getSize() >= 1) return;
+
+        // Check if the team is a default preset.
+        for (UserGroup userGroup : UserGroup.values()) if (teamExist(userGroup.getTeamName())) return;
+
+        // If the team has no players and is not a default
+        // preset, then lets remove the team from the
+        // scoreboard.
+        removeTeam(currentTeam.getName());
+    }
+
+    /**
+     * This will check to see if a team exists.
+     *
+     * @param teamName The team we want to check for.
+     * @return True if the team exists. False otherwise.
+     */
+    private boolean teamExist(String teamName) {
+        boolean doesExist = false;
+        for (Team team : scoreboard.getTeams()) if (team.getName().equals(teamName)) doesExist = true;
+        return doesExist;
     }
 }

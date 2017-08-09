@@ -134,17 +134,12 @@ public abstract class BlockBreakProfession extends Profession implements LoadCon
 
         // Make sure the user has learned the profession first.
         if (!hasProfession(playerProfileData)) {
-            // TODO: Implement profession specific message.
             sendChatFailMessage(player, SpigotCoreMessages.PROFESSION_NOT_LEARNED.toString());
             return;
         }
 
         // Make sure the block to break is happening with the right tool.
-        if (!fileConfiguration.contains(toolName + ".breaks." + blockName + "-" + blockData)) {
-            // TODO: Implement profession specific message.
-            //sendChatFailMessage(player, SpigotCoreMessages.PROFESSION_WRONG_TOOL.toString());
-            return;
-        }
+        if (!fileConfiguration.contains(toolName + ".breaks." + blockName + "-" + blockData)) return;
 
         // Test to see if the profession action roll is a success.
         if (!RandomChance.testChance(fileConfiguration.getInt(toolName + ".breaks." + blockName + "-" + blockData + ".success_rate"))) {

@@ -1,7 +1,6 @@
 package com.forgestorm.spigotcore.util.text;
 
 import com.forgestorm.spigotcore.constants.DefaultFontInfo;
-import org.bukkit.ChatColor;
 
 public class CenterChatText {
 
@@ -25,7 +24,7 @@ public class CenterChatText {
      */
     public static String centerMessage(int width, String message) {
         if (message != null && !message.equals("")) {
-            message = ChatColor.translateAlternateColorCodes('&', message);
+            message = ColorMessage.color(message);
 
             int messagePxSize = 0;
             boolean previousCode = false;

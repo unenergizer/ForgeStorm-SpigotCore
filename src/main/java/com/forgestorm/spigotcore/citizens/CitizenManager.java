@@ -4,6 +4,7 @@ import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.CommonSounds;
 import com.forgestorm.spigotcore.constants.FilePaths;
 import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
+import com.forgestorm.spigotcore.constants.UserGroup;
 import com.forgestorm.spigotcore.menus.help.LinksMenu;
 import com.forgestorm.spigotcore.menus.help.TutorialMenu;
 import com.forgestorm.spigotcore.menus.merchant.BartenderMenu;
@@ -24,6 +25,7 @@ import com.forgestorm.spigotcore.util.item.NPCSkullBuilder;
 import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import com.forgestorm.spigotcore.util.math.RandomChance;
 import com.forgestorm.spigotcore.util.text.CenterChatText;
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -176,9 +178,10 @@ public class CitizenManager extends BukkitRunnable implements Listener {
                 CitizenType type = getCitizenType(npcName);
 
                 // Setup Health, Scoreboard, and Titles..
+                //noinspection deprecation
                 npc.setMaxHealth(100);
                 npc.setHealth(100);
-                plugin.getScoreboardManager().setupNPC(npc);
+                plugin.getScoreboardManager().addPlayer(npc, UserGroup.NPC);
 
                 if (type != CitizenType.NONE) {
                     if (type.equals(CitizenType.PLAY_MINIGAMES)) {
@@ -240,7 +243,7 @@ public class CitizenManager extends BukkitRunnable implements Listener {
      * @param npc    The Citizen (created by the Citizen plugin) that was clicked.
      */
     @SuppressWarnings("deprecation")
-    public void onCitizenInteract(Player player, Player npc) {
+    private void onCitizenInteract(Player player, Player npc) {
         String npcName = npc.getDisplayName();
         CitizenType type = getCitizenType(npcName);
         Location loc = npc.getLocation().add(0, 2, 0);
@@ -408,7 +411,7 @@ public class CitizenManager extends BukkitRunnable implements Listener {
             int lines = config.getConfigurationSection(prefix).getKeys(false).size();
             int rand = RandomChance.randomInt(1, lines) - 1;
 
-            return ChatColor.translateAlternateColorCodes('&', config.getString(prefix + Integer.toString(rand)));
+            return ColorMessage.color(config.getString(prefix + Integer.toString(rand)));
         } else {
             return null;
         }
@@ -471,7 +474,7 @@ public class CitizenManager extends BukkitRunnable implements Listener {
 
         private final Map<Player, Integer> countDowns = new ConcurrentHashMap<>();
 
-        public ResetTimer() {
+        ResetTimer() {
             ColorLogger.INFO.printLog("ResetTimer created!");
         }
 

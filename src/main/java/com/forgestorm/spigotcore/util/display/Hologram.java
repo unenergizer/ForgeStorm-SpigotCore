@@ -1,8 +1,8 @@
 package com.forgestorm.spigotcore.util.display;
 
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
@@ -72,7 +72,7 @@ public class Hologram {
         stand.setRemoveWhenFarAway(false);
 
         //Set the armor stands name.
-        stand.setCustomName(color(name));
+        stand.setCustomName(ColorMessage.color(name));
         stand.setCustomNameVisible(true);
 
         return stand;
@@ -90,9 +90,4 @@ public class Hologram {
         //Clear array holograms.
         armorStands.clear();
     }
-
-    private String color(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
-    }
-
 }

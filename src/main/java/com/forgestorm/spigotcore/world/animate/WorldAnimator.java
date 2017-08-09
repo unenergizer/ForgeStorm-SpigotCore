@@ -2,6 +2,7 @@ package com.forgestorm.spigotcore.world.animate;
 
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.FilePaths;
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -10,7 +11,6 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.world.DataException;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -220,8 +220,8 @@ public class WorldAnimator {
 				String chat = config.getString(suffix + "." + i);
 
 				for (Player players : Bukkit.getOnlinePlayers()) {
-					players.sendMessage(ChatColor.translateAlternateColorCodes('&', chat));
-				}
+                    players.sendMessage(ColorMessage.color(chat));
+                }
 			}
 		}
 
@@ -229,8 +229,8 @@ public class WorldAnimator {
 		// TITLES
 		/////////////////////
 
-		String title = ChatColor.translateAlternateColorCodes('&', config.getString(prefix + ".Titles.title"));
-		String subtitle = ChatColor.translateAlternateColorCodes('&', config.getString(prefix + ".Titles.subtitle"));
+        String title = ColorMessage.color(config.getString(prefix + ".Titles.title"));
+        String subtitle = ColorMessage.color(config.getString(prefix + ".Titles.subtitle"));
 
 		// TODO: Fix null stuff (ChatColor.translateAlternateColorCodes can never be null.
 		if (title != null && subtitle != null) {

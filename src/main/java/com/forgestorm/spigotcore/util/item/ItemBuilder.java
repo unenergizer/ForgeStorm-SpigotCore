@@ -1,5 +1,6 @@
 package com.forgestorm.spigotcore.util.item;
 
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 import com.forgestorm.spigotcore.util.text.StringSplitter;
 import lombok.Getter;
 import lombok.Setter;
@@ -125,13 +126,13 @@ public class ItemBuilder {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             if (this.title != null) {
-                meta.setDisplayName(color(this.title));
+                meta.setDisplayName(ColorMessage.color(this.title));
             }
             if (!this.lore.isEmpty()) {
                 List<String> colored = new ArrayList<>();
 
                 for (String string : lore) {
-                    colored.add(color(string));
+                    colored.add(ColorMessage.color(string));
                 }
 
                 meta.setLore(colored);
@@ -152,10 +153,6 @@ public class ItemBuilder {
         // this.potion.apply(item);
         // }
         return item;
-    }
-
-    private String color(String msg) {
-        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
     public ItemBuilder clone() {

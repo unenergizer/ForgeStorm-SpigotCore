@@ -170,7 +170,7 @@ public abstract class Profession implements Listener {
      * @return A formatted message.
      */
     private String formatLevelUpMessage(String message) {
-        return CenterChatText.centerChatMessage(color(message));
+        return CenterChatText.centerChatMessage(message);
     }
 
     /**
@@ -231,15 +231,5 @@ public abstract class Profession implements Listener {
             gems.setAmount(amount);
             player.getWorld().dropItemNaturally(location, gems);
         }
-    }
-
-    /**
-     * Colors a chat message.
-     *
-     * @param message The message to color.
-     * @return A color message.
-     */
-    protected String color(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }

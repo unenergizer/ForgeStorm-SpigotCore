@@ -3,6 +3,7 @@ package com.forgestorm.spigotcore.professions.furnace;
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.ProfessionType;
 import com.forgestorm.spigotcore.database.PlayerProfileData;
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 
 /*********************************************************************************
  *
@@ -50,6 +51,6 @@ public class Smelting extends FurnaceProfession {
         } else if (rankUpgradeLevel == 100) {
             result = "&aPrestige level 1";
         }
-        return color(result);
+        return ColorMessage.color(result);
     }
 }

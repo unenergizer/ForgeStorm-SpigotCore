@@ -7,6 +7,7 @@ import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
 import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.professions.Profession;
 import com.forgestorm.spigotcore.util.math.RandomChance;
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -161,6 +162,6 @@ public class FishingProfession extends Profession {
         } else if (rankUpgradeLevel == 100) {
             result = "&aPrestige level 1";
         }
-        return color(result);
+        return ColorMessage.color(result);
     }
 }

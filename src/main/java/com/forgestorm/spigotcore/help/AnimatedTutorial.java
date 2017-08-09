@@ -6,6 +6,7 @@ import com.forgestorm.spigotcore.constants.FilePaths;
 import com.forgestorm.spigotcore.constants.SpigotCoreMessages;
 import com.forgestorm.spigotcore.util.player.PlayerRewards;
 import com.forgestorm.spigotcore.util.text.CenterChatText;
+import com.forgestorm.spigotcore.util.text.ColorMessage;
 import lombok.Getter;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
@@ -157,8 +158,8 @@ public class AnimatedTutorial implements Listener {
 								subtitle = "";
 							}
 
-							plugin.getTitleManagerAPI().sendTitles(player, color(title), color(subtitle));
-							//System.out.println("[Tutorial] Floating message displayed!");
+                            plugin.getTitleManagerAPI().sendTitles(player, ColorMessage.color(title), ColorMessage.color(subtitle));
+                            //System.out.println("[Tutorial] Floating message displayed!");
 						}
 
 						largeMessage = true;
@@ -182,7 +183,7 @@ public class AnimatedTutorial implements Listener {
 							player.sendMessage("");
 
 							for (int i = 0; i <= messageCount; i++) {
-								player.sendMessage(color(list.get(i)));
+                                player.sendMessage(ColorMessage.color(list.get(i)));
 
 								//Play a sound
 								if (!list.get(messageCount).isEmpty()) {
@@ -303,11 +304,7 @@ public class AnimatedTutorial implements Listener {
 
 		//Remove them from the list.
 		activePlayers.remove(player);
-	}	
-
-	private String color(String msg) {
-		return ChatColor.translateAlternateColorCodes('&', msg);
-	}
+    }
 
 	/**
 	 * Creates a new configuration file.
