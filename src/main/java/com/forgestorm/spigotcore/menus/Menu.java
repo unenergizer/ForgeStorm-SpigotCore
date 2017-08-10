@@ -1,6 +1,7 @@
 package com.forgestorm.spigotcore.menus;
 
 import com.forgestorm.spigotcore.SpigotCore;
+import com.forgestorm.spigotcore.database.PlayerProfileData;
 import com.forgestorm.spigotcore.menus.actions.ClickAction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -162,7 +163,12 @@ public abstract class Menu {
     }
 
     public void open(Player player) {
+        PlayerProfileData playerProfileData = plugin.getProfileManager().getProfile(player);
+
+        // If the player doesn't have profile data, then don't open menus.
+        if (playerProfileData == null) return;
+
         player.openInventory(inventory);
-        plugin.getProfileManager().getProfile(player).setCurrentMenu(this);
+        playerProfileData.setCurrentMenu(this);
     }
 }

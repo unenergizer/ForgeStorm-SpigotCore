@@ -180,7 +180,6 @@ public class ScoreboardManager implements Listener {
      *
      * @param player The player to remove from the team.
      */
-    @SuppressWarnings("DanglingJavadoc")
     public void removePlayer(Player player) {
         String entry = player.getName();
         Team currentTeam = null;
