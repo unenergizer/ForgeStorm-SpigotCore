@@ -485,7 +485,7 @@ public class CitizenManager extends BukkitRunnable implements Listener {
 
                 int count = countDowns.get(player);
 
-                if (count > 0) {
+                if (count <= 0) {
                     countDowns.remove(player);
                 } else {
                     countDowns.replace(player, --count);

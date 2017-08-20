@@ -3,8 +3,10 @@ package com.forgestorm.spigotcore.util.scoreboard;
 
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.UserGroup;
+import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import com.forgestorm.spigotcore.util.text.ColorMessage;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -67,13 +69,27 @@ public class ScoreboardManager implements Listener {
      * @param suffix   The suffix of the team name.
      */
     private void addTeam(String teamName, String prefix, String suffix) {
-        Team team = scoreboard.registerNewTeam(teamName);
+        Team team = scoreboard.registerNewTeam(trimString(teamName));
 
         // Set the prefix.
-        if (prefix != null && !prefix.isEmpty()) team.setPrefix(prefix);
+        if (prefix != null && !prefix.isEmpty()) {
+            team.setPrefix(prefix);
+            ColorLogger.ERROR.printLog("Prefix Added: " + prefix);
+        }
 
         // Set ths suffix.
-        if (suffix != null && !suffix.isEmpty()) team.setSuffix(suffix);
+        if (suffix != null && !suffix.isEmpty()) {
+            team.setSuffix(suffix);
+            ColorLogger.ERROR.printLog("Suffix Added: " + suffix);
+        }
+
+        ColorLogger.ERROR.printLog("TEAM " + teamName + " ADDED!!!");
+
+        ColorLogger.ERROR.printLog("------ ADDED ---------");
+        for (Team teams : scoreboard.getTeams()) {
+            ColorLogger.WARNING.printLog(teams.getName());
+        }
+        ColorLogger.ERROR.printLog("----------------------");
     }
 
     /**
@@ -83,6 +99,14 @@ public class ScoreboardManager implements Listener {
      */
     private void removeTeam(String teamName) {
         scoreboard.getTeam(teamName).unregister();
+
+
+        ColorLogger.ERROR.printLog("REMOVED: " + teamName);
+        ColorLogger.ERROR.printLog("------ TOTAL ---------");
+        for (Team teams : scoreboard.getTeams()) {
+            ColorLogger.WARNING.printLog(teams.getName());
+        }
+        ColorLogger.ERROR.printLog("----------------------");
     }
 
     /**
@@ -166,11 +190,18 @@ public class ScoreboardManager implements Listener {
         // Give the player the current scoreboard.
         player.setScoreboard(scoreboard);
 
+        player.sendMessage("(SPIGOTCORE) teamName: " + teamName + ChatColor.RESET + " teamPrefix: " + prefix + " " + player.getName());
+
         // If the team does not exist, lets add the team to the scoreboard.
         if (!teamExist(teamName)) addTeam(teamName, prefix, suffix);
 
+
+        ColorLogger.ERROR.printLog("team added...");
+
         // Add the player to the team.
         scoreboard.getTeam(teamName).addEntry(player.getName());
+
+        ColorLogger.ERROR.printLog("team entry added...");
     }
 
     /**
@@ -220,5 +251,25 @@ public class ScoreboardManager implements Listener {
         boolean doesExist = false;
         for (Team team : scoreboard.getTeams()) if (team.getName().equals(teamName)) doesExist = true;
         return doesExist;
+    }
+
+    /**
+     * This will make sure a string is not longer than 14 characters.
+     * If it is, we will shorten the string.
+     *
+     * @param input The string we want to trim.
+     * @return The trimmed string.
+     */
+    private String trimString(String input) {
+        final int maxWidth = 16; // Scoreboard string length is 16.
+
+        // Check to see if the input length is greater than the maxWidth of characters.
+        if (input.length() > maxWidth) {
+            int amountOver = input.length() - maxWidth;
+            return input.substring(0, input.length() - amountOver);
+        } else {
+            // The input is less than 15 characters so it does not need to be trimmed.
+            return input;
+        }
     }
 }

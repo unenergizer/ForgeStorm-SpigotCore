@@ -16,7 +16,23 @@ public enum UserGroup {
     NPC("npc", "&7[&9NPC&7] ", ChatColor.WHITE),
     MINIGAME_TEAM("mgTeam", "&lTEAM&7&l:&r ", ChatColor.WHITE),
     MINIGAME_KIT("mgKit", "&lKIT&7&l:&r ", ChatColor.WHITE),
-    MINIGAME_SPECTATOR("mgSpectator", "&7[&8bKit&7] ", ChatColor.DARK_GRAY);
+    MINIGAME_SPECTATOR("mgSpectator", "&7[Spectator] ", ChatColor.DARK_GRAY),
+    AQUA("AQUA", "&b", ChatColor.AQUA),
+    BLACK("BLACK", "&0", ChatColor.BLACK),
+    BLUE("BLUE", "&9", ChatColor.BLUE),
+    DARK_AQUA("DARK_AQUA", "&3", ChatColor.DARK_AQUA),
+    DARK_BLUE("DARK_BLUE", "&1", ChatColor.DARK_BLUE),
+    DARK_GRAY("DARK_GRAY", "&8", ChatColor.DARK_GRAY),
+    DARK_GREEN("DARK_GREEN", "&2", ChatColor.DARK_GREEN),
+    DARK_PURPLE("DARK_PURPLE", "&5", ChatColor.DARK_PURPLE),
+    DARK_RED("DARK_RED", "&4", ChatColor.DARK_RED),
+    GOLD("GOLD", "&6", ChatColor.GOLD),
+    GRAY("GRAY", "&7", ChatColor.GRAY),
+    GREEN("GREEN", "&a", ChatColor.GREEN),
+    LIGHT_PURPLE("LIGHT_PURPLE", "&d", ChatColor.LIGHT_PURPLE),
+    RED("RED", "&c", ChatColor.RED),
+    WHITE("WHITE", "&f", ChatColor.WHITE),
+    YELLOW("YELLOW", "&e", ChatColor.YELLOW);
 
 	private final String teamName;
 	private final String prefix;
