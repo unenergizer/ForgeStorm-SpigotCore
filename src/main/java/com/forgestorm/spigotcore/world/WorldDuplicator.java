@@ -101,7 +101,7 @@ public class WorldDuplicator {
 		} else {
 
 			if (dest.isDirectory()) {
-                ColorLogger.FATAL.printLog("YOU FUCKED UP!");
+                ColorLogger.AQUA.printLog("YOU FUCKED UP!");
             }
 
 			// if file, then copy it

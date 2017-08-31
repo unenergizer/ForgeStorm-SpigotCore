@@ -91,7 +91,7 @@ public class CitizenManager extends BukkitRunnable implements Listener {
         //Apply Citizens Configuration after server startup.
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             applyCitizensConfiguration();
-            ColorLogger.INFO.printLog("[FSCore] Applied Citizens HP and Holograms.");
+            ColorLogger.AQUA.printLog("[FSCore] Applied Citizens HP and Holograms.");
         }, 5 * 20L);
 
         // Register Listeners
@@ -475,7 +475,7 @@ public class CitizenManager extends BukkitRunnable implements Listener {
         private final Map<Player, Integer> countDowns = new ConcurrentHashMap<>();
 
         ResetTimer() {
-            ColorLogger.INFO.printLog("ResetTimer created!");
+            ColorLogger.AQUA.printLog("ResetTimer created!");
         }
 
         @Override

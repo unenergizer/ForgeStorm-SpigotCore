@@ -50,9 +50,6 @@ public class SetupNetworkPlayer extends BukkitRunnable {
         profileData.setChatPrefix();
         profileData.setPlayerLevel(expCalc.getLevel(profileData.getExperience()));
 
-        //Setup usergroup prefixes.
-        plugin.getScoreboardManager().addPlayer(player, profileData.getPlayerUsergroup());
-
         //Send the player a formatted tab menu.
         String header = SpigotCoreMessages.DISPLAY_TAB_HEADER.toString().replace("%s", player.getName());
         String footer = SpigotCoreMessages.DISPLAY_TAB_FOOTER.toString();

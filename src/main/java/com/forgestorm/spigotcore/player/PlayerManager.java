@@ -129,7 +129,7 @@ public class PlayerManager implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
-        ColorLogger.INFO.printLog("Compass drop");
+        ColorLogger.AQUA.printLog("Compass drop");
         if (event.getItemDrop().getItemStack().getType() == Material.COMPASS) {
             event.getPlayer().sendMessage(ChatColor.RED + "You can not drop your compass.");
             CommonSounds.ACTION_FAILED.playSound(event.getPlayer());

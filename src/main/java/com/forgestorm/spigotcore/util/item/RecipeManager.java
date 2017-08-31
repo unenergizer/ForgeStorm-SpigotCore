@@ -136,7 +136,7 @@ public class RecipeManager {
         if (plugin.getProfileManager().getProfile(player).getCollectedRecipes().contains(recipe)) {
             plugin.getProfileManager().getProfile(player).getCollectedRecipes().remove(recipe);
 
-            ColorLogger.WARNING.printLog("REMOVE CALL: " + plugin.getProfileManager().getProfile(player).getCollectedRecipes().toString());
+            ColorLogger.AQUA.printLog("REMOVE CALL: " + plugin.getProfileManager().getProfile(player).getCollectedRecipes().toString());
 
             return ChatColor.GREEN + "Recipe was removed from player.";
         } else {

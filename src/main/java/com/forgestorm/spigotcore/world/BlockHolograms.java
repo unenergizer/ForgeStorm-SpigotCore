@@ -49,7 +49,7 @@ public class BlockHolograms {
         //Apply Citizens Configuration after server startup.
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
             applyBlockHolograms();
-            ColorLogger.INFO.printLog("[FSCore] Applied Block Holograms.");
+            ColorLogger.AQUA.printLog("[FSCore] Applied Block Holograms.");
         }, 4 * 20L);
 
     }
@@ -105,7 +105,7 @@ public class BlockHolograms {
             hologramInfos.add(new HologramInfo(x, y, z, text, centerOnBlock));
             totalHolograms++;
         }
-        ColorLogger.INFO.printLog("[FS-CORE] Loaded " + totalHolograms + " block hologramInfos.");
+        ColorLogger.AQUA.printLog("[FS-CORE] Loaded " + totalHolograms + " block hologramInfos.");
     }
 
     /**

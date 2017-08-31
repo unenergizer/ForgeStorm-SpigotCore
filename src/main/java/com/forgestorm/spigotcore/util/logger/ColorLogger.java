@@ -25,20 +25,24 @@ import org.bukkit.ChatColor;
  * Link: https://en.wikipedia.org/wiki/Java_logging_framework
  */
 public enum ColorLogger {
-    //Severe errors that cause premature termination. Expect these to be immediately visible on a status console.
-    FATAL(ChatColor.DARK_RED),
+    AQUA(ChatColor.AQUA),
+    BLACK(ChatColor.BLACK),
+    BLUE(ChatColor.BLUE),
+    DARK_AQUA(ChatColor.DARK_AQUA),
+    DARK_BLUE(ChatColor.DARK_BLUE),
+    DARK_GRAY(ChatColor.DARK_GRAY),
+    DARK_GREEN(ChatColor.DARK_GREEN),
+    DARK_PURPLE(ChatColor.DARK_PURPLE),
+    DARK_RED(ChatColor.DARK_RED),
+    GOLD(ChatColor.GOLD),
+    GRAY(ChatColor.GRAY),
+    GREEN(ChatColor.GREEN),
+    LIGHT_PURPLE(ChatColor.LIGHT_PURPLE),
+    RED(ChatColor.RED),
+    WHITE(ChatColor.WHITE),
+    YELLOW(ChatColor.YELLOW);
 
-    //Other runtime errors or unexpected conditions. Expect these to be immediately visible on a status console.
-    ERROR(ChatColor.RED),
-
-    WARNING(ChatColor.YELLOW),
-
-    //Interesting runtime events (startup/shutdown). Expect these to be immediately visible on a console, so be conservative and keep to a minimum.
-    INFO(ChatColor.AQUA),
-
-    //Detailed information on the flow through the system. Expect these to be written to logs only.
-    DEBUG(ChatColor.GREEN);
-
+    private static final String CL = "[CL]";
     private ChatColor chatColor;
 
     ColorLogger(ChatColor chatColor) {
@@ -46,14 +50,10 @@ public enum ColorLogger {
     }
 
     public void printLog(String logMessage) {
-        Bukkit.getServer().getConsoleSender().sendMessage(getLogLevel() + chatColor + logMessage);
+        Bukkit.getServer().getConsoleSender().sendMessage(CL + chatColor + logMessage);
     }
 
     public void printLog(boolean printLog, String logMessage) {
-        if (printLog) Bukkit.getServer().getConsoleSender().sendMessage(getLogLevel() + chatColor + logMessage);
-    }
-
-    private String getLogLevel() {
-        return "[CL " + toString() + "] ";
+        if (printLog) Bukkit.getServer().getConsoleSender().sendMessage(CL + chatColor + logMessage);
     }
 }

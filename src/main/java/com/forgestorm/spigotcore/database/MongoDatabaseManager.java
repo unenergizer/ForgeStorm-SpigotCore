@@ -81,7 +81,7 @@ public class MongoDatabaseManager extends BukkitRunnable {
 
         // Close the database connection
         mongoClient.close();
-        ColorLogger.INFO.printLog("[FSCore] Closing MongoDB connection.");
+        ColorLogger.AQUA.printLog("[FSCore] Closing MongoDB connection.");
     }
 
     private void createProfile(Player player) {
@@ -273,7 +273,7 @@ public class MongoDatabaseManager extends BukkitRunnable {
      * @param player The player who joined the server.
      */
     public void loadProfile(Player player) {
-        ColorLogger.ERROR.printLog("LoadingProfile");
+        ColorLogger.AQUA.printLog("LoadingProfile");
         //Prevent NPC's from getting profiles.
         if (player.hasMetadata("NPC")) return;
 
@@ -354,7 +354,7 @@ public class MongoDatabaseManager extends BukkitRunnable {
      * @param player The player who logged out.
      */
     public void unloadProfile(Player player) {
-        ColorLogger.FATAL.printLog("UnloadingProfile");
+        ColorLogger.AQUA.printLog("UnloadingProfile");
         //Prevent NPC's from unloading profiles.
         if (player.hasMetadata("NPC")) {
             return;

@@ -3,10 +3,8 @@ package com.forgestorm.spigotcore.util.scoreboard;
 
 import com.forgestorm.spigotcore.SpigotCore;
 import com.forgestorm.spigotcore.constants.UserGroup;
-import com.forgestorm.spigotcore.util.logger.ColorLogger;
 import com.forgestorm.spigotcore.util.text.ColorMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -69,27 +67,23 @@ public class ScoreboardManager implements Listener {
      * @param suffix   The suffix of the team name.
      */
     private void addTeam(String teamName, String prefix, String suffix) {
-        Team team = scoreboard.registerNewTeam(trimString(teamName));
+        String trimmedTeamName = trimString(teamName);
+
+        // If the team already exists, skip adding it.
+        if (teamExist(trimmedTeamName)) return;
+
+        // Register the new team
+        Team team = scoreboard.registerNewTeam(trimmedTeamName);
 
         // Set the prefix.
         if (prefix != null && !prefix.isEmpty()) {
             team.setPrefix(prefix);
-            ColorLogger.ERROR.printLog("Prefix Added: " + prefix);
         }
 
         // Set ths suffix.
         if (suffix != null && !suffix.isEmpty()) {
             team.setSuffix(suffix);
-            ColorLogger.ERROR.printLog("Suffix Added: " + suffix);
         }
-
-        ColorLogger.ERROR.printLog("TEAM " + teamName + " ADDED!!!");
-
-        ColorLogger.ERROR.printLog("------ ADDED ---------");
-        for (Team teams : scoreboard.getTeams()) {
-            ColorLogger.WARNING.printLog(teams.getName());
-        }
-        ColorLogger.ERROR.printLog("----------------------");
     }
 
     /**
@@ -98,15 +92,7 @@ public class ScoreboardManager implements Listener {
      * @param teamName The team to remove.
      */
     private void removeTeam(String teamName) {
-        scoreboard.getTeam(teamName).unregister();
-
-
-        ColorLogger.ERROR.printLog("REMOVED: " + teamName);
-        ColorLogger.ERROR.printLog("------ TOTAL ---------");
-        for (Team teams : scoreboard.getTeams()) {
-            ColorLogger.WARNING.printLog(teams.getName());
-        }
-        ColorLogger.ERROR.printLog("----------------------");
+        getTeam(teamName).unregister();
     }
 
     /**
@@ -117,7 +103,7 @@ public class ScoreboardManager implements Listener {
      * @param teamName     The team the living entity should join.
      */
     public void addEntityToTeam(LivingEntity livingEntity, String teamName) {
-        scoreboard.getTeam(teamName).addEntry(livingEntity.getUniqueId().toString());
+        getTeam(teamName).addEntry(livingEntity.getUniqueId().toString());
     }
 
     /**
@@ -128,7 +114,7 @@ public class ScoreboardManager implements Listener {
      * @param teamName     The team the living entity should quit.
      */
     public void removeEntityFromTeam(LivingEntity livingEntity, String teamName) {
-        scoreboard.getTeam(teamName).removeEntry(livingEntity.getUniqueId().toString());
+        getTeam(teamName).removeEntry(livingEntity.getUniqueId().toString());
     }
 
     /**
@@ -190,18 +176,11 @@ public class ScoreboardManager implements Listener {
         // Give the player the current scoreboard.
         player.setScoreboard(scoreboard);
 
-        player.sendMessage("(SPIGOTCORE) teamName: " + teamName + ChatColor.RESET + " teamPrefix: " + prefix + " " + player.getName());
-
-        // If the team does not exist, lets add the team to the scoreboard.
-        if (!teamExist(teamName)) addTeam(teamName, prefix, suffix);
-
-
-        ColorLogger.ERROR.printLog("team added...");
+        // Lets add the team to the scoreboard.
+        addTeam(teamName, prefix, suffix);
 
         // Add the player to the team.
-        scoreboard.getTeam(teamName).addEntry(player.getName());
-
-        ColorLogger.ERROR.printLog("team entry added...");
+        getTeam(teamName).addEntry(player.getName());
     }
 
     /**
@@ -233,12 +212,24 @@ public class ScoreboardManager implements Listener {
         if (currentTeam.getSize() >= 1) return;
 
         // Check if the team is a default preset.
-        for (UserGroup userGroup : UserGroup.values()) if (teamExist(userGroup.getTeamName())) return;
+        for (UserGroup userGroup : UserGroup.values()) {
+            if (userGroup.getTeamName().equals(currentTeam.getName())) return;
+        }
 
         // If the team has no players and is not a default
         // preset, then lets remove the team from the
         // scoreboard.
         removeTeam(currentTeam.getName());
+    }
+
+    /**
+     * Gets a team using the trimmed name.
+     *
+     * @param teamName The original team name.
+     * @return The team with the trimmed team name.
+     */
+    private Team getTeam(String teamName) {
+        return scoreboard.getTeam(trimString(teamName));
     }
 
     /**

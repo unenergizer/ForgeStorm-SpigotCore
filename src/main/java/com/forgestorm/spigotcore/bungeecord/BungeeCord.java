@@ -69,7 +69,7 @@ public class BungeeCord implements PluginMessageListener {
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    ColorLogger.FATAL.printLog("Could not handle BungeeCord command from " + player.getName() + ": tried to connect to \"" + server + "\".");
+                    ColorLogger.AQUA.printLog("Could not handle BungeeCord command from " + player.getName() + ": tried to connect to \"" + server + "\".");
                 }
             }
         }.runTaskLater(plugin, 20 * 2); //2 seconds

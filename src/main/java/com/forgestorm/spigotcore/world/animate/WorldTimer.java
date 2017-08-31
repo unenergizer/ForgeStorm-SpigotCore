@@ -40,7 +40,7 @@ public class WorldTimer extends BukkitRunnable {
             // AFTERNOON
             if (time == 0) {
                 day++;
-                ColorLogger.INFO.printLog("Day: " + day);
+                ColorLogger.AQUA.printLog("Day: " + day);
                 timesOfTheDay = TimesOfTheDay.AFTERNOON;
                 triggerEvent(timesOfTheDay);
             }

@@ -112,6 +112,6 @@ public class DeletePlayerFiles {
     }
 
     private void showDebugText(String message) {
-        if (debugText) ColorLogger.DEBUG.printLog(message);
+        if (debugText) ColorLogger.AQUA.printLog(message);
     }
 }

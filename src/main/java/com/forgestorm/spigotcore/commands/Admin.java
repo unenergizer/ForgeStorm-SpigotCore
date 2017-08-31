@@ -100,7 +100,7 @@ public class Admin implements CommandExecutor {
 
             switch (args[0].toLowerCase()) {
                 case "chaticon":
-                    ColorLogger.INFO.printLog("Sending chat icon...");
+                    ColorLogger.AQUA.printLog("Sending chat icon...");
                     commandSender.sendMessage("");
                     new EzImgMessage().sendEzImgMessage((Player) commandSender, ChatIcons.valueOf(args[1].toUpperCase()), "This is test text!");
                     break;

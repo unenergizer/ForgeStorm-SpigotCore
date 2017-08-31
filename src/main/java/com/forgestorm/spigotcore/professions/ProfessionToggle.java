@@ -69,7 +69,7 @@ public class ProfessionToggle {
         professionsEnabled = true;
         for (Profession profession : professions) {
             profession.onEnable();
-            ColorLogger.DEBUG.printLog(profession.getClass().getSimpleName() + " enabled");
+            ColorLogger.AQUA.printLog(profession.getClass().getSimpleName() + " enabled");
         }
 
         // Startup private furnace manager.
@@ -84,7 +84,7 @@ public class ProfessionToggle {
         professionsEnabled = false;
         for (Profession profession : professions) {
             profession.onDisable();
-            ColorLogger.DEBUG.printLog(profession.getClass().getSimpleName() + " disabled");
+            ColorLogger.AQUA.printLog(profession.getClass().getSimpleName() + " disabled");
         }
 
         // Disable the private furnaces.
